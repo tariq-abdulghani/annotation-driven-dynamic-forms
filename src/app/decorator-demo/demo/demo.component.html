@@ -1,1 +1,7 @@
-<p>demo works!</p>
+<div class="container">
+    <p>{{ point | json}}</p>
+
+    <p>{{ point.toString()}}</p>
+
+    <p>{{ $any(point).formEntity | json }}</p>
+</div>
