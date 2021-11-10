@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormEntityProcessor } from '../models/formEntityProcessor';
+import { FormEntityProcessor } from '../models/form-models/formEntityProcessor';
 import { Point } from '../models/point';
+
 
 @Component({
   selector: 'app-demo',

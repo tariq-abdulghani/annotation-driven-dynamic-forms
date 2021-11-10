@@ -1,6 +1,6 @@
-import { FormModel} from "./form-model";
-import { Control } from "./form-control";
+import { Control } from "./form-models/form-control";
 import "reflect-metadata";
+import { FormModel } from "./form-models/form-model";
 
 
 @FormModel({

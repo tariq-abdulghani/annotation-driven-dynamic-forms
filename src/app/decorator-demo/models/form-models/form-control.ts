@@ -16,7 +16,6 @@ export function Control(meta: {
     meta.formControl = new FormControl();
     
     const setter = function(val?:any){
-        console.log(meta.formControl);
         meta.formControl?.setValue(val);
     }
 
@@ -31,6 +30,5 @@ export function Control(meta: {
     });
    
     Reflect.defineMetadata(propertyKey, meta, target, propertyKey);
-    // console.log("target",target);
   };
 }
