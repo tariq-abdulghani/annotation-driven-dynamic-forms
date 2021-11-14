@@ -1,16 +1,39 @@
 import { Validators } from "@angular/forms";
-import { formModel, textControl } from "./controls-meta";
+import { formModel, numberControl, textControl } from "./controls-meta";
+import { splittedDateRangeControl } from "./splitted-date-range";
 
-@formModel({showReset: false,submitBtnLabel:'submit', resetBtnLabel:''})
-export class Person{
+@formModel({
+  showReset: false,
+  submitBtnLabel: 'submit',
+  resetBtnLabel: 'reset',
+})
+export class PersonForm {
 
-    @textControl({name: 'name',type:'text',validators: [Validators.required]})
-    name: string;
+  @textControl({
+    name: 'fullName',
+    type: 'text',
+    validators: [Validators.required],
+  })
+  name: string;
 
-    age: number;
+  @numberControl({
+    name: 'age',
+    type: 'number',
+    validators: [Validators.required],
+  })
+  age: number;
 
-    constructor(name: string, age: number){
-        this.name = name;
-        this.age = age;
-    }
+  @splittedDateRangeControl({
+    startDateLabel:"dateOfBirth",
+    startDate: new Date(),
+    endDate: new Date(2060, 10, 10),
+    endDateLabel: "dateOfDeath"
+  })
+  dates = [new Date(), new Date()];
+
+  constructor(name: string, age: number) {
+    this.name = name;
+    this.age = age;
+    this.dates = [new Date(), new Date()]
+  }
 }
