@@ -24,16 +24,17 @@ export class PersonForm {
   age: number;
 
   @splittedDateRangeControl({
-    startDateLabel:"dateOfBirth",
     startDate: new Date(),
-    endDate: new Date(2060, 10, 10),
+    startDateLabel:"dateOfBirth",
+    endDate: new Date(2030, 10, 10),
     endDateLabel: "dateOfDeath"
   })
-  dates = [new Date(), new Date()];
+  //@ts-ignore
+  dates //= [new Date(), new Date()];
 
   constructor(name: string, age: number) {
     this.name = name;
     this.age = age;
-    this.dates = [new Date(), new Date()]
+    this.dates = [new Date(), new Date()]; //[null, null]//[new Date(), new Date()]
   }
 }

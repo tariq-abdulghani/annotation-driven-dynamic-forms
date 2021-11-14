@@ -28,7 +28,7 @@ export class DynamicFormComponent implements OnInit {
   }
 
   onSubmit(v: any){
-    console.log(this.formDescriptor.formGroup.value);
+    console.log(this.formDescriptor.formGroup);
   }
 
 }
