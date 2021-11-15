@@ -30,8 +30,7 @@ export class PersonForm {
     endDateLabel: "dateOfDeath",
     optional: false
   })
-  //@ts-ignore
-  dates //= [new Date(), new Date()];
+  dates!:[Date | null | string, Date | null | string] //= [new Date(), new Date()];
 
   constructor(name: string, age: number) {
     this.name = name;
