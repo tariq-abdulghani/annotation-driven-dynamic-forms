@@ -1,5 +1,5 @@
 import { Validators } from "@angular/forms";
-import { formModel, numberControl, textControl } from "./controls-meta";
+import { formModel, textControl, numberControl } from "./common-controls";
 import { splittedDateRangeControl } from "./splitted-date-range";
 
 @formModel({
@@ -12,6 +12,7 @@ export class PersonForm {
   @textControl({
     name: 'fullName',
     type: 'text',
+    id:'full-name',
     validators: [Validators.required],
   })
   name: string;
@@ -19,16 +20,21 @@ export class PersonForm {
   @numberControl({
     name: 'age',
     type: 'number',
+    id: 'age',
     validators: [Validators.required],
   })
   age: number;
 
   @splittedDateRangeControl({
-    startDate: new Date(),
-    startDateLabel:"dateOfBirth",
-    endDate: new Date(2030, 10, 10),
-    endDateLabel: "dateOfDeath",
-    optional: false
+    startDateControlId: 'date-of-birth',
+    startDateControlPlaceHolder: 'yyyy/mm-dd',
+    rangeStartDate: new Date(),
+    startDateControlName:"dateOfBirth",
+    rangeEndDate: new Date(2030, 10, 10),
+    endDateControlName: "dateOfDeath",
+    endDateControlId:'date-of-death',
+    endDateControlPlaceHolder: 'yyyy/mm/dd',
+    optional: true
   })
   dates!:[Date | null | string, Date | null | string] //= [new Date(), new Date()];
 
