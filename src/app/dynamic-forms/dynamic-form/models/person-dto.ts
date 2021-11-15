@@ -27,7 +27,8 @@ export class PersonForm {
     startDate: new Date(),
     startDateLabel:"dateOfBirth",
     endDate: new Date(2030, 10, 10),
-    endDateLabel: "dateOfDeath"
+    endDateLabel: "dateOfDeath",
+    optional: false
   })
   //@ts-ignore
   dates //= [new Date(), new Date()];
@@ -35,6 +36,6 @@ export class PersonForm {
   constructor(name: string, age: number) {
     this.name = name;
     this.age = age;
-    this.dates = [new Date(), new Date()]; //[null, null]//[new Date(), new Date()]
+    this.dates = [null, null];// [new Date(), new Date()]; ////[new Date(), new Date()]
   }
 }
