@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
 import { ControlTypes } from './models/control-types.enum';
 import { FormDescriptor, FormEntityProcessor } from './models/formEntityProcessor';
 import { PersonForm } from './models/person-dto';
@@ -18,13 +17,6 @@ export class DynamicFormComponent implements OnInit {
   ngOnInit(): void {
     this.formDescriptor  = FormEntityProcessor.generateFormDescriptor(this.personDTO);
     console.log(this.formDescriptor);
-    // this.formDescriptor.formGroup.valueChanges.subscribe(value =>{
-    //   console.log(value);
-    // })
-
-    // this.formDescriptor.formGroup.statusChanges.subscribe(value =>{
-    //   console.log(value);
-    // })
   }
 
   onSubmit(v: any){

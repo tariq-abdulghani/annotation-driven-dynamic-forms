@@ -1,10 +1,10 @@
 import { FormControl } from "@angular/forms";
 import { ControlTypes } from "./control-types.enum";
-import { FomrModel, TextControlMeta, NumberControlMeta, DateControlMeta } from "./controls-meta";
+import { FormMeta, TextControlMeta, NumberControlMeta, DateControlMeta } from "./controls-meta";
 import 'reflect-metadata';
 
 
-export function formModel(configs:FomrModel) {
+export function formModel(configs:FormMeta) {
     return function <T extends { new (...args: any[]): {} }>(constructor: T) {
       return class extends constructor {
           showReset = configs.showReset || false;

@@ -3,14 +3,14 @@ import { ControlTypes } from "./control-types.enum";
 import { DateControlMeta } from "./controls-meta";
 
 export function splittedDateRangeControl(metaData: {
-  startDateControlName: string;
-  startDateControlId: string;
-  startDateControlPlaceHolder?: string;
-  startDateControlPlaceLabel?: string;
-  endDateControlName: string;
-  endDateControlId: string;
-  endDateControlPlaceHolder?: string;
-  endDateControlPlaceLabel?: string;
+  startDateInputName: string;
+  startDateInputId: string;
+  startDateInputPlaceHolder?: string;
+  startDateInputPlaceLabel?: string;
+  endDateInputName: string;
+  endDateInputId: string;
+  endDateInputPlaceHolder?: string;
+  endDateInputPlaceLabel?: string;
   rangeStartDate: Date;
   rangeEndDate: Date;
   optional?: boolean;
@@ -23,8 +23,8 @@ export function splittedDateRangeControl(metaData: {
     // console.log("splitted date decorator runs");
     const endDateMeta: DateControlMeta  = {
       type: 'date',
-      name: metaData.endDateControlName,
-      propertyKey: metaData.endDateControlName,
+      name: metaData.endDateInputName,
+      propertyKey: metaData.endDateInputName,
       minDate: metaData.rangeStartDate,
       maxDate: metaData.rangeEndDate,
       controlType: ControlTypes.Date,
@@ -33,9 +33,9 @@ export function splittedDateRangeControl(metaData: {
       style: metaData.style,
       class: metaData.class,
       validators:[],
-      id: metaData.endDateControlId,
-      placeHolder: metaData.endDateControlPlaceHolder,
-      label: metaData.endDateControlPlaceLabel,
+      id: metaData.endDateInputId,
+      placeHolder: metaData.endDateInputPlaceHolder,
+      label: metaData.endDateInputPlaceLabel,
     }
 
     const endDateSetter = (n: Date) => {
@@ -45,31 +45,32 @@ export function splittedDateRangeControl(metaData: {
       return endDateMeta.formControl.value;
     }
 
-    Reflect.defineMetadata(metaData.endDateControlName, endDateMeta, target, metaData.endDateControlName);
+    Reflect.defineMetadata(metaData.endDateInputName, endDateMeta, target, metaData.endDateInputName);
 
 
     const startDateMeta: DateControlMeta = {
       type: 'date',
-      name: metaData.startDateControlName,
-      propertyKey: metaData.startDateControlName,
+      name: metaData.startDateInputName,
+      propertyKey: metaData.startDateInputName,
       minDate: metaData.rangeStartDate,
       maxDate: metaData.rangeEndDate,
       controlType: ControlTypes.Date,
       formControl: new FormControl(metaData.rangeStartDate,
         [minDateValidator(metaData.rangeStartDate),
         maxDateValidator(metaData.rangeEndDate),
-        optionalValidator(metaData.optional || false)]),
+        optionalValidator(metaData.optional || false)]
+        ),
         validators:[],
-      id: metaData.startDateControlId,
-      placeHolder: metaData.startDateControlPlaceHolder,
-      label: metaData.startDateControlPlaceLabel,
+      id: metaData.startDateInputId,
+      placeHolder: metaData.startDateInputPlaceHolder,
+      label: metaData.startDateInputPlaceLabel,
       width: metaData.width,
       style: metaData.style,
       class: metaData.class,
     }
 
     const startDateSetter = (n: Date) => {
-      console.log("start date setter", n);
+      // console.log("start date setter", n);
       endDateMeta.minDate = n;
       startDateMeta.formControl.setValue(n);
     }
@@ -77,20 +78,26 @@ export function splittedDateRangeControl(metaData: {
       return startDateMeta.formControl.value;
     }
 
-    Object.defineProperty(target, metaData.startDateControlName, {
+    Object.defineProperty(target, metaData.startDateInputName, {
       set: startDateSetter,
       get: startDateGetter,
       enumerable: true,
     });
 
-    startDateMeta.formControl.valueChanges.subscribe((n: any) => {
+    startDateMeta.formControl
+    .valueChanges.subscribe((n: any) => {
       endDateMeta.minDate = new Date(n);
       endDateMeta.formControl.setValue(endDateMeta.minDate);
-      endDateMeta.formControl.setValidators([minDateValidator(endDateMeta.minDate), maxDateValidator(metaData.rangeEndDate), optionalValidator(metaData.optional || false)]);
+      endDateMeta.formControl.setValidators([
+        minDateValidator(endDateMeta.minDate), 
+        maxDateValidator(metaData.rangeEndDate), 
+        optionalValidator(metaData.optional || false)
+      ]);
       endDateMeta.formControl.updateValueAndValidity();
     });
-    Reflect.defineMetadata(metaData.startDateControlName, startDateMeta, target, metaData.startDateControlName);
-    Object.defineProperty(target, metaData.endDateControlName, {
+
+    Reflect.defineMetadata(metaData.startDateInputName, startDateMeta, target, metaData.startDateInputName);
+    Object.defineProperty(target, metaData.endDateInputName, {
       set: endDateSetter,
       get: endDateGetter,
       enumerable: true,
@@ -102,7 +109,7 @@ export function splittedDateRangeControl(metaData: {
         startDateSetter(val[0]);
         endDateSetter(val[1]);
       } else {
-        throw new Error(`value " ${val} " must be array of two fields that are dates or nulls or valid sate string`);
+        throw new Error(`value "${val}" must be array of two fields that are dates or nulls or valid sate string`);
       }
     };
 
@@ -151,7 +158,7 @@ const minDateValidator = function (minVal: Date): ValidatorFn {
 
 const maxDateValidator = function (maxVal: Date): ValidatorFn {
   return function (control: AbstractControl) {
-    console.log("max date validator", maxVal, control.value);
+    // console.log("max date validator", maxVal, control.value);
     const err = { error: "maxDate", value: control.value, max: maxVal };
     if (control.value == null) {
       return null;
@@ -173,7 +180,7 @@ const maxDateValidator = function (maxVal: Date): ValidatorFn {
  * Formats given date using given string template
  * 
  * @param date Date
- * @param formatString stirng contains yyyy mm dd h m s
+ * @param formatString string contains yyyy mm dd h m s
  * @returns formatString after replacing yyyy by year and mm by month and dd by day HH by hour MM minutes SS seconds
  */
 function formatDate(date: Date, formatString: string){

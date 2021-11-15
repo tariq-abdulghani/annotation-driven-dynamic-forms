@@ -2,7 +2,7 @@ import { ValidatorFn } from "@angular/forms";
 import 'reflect-metadata';
 
 
-export interface FomrModel {
+export interface FormMeta {
   showReset?: boolean;
   resetBtnLabel?: string;
   submitBtnLabel?: string;

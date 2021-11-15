@@ -2,17 +2,20 @@
 
 <form [formGroup]="formDescriptor.formGroup" (ngSubmit)="onSubmit($event)">
     <ng-container *ngFor="let controlMeta of formDescriptor.controlsMeta">
-        <input *ngIf="controlMeta.controlType!=controlTypes.Date; else date" [type]="controlMeta.type"  
+        <input *ngIf="controlMeta.controlType!=controlTypes.Date; else date"
+        [id]="controlMeta.id" 
+        [type]="controlMeta.type"  
         [formControl]="controlMeta.formControl" 
         [name]="controlMeta.name">
        
         <ng-template #date>
-            <input 
-                [type]="controlMeta.type"  
-                [formControl]="controlMeta.formControl" 
-                [name]="controlMeta.name"
-                [min]="controlMeta.minDate"
-                [max]="controlMeta.maxDate">
+            <input
+            [id]="controlMeta.id" 
+            [type]="controlMeta.type"  
+            [formControl]="controlMeta.formControl" 
+            [name]="controlMeta.name"
+            [min]="controlMeta.minDate"
+            [max]="controlMeta.maxDate">
         </ng-template>
         
     </ng-container>
