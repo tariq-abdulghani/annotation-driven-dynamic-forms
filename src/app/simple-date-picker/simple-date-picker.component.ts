@@ -29,6 +29,7 @@ export class SimpleDatePickerComponent implements OnInit {
     ]
   
   readonly monthsArray = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  yearView = false;
 
   constructor() { }
 
@@ -86,5 +87,13 @@ export class SimpleDatePickerComponent implements OnInit {
 
     decrementMonth(){
       this.getCalenderByMonth((this.monthsArray.indexOf(this.selectedMonth)- 1)%12);
+    }
+
+    applyMonthView(){
+      this.yearView= false;
+    }
+
+    toggleYearView(){
+      this.yearView =! this.yearView;
     }
 }

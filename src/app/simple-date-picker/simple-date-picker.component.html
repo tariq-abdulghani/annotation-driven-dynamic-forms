@@ -1,58 +1,71 @@
 
-
 <div class="date-picker-container">
     <div class="date-picker-input-container ">
-        <input class="date-picker-input" type="text" placeholder="yyyy/mm/dd">
+        <input class="date-picker-input px-1" type="text" placeholder="yyyy/mm/dd">
         <span class="date-picker-icon"><i class="far fa-calendar"></i></span>
     </div>
     
     <div class="date-picker-calender shadow-sm">
         <div class="calender-navigator d-flex align-items-center justify-content-between">
-          
-          <span>{{selectedMonth}}</span> 
-          <span>{{selectedYear}}</span>
-          <!-- <span>Day</span> -->
+          <span class="year-view-toggler" [ngClass]="{'active': !yearView, 'not-active': yearView}"(click)="applyMonthView()">
+            {{selectedMonth}}
+          </span> 
+          <span class="year-view-toggler" [ngClass]="{'active': yearView,  'not-active': !yearView}" (click)="toggleYearView()">
+            {{selectedYear}}
+          </span>
+          <span >  </span>
           <button class="navigator-btn" (click)="decrementMonth()">&#10094;</button>
-          <!--<i class="fas fa-arrow-right"></i>-->
           <button class="navigator-btn" (click)="incrementMonth()">&#10095;</button>
-            <!-- <div class="col-4">
-                <span class="">Month</span> 
-                <span class="mx-1">Year</span> 
-            </div>
-            <div class="col-5">
-                <button class="navigator-btn"><i class="fas fa-arrow-left"></i></button>
-            <button class="navigator-btn"><i class="fas fa-arrow-right"></i></button>
-            </div> -->
-            
         </div>
         
-        <hr>
-        <table class="calender-navigator-body table table-sm table-borderless">
+        <hr class="mt-1">
+        <table class="calender-navigator-body table table-sm table-borderless" *ngIf="!yearView">
             <thead>
               <tr>
                 <th  class="calender-day-header" *ngFor="let dayHeader of daysHeader">{{dayHeader}}</th>
-                <!-- <th scope="col" class="calender-day-header">M</th>
-                <th scope="col" class="calender-day-header">T</th>
-                <th scope="col" class="calender-day-header">W</th>
-                <th scope="col" class="calender-day-header">T</th>
-                <th scope="col" class="calender-day-header">&#70;</th>
-                <th scope="col" class="calender-day-header">S</th> -->
               </tr>
             </thead>
             <tbody>
-              <!-- <tr class="col-md-12" *ngFor="let item of [1,2,3,4,5,6]">
-                <td class="col-md calender-day">1</td>
-                <td class="col-md calender-day">2</td>
-                <td class="col-md calender-day">3</td>
-                <td class="col-md calender-day">4</td>
-                <td class="col-md calender-day">5</td>
-                <td class="col-md calender-day">6</td>
-                <td class="col calender-day">7</td>
-              </tr> -->
               <tr class="col-md-12" *ngFor="let week of calender">
-                <td class="col-md calender-day" *ngFor="let day of week"> {{day}}</td>
+                <td class="col-md calender-day" *ngFor="let day of week" [ngClass]="{'text-white': day==0}"> {{day || "-"}}</td>
               </tr>
             </tbody>
+        </table>
+        <!-- <div class="d-flex align-items-center justify-content-between">
+          <button class="calender-btn">clear</button> 
+          <button class="calender-btn">today</button>
+        </div> -->
+<!-- month year view -->
+        <div class="row" *ngIf="yearView">
+          <div class="col-6" style="border-right: 1px solid lightgrey;">
+            <table class="calender-navigator-body table table-sm table-borderless" >
+              <thead>
+                <!-- <tr>
+                  <th  class="calender-day-header" *ngFor="let dayHeader of daysHeader">{{dayHeader}}</th>
+                </tr> -->
+              </thead>
+              <tbody>
+                <!-- <tr class="col-md-12" *ngFor="let week of calender">
+                  <td class="col-md calender-day" *ngFor="let day of week" [ngClass]="{'text-white': day==0}"> {{day || "-"}}</td>
+                </tr> -->
+                <tr *ngFor="let m of [0,2,4,6, 8, 10]">
+                  <td class="calender-day">{{monthsArray[m]}}</td>
+                  <td class="calender-day">{{monthsArray[m+1]}}</td>
+                </tr>
+              </tbody>
           </table>
+          </div>
+          <div class="col-6">
+            <table class="calender-navigator-body table table-sm table-borderless">
+              <thead>
+              </thead>
+              <tbody>
+                <tr *ngFor="let years of [2021, 2022, 2023, 2024, 2025]">
+                  <td class="calender-day"  *ngFor="let n of [0,5,]">{{n+years}}</td>
+                </tr>
+              </tbody>
+          </table>
+          </div>
+        </div>
     </div>
 </div>

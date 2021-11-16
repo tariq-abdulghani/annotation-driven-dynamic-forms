@@ -50,3 +50,32 @@
     color: gray;
     border: none;
 }
+
+.calender-btn{
+    background-color: white;
+    border: lightgray solid 1px;
+    padding: 5px;
+}
+
+.calender-btn:hover{
+    background-color: white;
+    /* border: gray solid 1px; */
+    color: gray;
+}
+
+.year-view-toggler{
+    cursor: pointer;
+}
+
+.year-view-toggler:hover{
+    color: black;
+}
+
+.active{
+    color: black;
+    font-weight: bold;
+}
+
+.not-active{
+    color: gray;
+}
