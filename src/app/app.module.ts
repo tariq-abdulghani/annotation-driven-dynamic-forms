@@ -6,12 +6,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DemoComponent } from './decorator-demo/demo/demo.component';
 import { DynamicFormComponent } from './dynamic-forms/dynamic-form/dynamic-form.component';
+import { SimpleDatePickerComponent } from './simple-date-picker/simple-date-picker.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     DemoComponent,
-    DynamicFormComponent
+    DynamicFormComponent,
+    SimpleDatePickerComponent
   ],
   imports: [
     BrowserModule,

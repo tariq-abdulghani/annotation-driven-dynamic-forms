@@ -1,0 +1,47 @@
+
+<div class="date-picker-container">
+    <div class="date-picker-input-container ">
+        <input class="date-picker-input" type="text" placeholder="yyyy/mm/dd">
+        <span class="date-picker-icon"><i class="far fa-calendar"></i></span>
+    </div>
+    
+    <div class="date-picker-calender text-sm shadow-sm">
+        <div class="calender-navigator row justify-content-between">
+            <div class="col-6 justify-content-between">
+                <span class="">Month</span> 
+                <span class="mx-2">Year</span> 
+            </div>
+            <div class="col-4">
+                <button class="navigator-btn"><i class="fas fa-arrow-left"></i></button>
+            <button class="navigator-btn"><i class="fas fa-arrow-right"></i></button>
+            </div>
+            
+        </div>
+        
+        <hr>
+        <table class="calender-navigator-body table table-sm table-borderless">
+            <thead>
+              <tr>
+                <th scope="col" class="calender-day-header">S</th>
+                <th scope="col" class="calender-day-header">M</th>
+                <th scope="col" class="calender-day-header">T</th>
+                <th scope="col" class="calender-day-header">W</th>
+                <th scope="col" class="calender-day-header">T</th>
+                <th scope="col" class="calender-day-header">F</th>
+                <th scope="col" class="calender-day-header">S</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="col-md-12" *ngFor="let item of [1,2,3,4,5,6]">
+                <td class="col-md calender-day">1</td>
+                <td class="col-md calender-day">2</td>
+                <td class="col-md calender-day">3</td>
+                <td class="col-md calender-day">4</td>
+                <td class="col-md calender-day">5</td>
+                <td class="col-md calender-day">6</td>
+                <td class="col calender-day">7</td>
+              </tr>
+            </tbody>
+          </table>
+    </div>
+</div>

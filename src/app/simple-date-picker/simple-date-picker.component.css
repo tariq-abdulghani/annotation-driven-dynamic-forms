@@ -1,0 +1,65 @@
+
+.date-picker-container{
+    border: 1px solid black;
+    width: fit-content;
+    position: relative;
+}
+.date-picker-input-container{
+    width: 100%;
+}
+.date-picker-input{
+    border: none;
+    /* width: 230px; */
+}
+
+.date-picker-input:focus {
+    outline: none !important;
+}
+
+.date-picker-icon{
+    padding: 5px;
+}
+.calender-navigator{
+    font-weight: bold;
+}
+.date-picker-calender{
+    font-size: 1rem;
+    aspect-ratio: 11;
+    border: 1px solid black;
+    padding: 10px;
+    z-index: 200;
+    position: absolute;
+}
+.calender-navigator-body{
+    font-size: .8rem;
+}
+.calender-day-header{
+    text-align: center;
+    width: 20px;
+    /* border-bottom: 2px solid; */
+}
+.calender-day{
+    text-align: center;
+    border: 1px solid transparent;
+    min-width: 25px;
+}
+.calender-day:hover{
+    color: white;
+    background-color: lightgray;
+    /* border: solid 1px gray; */
+    border-radius:50% ;
+    
+}
+
+.navigator-btn{
+    background-color: white;
+    /* border-radius:50% ; */
+    border: none;
+}
+
+.navigator-btn:hover{
+    background-color: lightgray;
+    color: white;
+    border-radius:50% ;
+    border: none;
+}
