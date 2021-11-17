@@ -1,99 +1,60 @@
 import { Component, OnInit } from '@angular/core';
+import { MonthDaysService } from './services/month-days.service';
 
-
-type weekDisplayed = [number,number,number,number,number,number, number];
-type Calender =[weekDisplayed, weekDisplayed,weekDisplayed,
-  weekDisplayed,weekDisplayed,weekDisplayed];
 
 @Component({
   selector: 'simple-date-picker',
   templateUrl: './simple-date-picker.component.html',
-  styleUrls: ['./simple-date-picker.component.css']
+  styleUrls: ['./simple-date-picker.component.css'],
+  providers: [MonthDaysService]
 })
 export class SimpleDatePickerComponent implements OnInit {
-  currentDate = new Date();
-
-  selectedYear = 2021;
-  selectedMonth = "Feb";
-
-  daysHeader: string[] = [
-    "S","M", "T", "W", "T", "F", "S"
+  locale:string = 'ar-EG'
+  date: Date;
+  readonly daysHeader: string[] = [
+    "S", "M", "T", "W", "T", "F", "S"
   ];
-  calender: Calender = [
-      [0,0,0,0,0,0,0],
-      [0,0,0,0,0,0,0],
-      [0,0,0,0,0,0,0],
-      [0,0,0,0,0,0,0],
-      [0,0,0,0,0,0,0],
-      [0,0,0,0,0,0,0],
-    ]
-  
   readonly monthsArray = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  daysArray: number[] = Array(42).fill(0);
   yearView = false;
 
-  constructor() { }
-
-  ngOnInit(): void {
-    // console.log("month 10",this.getNumberOfDaysAndStartDay(2021, 9));
-    // console.log(this.getDaysArray(2021, 9));
-
-    // console.log("month 9",this.getNumberOfDaysAndStartDay(2021, 8));
-    // console.log(this.getDaysArray(2021, 8));
-
-    // console.log("month 6",this.getNumberOfDaysAndStartDay(2021, 5));
-    // console.log(this.getDaysArray(2021, 5));
-
-    console.log("month 2",this.getNumberOfDaysAndStartDay(2021, 1));
-    console.log(this.getDaysArray(2021, 1));
-    console.log(this.getWeeksFromDays((this.getDaysArray(2021, 1))));
-    this.calender = this.getWeeksFromDays((this.getDaysArray(2021, 1)));
+  constructor(private monthDayService: MonthDaysService) {
+    this.date = new Date();
   }
 
-    getNumberOfDaysAndStartDay(year: number, month: number): [number, number]{
-      return  [new Date(year, month+1, 0).getDate(), new Date(year, month, 1).getDay()];
-    }
+  ngOnInit(): void {
+    this.daysArray = this.monthDayService.getDaysArray(this.date);
+  }
 
-    getDaysArray(year: number, month: number): number[]{
-      const days = Array(42).fill(0);
-      const [numOfDays, startDayIndex] = this.getNumberOfDaysAndStartDay(year, month);
-      console.log(numOfDays, startDayIndex, year, month);
-      let dayCount = 1;
-      days.forEach((element, index)=>{
-          if(index >= startDayIndex && dayCount <= numOfDays){
-            days[index] = dayCount++;
-          }
-      });
-      return days;
-    }
+  incrementMonth() {
+    this.daysArray = this.monthDayService.incrementMonth(this.date);
+  }
 
-    getWeeksFromDays(days: number[]): Calender {
-      const calender = <Calender>Array(6).fill(Array(7).fill(0));
-      console.log(calender);
-      calender.forEach((week, index)=>{
-        calender[index] = <weekDisplayed>days.slice(index * 7, (index+1)*7);
-      })
-      return calender;
-    }
+  decrementMonth() {
+    this.daysArray = this.monthDayService.decrementMonth(this.date);
+  }
 
-    getCalenderByMonth(month: number | string){
-      console.log(month);
-      this.selectedMonth = this.monthsArray[parseInt(month.toString())];
-      this.calender = this.getWeeksFromDays((this.getDaysArray(2021,parseInt(month.toString()))));
-    }
+  applyMonthView() {
+    this.yearView = false;
+  }
 
-    incrementMonth(){
-      this.getCalenderByMonth((this.monthsArray.indexOf(this.selectedMonth)+1)%12);
-    }
+  toggleYearView() {
+    this.yearView = !this.yearView;
+  }
 
-    decrementMonth(){
-      this.getCalenderByMonth((this.monthsArray.indexOf(this.selectedMonth)- 1)%12);
-    }
+  get selectedYear(): number {
+    return this.date.getFullYear();
+  }
 
-    applyMonthView(){
-      this.yearView= false;
-    }
+  get selectedMonth(): string {
+    return this.monthsArray[this.date.getMonth()];
+  }
 
-    toggleYearView(){
-      this.yearView =! this.yearView;
-    }
+  get selectedDate() {
+    return this.date.getDate();
+  }
+
+  set selectedDate(date: number){
+    this.date.setDate(date);
+  }
 }

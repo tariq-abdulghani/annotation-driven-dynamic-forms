@@ -79,3 +79,10 @@
 .not-active{
     color: gray;
 }
+
+.empty-row{
+    color: white;
+}
+.empty-row:hover{
+    color: white;
+}
