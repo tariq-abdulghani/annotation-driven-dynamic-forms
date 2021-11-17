@@ -17,8 +17,10 @@
             {{selectedYear}}
           </span>
           <span >  </span>
-          <button class="navigator-btn" (click)="decrementMonth()">&#10094;</button>
-          <button class="navigator-btn" (click)="incrementMonth()">&#10095;</button>
+          <button class="navigator-btn" (click)="reset()">&odot;</button>
+          <button class="navigator-btn" (click)="navigatePrevious()"> &ltrif;</button>
+          <!--&#10094; &#10095;-->
+          <button class="navigator-btn" (click)="navigateNext()"> &rtrif;</button>
         </div>
         
         <hr class="mt-1">
@@ -50,8 +52,10 @@
               </thead>
               <tbody>
                 <tr *ngFor="let m of [0,2,4,6, 8, 10]">
-                  <td class="calender-day">{{monthsArray[m]}}</td>
-                  <td class="calender-day">{{monthsArray[m+1]}}</td>
+                  <td class="calender-day" *ngFor="let j of [0,1]" [ngClass]="{'active': monthsArray[m+j]==selectedMonth}" 
+                  (click)="selectedMonth=monthsArray[m+j]; applyMonthView()">
+                    {{monthsArray[m+j]}}
+                  </td>
                 </tr>
               </tbody>
           </table>
@@ -61,8 +65,9 @@
               <thead>
               </thead>
               <tbody>
-                <tr *ngFor="let years of [2020, 2021, 2022, 2023, 2024, 2025]">
-                  <td class="calender-day"  *ngFor="let n of [0,5,]">{{n+years}}</td>
+                <tr *ngFor="let i of [0,2,4, 6, 8]">
+                  <td class="calender-day"  [ngClass]="{'active': yearsList[i+j]== selectedYear}"
+                  *ngFor="let j of [0,1]" (click)="selectedYear = yearsList[i+j]">{{yearsList[i+j]}}</td>
                 </tr>
                 <tr class="empty-row">
                   <td>.</td>
@@ -74,10 +79,5 @@
           </table>
           </div>
         </div>
-
-        <!-- <div class="d-flex align-items-center justify-content-between">
-          <button class="calender-btn">clear</button> 
-          <button class="calender-btn">today</button>
-        </div> -->
     </div>
 </div>
