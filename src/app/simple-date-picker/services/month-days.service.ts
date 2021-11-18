@@ -11,7 +11,7 @@ export class MonthDaysService {
     }
 
     public getDaysArray(date: Date): number[] {
-        const days = Array(42).fill(0);
+        const days = Array(42).fill(null);
         const [numOfDays, startDayIndex] = this.getNumberOfDaysAndStartDay(date.getFullYear(), date.getMonth());
         console.log(numOfDays, startDayIndex, date.getFullYear(),  date.getMonth());
         let dayCount = 1;

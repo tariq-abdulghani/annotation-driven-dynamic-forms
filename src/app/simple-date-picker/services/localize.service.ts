@@ -43,8 +43,9 @@ export class LocalizeDatePickerViewService{
         return num.toLocaleString(this.locale, {useGrouping: false});
     }
 
-    public localizeNumArray(numbers: number[]): string[]{
-        return [...numbers.map(n => n.toLocaleString(this.locale, {useGrouping: false}))];
+    public localizeNumArray(numbers: number[]): string []{
+        //@ts-ignore
+        return [...numbers.map(n => n?n.toLocaleString(this.locale, {useGrouping: false}): null)];
     }
 
     public writingDirection(locale?: string): string{
