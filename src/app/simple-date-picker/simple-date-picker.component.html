@@ -33,7 +33,7 @@
             <tbody>
               <tr class="col-md-12" *ngFor="let weekIndex of [0, 7, 14, 21, 28, 35]">
                 <td class="col-md "  
-                [ngClass]="{'empty-row': !daysArray[weekIndex+dayIndex], 'calender-day': daysArray[weekIndex+dayIndex]}" 
+                [ngClass]="{'empty-row': !daysArray[weekIndex+dayIndex], 'calender-day': daysArray[weekIndex+dayIndex], 'active': daysArray[weekIndex+dayIndex]==dp.localizedDayDate}" 
                 *ngFor="let dayIndex of [0,1,2,3,4,5, 6]" (click)="selectDayByIndex(weekIndex + dayIndex)">
                   {{daysArray[ weekIndex + dayIndex ]}}
                 </td>
@@ -66,7 +66,7 @@
               </thead>
               <tbody>
                 <tr *ngFor="let i of [0,2,4, 6, 8]">
-                  <td class="calender-day"  [ngClass]="{'active': false}"
+                  <td class="calender-day"  [ngClass]="{'active': yearsArray[i+j]==dp.localizedYear}"
                   *ngFor="let j of [0,1]" (click)="selectYearByIndex(i+j)">{{dp.localizedYearsArray[i+j]}}</td>
                 </tr>
                 <tr class="empty-row">

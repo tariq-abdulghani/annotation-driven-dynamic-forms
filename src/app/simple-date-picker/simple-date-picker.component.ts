@@ -23,11 +23,18 @@ export class SimpleDatePickerComponent implements OnInit {
 
   ngOnInit(): void {
     console.log(this.dp);
+    this.dp.configure({defaultDate: new Date()});
+    this.updateViewFull();
   }
 
-  updateView() {
+  updateViewFull() {
     this.daysHeader = this.dp.localizedDaysOfWeekArray;
     this.monthsArray = this.dp.localizedMonthsOfYearArray;
+    this.daysArray = this.dp.localizedDaysDatesArray;
+    this.yearsArray = this.dp.localizedYearsArray;
+  }
+
+  updateView(){
     this.daysArray = this.dp.localizedDaysDatesArray;
     this.yearsArray = this.dp.localizedYearsArray;
   }
@@ -56,9 +63,18 @@ export class SimpleDatePickerComponent implements OnInit {
     this.dp.dayDate = index;
   }
 
-  navigateNext() {}
+  navigateNext() {
+    this.dp.incrementMonth();
+    this.updateView();
+  }
 
-  navigatePrevious() {}
+  navigatePrevious() {
+    this.dp.decrementMonth();
+    this.updateView();
+  }
 
-  reset() {}
+  reset() {
+    this.dp.configure({defaultDate: new Date(), minDate :new Date()});
+    this.updateViewFull();
+  }
 }

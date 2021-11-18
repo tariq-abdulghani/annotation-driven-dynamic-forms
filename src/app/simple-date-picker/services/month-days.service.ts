@@ -17,7 +17,6 @@ export class MonthDaysService {
       date.getFullYear(),
       date.getMonth()
     );
-    console.log(numOfDays, startDayIndex, date.getFullYear(), date.getMonth());
     let dayCount = 1;
     days.forEach((element, index) => {
       if (index >= startDayIndex && dayCount <= numOfDays) {
@@ -35,5 +34,24 @@ export class MonthDaysService {
   decrementMonth(date: Date): number[] {
     date.setMonth(date.getMonth() - 1);
     return this.getDaysArray(date);
+  }
+
+  canIncrementMonth(date: Date, maxDate?: Date): boolean{
+    if(maxDate){
+        const dateWithIncreasedMonth = new Date(date);
+        dateWithIncreasedMonth.setMonth(date.getMonth() +1);
+        console.log(dateWithIncreasedMonth <= maxDate, dateWithIncreasedMonth, maxDate);
+        return dateWithIncreasedMonth <= maxDate;
+    }
+    return true;
+  }
+
+  canDecrementMonth(date: Date, minDate?: Date): boolean{
+    if(minDate){
+        const dateWithDecrementedMonth = new Date(date);
+        dateWithDecrementedMonth.setMonth(date.getMonth() -1);
+        return dateWithDecrementedMonth > minDate;
+    }
+    return true;
   }
 }
