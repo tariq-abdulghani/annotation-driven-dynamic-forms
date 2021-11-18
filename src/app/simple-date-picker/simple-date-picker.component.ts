@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { LocalizeDatePickerViewService as LocalizeDatePickerViewService } from './services/localize.service';
 import { LocalizedSimpleDatePickerEngineService } from './services/localized-date-picker.service';
-import { MonthDaysService } from './services/month-days.service';
-import { YearMonthService } from './services/year-month.service';
+
 
 @Component({
   selector: 'simple-date-picker',
@@ -15,7 +13,6 @@ export class SimpleDatePickerComponent implements OnInit {
   monthsArray: string[];
   daysArray: string[];
   yearsArray: string[];
-  yearView = false;
 
   constructor(public dp: LocalizedSimpleDatePickerEngineService) {
     this.daysHeader = dp.localizedDaysOfWeekArray;
@@ -34,9 +31,30 @@ export class SimpleDatePickerComponent implements OnInit {
     this.daysArray = this.dp.localizedDaysDatesArray;
     this.yearsArray = this.dp.localizedYearsArray;
   }
-  applyMonthView() {}
 
-  toggleYearView() {}
+  get yearView(){
+    return this.dp.isYearView;
+  }
+
+  applyMonthView() {
+    this.dp.goToMonthView();
+  }
+
+  toggleYearView() {
+    this.dp.switchViews();
+  }
+
+  selectYearByIndex(index: number){
+    this.dp.year = index
+  }
+
+  selectMonthByIndex(index: number){
+    this.dp.month  = index;
+  }
+
+  selectDayByIndex(index: number){
+    this.dp.dayDate = index;
+  }
 
   navigateNext() {}
 

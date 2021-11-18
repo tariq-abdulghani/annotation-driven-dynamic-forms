@@ -66,11 +66,17 @@ export class LocalizedSimpleDatePickerEngineService {
     return this.localizer.localizeNumArray(this.yearsArray);
   }
 
-  set dayDate(dayDateIndex: number) {}
+  set dayDate(dayDateIndex: number) {
+      this._date.setDate(this.daysDatesArray[dayDateIndex])
+  }
 
-  set month(monthIndex: number) {}
+  set month(monthIndex: number) {
+      this._date.setMonth(monthIndex);
+  }
 
-  set year(yearIndex: number) {}
+  set year(yearIndex: number) {
+      this._date.setFullYear(this.yearsArray[yearIndex]);
+    }
 
   get isYearView() {
     return this.yearView;
