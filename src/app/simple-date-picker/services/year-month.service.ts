@@ -1,9 +1,6 @@
-import { Injectable } from "@angular/core";
 
-
-@Injectable()
 export class YearMonthService{
-
+    readonly STEP = 10;
     constructor(){}
 
     getYearsInDecade(date: Date): number[]{
@@ -11,22 +8,22 @@ export class YearMonthService{
     }
 
     getYearsInNextDecade(date: Date): number[]{
-        let startingDate = this.getStartingYear(date)+10;
-        date.setFullYear(date.getFullYear()+10);
+        let startingDate = this.getStartingYear(date)+this.STEP;
+        date.setFullYear(date.getFullYear()+this.STEP);
         return this.generateRange(startingDate);
     }
 
     getYearsInPreviousDecade(date: Date): number[]{
-        let startingDate = this.getStartingYear(date)-10;
-        date.setFullYear(date.getFullYear()-10);
-        return this.generateRange(this.getStartingYear(date)-10);
+        let startingDate = this.getStartingYear(date)-this.STEP;
+        date.setFullYear(date.getFullYear()-this.STEP);
+        return this.generateRange(this.getStartingYear(date)-this.STEP);
     }
 
     private getStartingYear(date: Date): number{
-        return date.getFullYear()-date.getFullYear()%10;
+        return date.getFullYear()-date.getFullYear()%this.STEP;
     }
 
     private generateRange(startingYear: number): number[]{
-        return [...Array(10).keys()].map(v => v+startingYear);
+        return [...Array(this.STEP).keys()].map(v => v+startingYear);
     }
 }
