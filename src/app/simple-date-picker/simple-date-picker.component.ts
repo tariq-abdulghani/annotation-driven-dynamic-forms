@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { LocalizeDatePickerViewService as LocalizeDatePickerViewService } from './services/localize.service';
+import { LocalizedSimpleDatePickerEngineService } from './services/localized-date-picker.service';
 import { MonthDaysService } from './services/month-days.service';
 import { YearMonthService } from './services/year-month.service';
 
@@ -8,7 +9,7 @@ import { YearMonthService } from './services/year-month.service';
   selector: 'simple-date-picker',
   templateUrl: './simple-date-picker.component.html',
   styleUrls: ['./simple-date-picker.component.css'],
-  providers: [MonthDaysService, YearMonthService, LocalizeDatePickerViewService]
+  providers: [MonthDaysService, YearMonthService, LocalizedSimpleDatePickerEngineService]
 })
 export class SimpleDatePickerComponent implements OnInit {
 
@@ -25,18 +26,19 @@ export class SimpleDatePickerComponent implements OnInit {
   constructor(
     private monthDayService: MonthDaysService, 
     private yearMonthService: YearMonthService,
-    private localizeService: LocalizeDatePickerViewService) {
+    private datePickerEngine: LocalizedSimpleDatePickerEngineService) {
     this._date = new Date();
   }
 
   ngOnInit(): void {
-    this.daysArray = this.monthDayService.getDaysArray(this.date);
-    this.yearsArray = this.yearMonthService.getYearsInDecade(this.date);
-    // this.localizeService.setLocale('ar-EG');//'ar-EG'//'ko-KR' // 'de-DE'
-    console.log(this.localizeService.monthsList());
-    console.log(this.localizeService.daysList());
-    console.log(this.localizeService.localizeNumArray(this.monthDayService.getDaysArray(this.date)));
-    console.log(this.localizeService.writingDirection());
+    // this.daysArray = this.monthDayService.getDaysArray(this.date);
+    // this.yearsArray = this.yearMonthService.getYearsInDecade(this.date);
+    // // this.localizeService.setLocale('ar-EG');//'ar-EG'//'ko-KR' // 'de-DE'
+    // console.log(this.localizeService.monthsOfYearList());
+    // console.log(this.localizeService.daysOfWeekList());
+    // console.log(this.localizeService.localizeNumArray(this.monthDayService.getDaysArray(this.date)));
+    // console.log(this.localizeService.writingDirection());
+    console.log(this.datePickerEngine);
   }
 
   incrementMonth() {

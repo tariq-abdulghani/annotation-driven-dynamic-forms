@@ -1,10 +1,9 @@
 import { Injectable } from "@angular/core";
 
 
-@Injectable()
 export class LocalizeDatePickerViewService{
 
-    private locale = 'en-US';
+    constructor(public locale: string){}
 
     public getLocale(): string{
         return this.locale;
@@ -14,7 +13,7 @@ export class LocalizeDatePickerViewService{
         this.locale = locale;
     }
 
-    public monthsList(): string[]{
+    public monthsOfYearList(): string[]{
         let date = new Date();
         let months:string[] = [];
         [...Array(12).keys()].forEach(k =>{
@@ -24,7 +23,7 @@ export class LocalizeDatePickerViewService{
         return months;
     }
 
-    public daysList(): string[]{
+    public daysOfWeekList(): string[]{
         let date = new Date();date.setDate(1);
         let shift = date.getDay()!= 0? date.getDay(): 0;
         let weekDay:string[] = [];
@@ -37,14 +36,18 @@ export class LocalizeDatePickerViewService{
 
     public monthsAndDays():[string[], string[]]{
         
-        return [this.monthsList(), this.daysList()];
+        return [this.monthsOfYearList(), this.daysOfWeekList()];
+    }
+
+    public localizeNumber(num: number){
+        return num.toLocaleString(this.locale, {useGrouping: false});
     }
 
     public localizeNumArray(numbers: number[]): string[]{
-        return [...numbers.map(n => n.toLocaleString(this.locale))];
+        return [...numbers.map(n => n.toLocaleString(this.locale, {useGrouping: false}))];
     }
 
-    writingDirection(locale?: string): string{
+    public writingDirection(locale?: string): string{
         const rtl = ['ar-', 'zh-', 'he-', 'fa-', 'ps', 'ur'];
         if(locale){
             return rtl.some(str => locale.includes(str))? 'rtl': 'ltr';
