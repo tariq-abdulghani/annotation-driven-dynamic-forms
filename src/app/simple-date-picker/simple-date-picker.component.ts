@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { LocalizeDatePickerViewService as LocalizeDatePickerViewService } from './services/localize.service';
 import { MonthDaysService } from './services/month-days.service';
 import { YearMonthService } from './services/year-month.service';
 
@@ -7,7 +8,7 @@ import { YearMonthService } from './services/year-month.service';
   selector: 'simple-date-picker',
   templateUrl: './simple-date-picker.component.html',
   styleUrls: ['./simple-date-picker.component.css'],
-  providers: [MonthDaysService, YearMonthService]
+  providers: [MonthDaysService, YearMonthService, LocalizeDatePickerViewService]
 })
 export class SimpleDatePickerComponent implements OnInit {
 
@@ -21,13 +22,21 @@ export class SimpleDatePickerComponent implements OnInit {
   private yearsArray!:number[];
   yearView = false;
 
-  constructor(private monthDayService: MonthDaysService, private yearMonthService: YearMonthService) {
+  constructor(
+    private monthDayService: MonthDaysService, 
+    private yearMonthService: YearMonthService,
+    private localizeService: LocalizeDatePickerViewService) {
     this._date = new Date();
   }
 
   ngOnInit(): void {
     this.daysArray = this.monthDayService.getDaysArray(this.date);
     this.yearsArray = this.yearMonthService.getYearsInDecade(this.date);
+    // this.localizeService.setLocale('ar-EG');//'ar-EG'//'ko-KR' // 'de-DE'
+    console.log(this.localizeService.monthsList());
+    console.log(this.localizeService.daysList());
+    console.log(this.localizeService.localizeNumArray(this.monthDayService.getDaysArray(this.date)));
+    console.log(this.localizeService.writingDirection());
   }
 
   incrementMonth() {
