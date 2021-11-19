@@ -39,9 +39,10 @@ export class MonthDaysService {
   canIncrementMonth(date: Date, maxDate?: Date): boolean{
     if(maxDate){
         const dateWithIncreasedMonth = new Date(date);
+        // const compareMax = new Date(maxDate.getFullYear(), maxDate.getMonth());
         dateWithIncreasedMonth.setMonth(date.getMonth() +1);
-        console.log(dateWithIncreasedMonth <= maxDate, dateWithIncreasedMonth, maxDate);
-        return dateWithIncreasedMonth <= maxDate;
+        console.log(dateWithIncreasedMonth <= maxDate, dateWithIncreasedMonth, maxDate, dateWithIncreasedMonth.getMonth() <= maxDate.getMonth());
+        return dateWithIncreasedMonth.getMonth() <= maxDate.getMonth() && dateWithIncreasedMonth.getFullYear() <= maxDate.getFullYear();
     }
     return true;
   }
@@ -50,7 +51,7 @@ export class MonthDaysService {
     if(minDate){
         const dateWithDecrementedMonth = new Date(date);
         dateWithDecrementedMonth.setMonth(date.getMonth() -1);
-        return dateWithDecrementedMonth > minDate;
+        return dateWithDecrementedMonth >= minDate;
     }
     return true;
   }

@@ -6,6 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DemoComponent } from './decorator-demo/demo/demo.component';
 import { DynamicFormComponent } from './dynamic-forms/dynamic-form/dynamic-form.component';
+import { SimpleDatePickerDirective } from './simple-date-picker/directives/simple-date-picker.directive';
 import { SimpleDatePickerComponent } from './simple-date-picker/simple-date-picker.component';
 
 @NgModule({
@@ -13,7 +14,8 @@ import { SimpleDatePickerComponent } from './simple-date-picker/simple-date-pick
     AppComponent,
     DemoComponent,
     DynamicFormComponent,
-    SimpleDatePickerComponent
+    SimpleDatePickerComponent,
+    SimpleDatePickerDirective
   ],
   imports: [
     BrowserModule,

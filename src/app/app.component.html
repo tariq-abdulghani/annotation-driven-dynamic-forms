@@ -1,7 +1,15 @@
 hello
 
-<!-- <app-dynamic-form></app-dynamic-form> -->
-
 <div class="container">
-    <simple-date-picker></simple-date-picker>
+    <form [formGroup]="form">
+        <input 
+            class="form-control" 
+            type="text" 
+            formControlName="date" 
+            name="dateControl" 
+            simpleDatePicker
+            [showIcon]="true"
+            [config]="{'locale': 'ar'}">
+        <input type="button" class="btn btn-light" value="submit" (click)="submit()">
+    </form>
 </div>

@@ -1,8 +1,15 @@
 
-.date-picker-container{
-    border: 1px solid black;
-    width: fit-content;
+.wrapper{
     position: relative;
+}
+.date-picker-container{
+    /* border: 1px solid black; */
+    padding: 15px;
+    background-color: white;
+    top: 5px;
+    width: fit-content; 
+    position: absolute;
+    z-index: 1000;
 }
 
 .date-picker-input{
@@ -20,11 +27,12 @@
 .date-picker-calender{
     font-size: 1rem;
     padding: 5px;
-    z-index: 200;
-    position: absolute;
+    /* z-index: 999; */
+    /* position: absolute; */
     width: 100%;
 }
 .calender-navigator-body{
+    width: 100%;
     font-size: .8rem;
 }
 .calender-day-header{

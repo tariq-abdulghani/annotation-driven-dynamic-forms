@@ -1,83 +1,91 @@
+<!--&#10094; &#10095;   &lt; &gt; &#10561;-->
+<!-- &#x267A; O&#771; -->
 
-<div class="date-picker-container" [style.direction]="dp.writingDirection">
-    <div class="date-picker-input-container ">
-        <input class="date-picker-input px-1" type="text" placeholder="yyyy/mm/dd">
-        <span class="date-picker-icon"><i class="far fa-calendar"></i></span>
-    </div>
-    
-    <div class="date-picker-calender shadow-sm">
-        <div class="calender-navigator d-flex align-items-center justify-content-between">
-          <span class="year-view-toggler" [ngClass]="{'active': !yearView, 'not-active': yearView}" (click)="applyMonthView()">
-            {{dp.localizedDayDate}}
-          </span> 
-          <span class="year-view-toggler" [ngClass]="{'active': !yearView, 'not-active': yearView}" (click)="applyMonthView()">
-            {{dp.localizedMonth}}
-          </span> 
-          <span class="year-view-toggler" [ngClass]="{'active': yearView,  'not-active': !yearView}" (click)="toggleYearView()">
-            {{dp.localizedYear}}
-          </span>
-          <span >  </span>
-          <button class="navigator-btn" (click)="reset()">&odot;</button>
-          <button class="navigator-btn" (click)="navigatePrevious()"> &ltrif;</button>
-          <!--&#10094; &#10095;-->
-          <button class="navigator-btn" (click)="navigateNext()"> &rtrif;</button>
-        </div>
+
+<div class="wrapper">
+  
+  <div class="date-picker-container shadow-sm" [style.direction]="dp.writingDirection">
+
+    <div class="calender-navigator d-flex align-items-center justify-content-between">
+      <!-- <span class="year-view-toggler mx-2" [ngClass]="{'active': !yearView, 'not-active': yearView}"
+        (click)="applyMonthView()">
+        {{dp.localizedDayDate}}
+      </span> -->
+      <span class="year-view-toggler  mx-2" [ngClass]="{'active': !yearView, 'not-active': yearView}"
+        (click)="applyMonthView()">
+        {{dp.localizedMonth}}
+      </span>
+      <span class="year-view-toggler mx-2" [ngClass]="{'active': yearView,  'not-active': !yearView}"
+        (click)="toggleYearView()">
+        {{dp.localizedYear}}
+      </span>
+      <span class=" mx-2 empty-row"> .</span>
+      <span class=" mx-2 empty-row"> .</span>
+      <span class=" mx-2 empty-row"> .</span>
+
+      <span class="year-view-toggler mx-1" (click)="navigatePrevious()" *ngIf="dp.writingDirection != 'rtl'">
+        &ltrif;</span>
         
-        <hr class="mt-1">
-        <table class="calender-navigator-body table table-sm table-borderless" *ngIf="!yearView">
+      <span class="year-view-toggler mx-1" (click)="navigateNext()"> &rtrif; </span>
+      <span class="year-view-toggler mx-1" (click)="navigatePrevious()" *ngIf="dp.writingDirection == 'rtl'">
+        &ltrif;</span>
+
+        <!-- <button class="navigator-btn" (click)="reset()" style="font-size: large;"> &Theta;</button> -->
+    </div>
+
+    <hr class="mx-1">
+
+    <div class="date-picker-calender ">
+      <table class="calender-navigator-body table table-sm table-borderless" *ngIf="!yearView">
+        <thead>
+          <tr>
+            <th class="calender-day-header" *ngFor="let dayHeader of daysHeader">{{dayHeader}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="col-md-12" *ngFor="let weekIndex of [0, 7, 14, 21, 28, 35]">
+            <td class="col-md "
+              [ngClass]="{'empty-row': !daysArray[weekIndex+dayIndex], 'calender-day': daysArray[weekIndex+dayIndex], 'active': daysArray[weekIndex+dayIndex]==dp.localizedDayDate}"
+              *ngFor="let dayIndex of [0,1,2,3,4,5, 6]" (click)="selectDayByIndex(weekIndex + dayIndex)">
+              {{daysArray[ weekIndex + dayIndex ]}}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="row" *ngIf="yearView">
+        <div class="col-6" style="border-right: 1px solid lightgrey;">
+          <table class="calender-navigator-body table table-sm table-borderless">
             <thead>
-              <tr>
-                <th  class="calender-day-header" *ngFor="let dayHeader of daysHeader">{{dayHeader}}</th>
-              </tr>
             </thead>
             <tbody>
-              <tr class="col-md-12" *ngFor="let weekIndex of [0, 7, 14, 21, 28, 35]">
-                <td class="col-md "  
-                [ngClass]="{'empty-row': !daysArray[weekIndex+dayIndex], 'calender-day': daysArray[weekIndex+dayIndex], 'active': daysArray[weekIndex+dayIndex]==dp.localizedDayDate}" 
-                *ngFor="let dayIndex of [0,1,2,3,4,5, 6]" (click)="selectDayByIndex(weekIndex + dayIndex)">
-                  {{daysArray[ weekIndex + dayIndex ]}}
+              <tr *ngFor="let m of [0,2,4,6, 8, 10]">
+                <td class="calender-day" *ngFor="let j of [0,1]"
+                  [ngClass]="{'active': monthsArray[m+j]==dp.localizedMonth}"
+                  (click)="selectMonthByIndex(m+j);applyMonthView()">
+                  {{monthsArray[m+j]}}
                 </td>
               </tr>
             </tbody>
-        </table>
-        
-<!-- month year view -->
-        <div class="row" *ngIf="yearView">
-          <div class="col-6" style="border-right: 1px solid lightgrey;">
-            <table class="calender-navigator-body table table-sm table-borderless" >
-              <thead>
-                <!-- <tr>
-                  <th  class="calender-day-header" *ngFor="let dayHeader of daysHeader">{{dayHeader}}</th>
-                </tr> -->
-              </thead>
-              <tbody>
-                <tr *ngFor="let m of [0,2,4,6, 8, 10]">
-                  <td class="calender-day" *ngFor="let j of [0,1]" [ngClass]="{'active': monthsArray[m+j]==dp.localizedMonth}" 
-                  (click)="selectMonthByIndex(m+j);applyMonthView()">
-                    {{monthsArray[m+j]}}
-                  </td>
-                </tr>
-              </tbody>
           </table>
-          </div>
-          <div class="col-6">
-            <table class="calender-navigator-body table table-sm table-borderless">
-              <thead>
-              </thead>
-              <tbody>
-                <tr *ngFor="let i of [0,2,4, 6, 8]">
-                  <td class="calender-day"  [ngClass]="{'active': yearsArray[i+j]==dp.localizedYear}"
-                  *ngFor="let j of [0,1]" (click)="selectYearByIndex(i+j)">{{dp.localizedYearsArray[i+j]}}</td>
-                </tr>
-                <tr class="empty-row">
-                  <td>.</td>
-                </tr>
-                <!-- <tr>
-                  <td># </td>
-                </tr> -->
-              </tbody>
-          </table>
-          </div>
         </div>
+        <div class="col-6">
+          <table class="calender-navigator-body table table-sm table-borderless">
+            <thead>
+            </thead>
+            <tbody>
+              <tr *ngFor="let i of [0,2,4, 6, 8]">
+                <td class="calender-day" [ngClass]="{'active': yearsArray[i+j]==dp.localizedYear}"
+                  *ngFor="let j of [0,1]" (click)="selectYearByIndex(i+j)">{{dp.localizedYearsArray[i+j]}}</td>
+              </tr>
+              <tr class="empty-row">
+                <td>.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
+
+  </div>
 </div>
