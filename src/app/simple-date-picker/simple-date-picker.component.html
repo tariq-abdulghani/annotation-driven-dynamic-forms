@@ -23,11 +23,11 @@
       <span class=" mx-2 empty-row"> .</span>
       <span class=" mx-2 empty-row"> .</span>
 
-      <span class="year-view-toggler mx-1" (click)="navigatePrevious()" *ngIf="dp.writingDirection != 'rtl'">
+      <span class="year-view-toggler not-active mx-1" (click)="navigatePrevious()" *ngIf="dp.writingDirection != 'rtl'">
         &ltrif;</span>
         
-      <span class="year-view-toggler mx-1" (click)="navigateNext()"> &rtrif; </span>
-      <span class="year-view-toggler mx-1" (click)="navigatePrevious()" *ngIf="dp.writingDirection == 'rtl'">
+      <span class="year-view-toggler not-active mx-1" (click)="navigateNext()"> &rtrif;</span>
+      <span class="year-view-toggler not-active mx-1" (click)="navigatePrevious()" *ngIf="dp.writingDirection == 'rtl'">
         &ltrif;</span>
 
         <!-- <button class="navigator-btn" (click)="reset()" style="font-size: large;"> &Theta;</button> -->
@@ -44,7 +44,7 @@
         </thead>
         <tbody>
           <tr class="col-md-12" *ngFor="let weekIndex of [0, 7, 14, 21, 28, 35]">
-            <td class="col-md "
+            <td class="col-md selectable"
               [ngClass]="{'empty-row': !daysArray[weekIndex+dayIndex], 'calender-day': daysArray[weekIndex+dayIndex], 'active': daysArray[weekIndex+dayIndex]==dp.localizedDayDate}"
               *ngFor="let dayIndex of [0,1,2,3,4,5, 6]" (click)="selectDayByIndex(weekIndex + dayIndex)">
               {{daysArray[ weekIndex + dayIndex ]}}
@@ -60,7 +60,7 @@
             </thead>
             <tbody>
               <tr *ngFor="let m of [0,2,4,6, 8, 10]">
-                <td class="calender-day" *ngFor="let j of [0,1]"
+                <td class="calender-day selectable" *ngFor="let j of [0,1]"
                   [ngClass]="{'active': monthsArray[m+j]==dp.localizedMonth}"
                   (click)="selectMonthByIndex(m+j);applyMonthView()">
                   {{monthsArray[m+j]}}
@@ -75,7 +75,7 @@
             </thead>
             <tbody>
               <tr *ngFor="let i of [0,2,4, 6, 8]">
-                <td class="calender-day" [ngClass]="{'active': yearsArray[i+j]==dp.localizedYear}"
+                <td class="calender-day selectable" [ngClass]="{'active': yearsArray[i+j]==dp.localizedYear}"
                   *ngFor="let j of [0,1]" (click)="selectYearByIndex(i+j)">{{dp.localizedYearsArray[i+j]}}</td>
               </tr>
               <tr class="empty-row">

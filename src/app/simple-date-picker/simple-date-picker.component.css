@@ -45,7 +45,7 @@
 }
 .calender-day:hover{
     color: white;
-    background-color: wheat;
+    background-color: lightgray;
     /* border-radius:50% ;     */
 }
 
@@ -80,6 +80,7 @@
 }
 
 .active{
+    /* color: black; */
     color: black;
     font-weight: bold;
 }
@@ -93,4 +94,7 @@
 }
 .empty-row:hover{
     color: white;
+}
+.selectable{
+    cursor: pointer;
 }

@@ -75,7 +75,7 @@ export class SimpleDatePickerDirective
       event.stopPropagation();
     }
     if (!this.isOpen) {
-      this.loadDatePicker();
+      this.showDatePicker();
       this.isOpen = true;
     } else {
       this.viewContainerRef.remove();
@@ -108,7 +108,7 @@ export class SimpleDatePickerDirective
 
   @HostListener('keyup') onKeyUp() {}
 
-  loadDatePicker() {
+  showDatePicker() {
     const componentFactory =
       this.componentFactoryResolver.resolveComponentFactory(
         SimpleDatePickerComponent
