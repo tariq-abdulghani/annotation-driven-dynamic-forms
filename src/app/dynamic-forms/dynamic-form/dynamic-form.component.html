@@ -1,23 +1,51 @@
-<p>{{personDTO | json }}</p>
+<p>{{ personDTO | json }}</p>
 
 <form [formGroup]="formDescriptor.formGroup" (ngSubmit)="onSubmit($event)">
-    <ng-container *ngFor="let controlMeta of formDescriptor.controlsMeta">
-        <input *ngIf="controlMeta.controlType!=controlTypes.Date; else date"
-        [id]="controlMeta.id" 
-        [type]="controlMeta.type"  
-        [formControl]="controlMeta.formControl" 
-        [name]="controlMeta.name">
-       
-        <ng-template #date>
-            <input
-            [id]="controlMeta.id" 
-            [type]="controlMeta.type"  
-            [formControl]="controlMeta.formControl" 
-            [name]="controlMeta.name"
-            [min]="controlMeta.minDate"
-            [max]="controlMeta.maxDate">
-        </ng-template>
-        
+  <ng-container *ngFor="let controlMeta of formDescriptor.controlsMeta">
+    <ng-container [ngSwitch]="controlMeta.controlType">
+      <input
+        *ngSwitchCase="controlTypes.Text"
+        [id]="controlMeta.id"
+        [type]="controlMeta.type"
+        [formControl]="controlMeta.formControl"
+        [name]="controlMeta.name"
+      />
+      <input
+        *ngSwitchCase="controlTypes.Number"
+        [id]="controlMeta.id"
+        [type]="controlMeta.type"
+        [formControl]="controlMeta.formControl"
+        [name]="controlMeta.name"
+      />
+      <input
+        *ngSwitchCase="controlTypes.Date"
+        [id]="controlMeta.id"
+        [type]="controlMeta.type"
+        [formControl]="controlMeta.formControl"
+        [name]="controlMeta.name"
+        [min]="controlMeta.minDate"
+        [max]="controlMeta.maxDate"
+      />
+
+      <select
+        *ngSwitchCase="controlTypes.Select"
+        [id]="controlMeta.id"
+        [formControl]="controlMeta.formControl"
+        [name]="controlMeta.name"
+        [compareWith]="$any(controlMeta).compareWith"
+      >
+        <option
+          *ngFor="let opt of $any(controlMeta).asyncDataSource() | async"
+          [ngValue]="
+            opt[$any(controlMeta).bindValue]
+              ? opt[$any(controlMeta).bindValue]
+              : opt
+          "
+        >
+          {{ opt[$any(controlMeta).bindLabel] }}
+        </option>
+      </select>
     </ng-container>
-    <button>submit</button>
+  </ng-container>
+  <button>submit</button>
 </form>

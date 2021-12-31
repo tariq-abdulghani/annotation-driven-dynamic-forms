@@ -2,7 +2,7 @@ import { AbstractControl, FormControl, ValidatorFn } from "@angular/forms";
 import { ControlTypes } from "./control-types.enum";
 import { DateControlMeta } from "./controls-meta";
 
-export function splittedDateRangeControl(metaData: {
+export function SplittedDateRangeControl(metaData: {
   startDateInputName: string;
   startDateInputId: string;
   startDateInputPlaceHolder?: string;
