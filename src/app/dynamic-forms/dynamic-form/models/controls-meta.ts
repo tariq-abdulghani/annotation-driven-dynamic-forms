@@ -41,12 +41,13 @@ export interface NumberControlMeta extends ControlMetaData {
 }
 
 /**
- *
+ * bindLabel string to bind to
+ * bindValue: string | null
  */
 export interface SelectControlMeta extends ControlMetaData {
   bindLabel: string;
   bindValue: string | null;
   multiple: true | undefined;
   compareWith: (a: any, b: any) => boolean;
-  dataSource: string | any[] | Observable<any[]>;
+  dataSource: URL | any[] | Observable<any[]>;
 }
