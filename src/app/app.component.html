@@ -1,19 +1,8 @@
 hello
 
 <div class="container">
-    <!-- <form [formGroup]="form">
-        <input 
-            class="form-control" 
-            type="text" 
-            formControlName="date" 
-            name="dateControl" 
-            simpleDatePicker
-            [showIcon]="true"
-            [config]="{'locale': 'ar'}">
-        <input type="button" class="btn btn-light" value="submit" (click)="submit()">
-    </form> -->
 
     <!-- <app-demo>
     </app-demo> -->
-    <app-dynamic-form></app-dynamic-form>
+    <app-dynamic-form [formModel]="personDto"></app-dynamic-form>
 </div>

@@ -7,14 +7,15 @@ import {
   DateControlMeta,
 } from './controls-meta';
 import 'reflect-metadata';
+import { FormLayout } from './form-layout-enum';
 
-export function FormModel(configs: FormMeta) {
+export function FormModel(formMeta: FormMeta) {
   return function <T extends { new (...args: any[]): {} }>(constructor: T) {
     return class extends constructor {
-      showReset = configs.showReset || false;
-      resetBtnLabel = configs.resetBtnLabel || 'reset';
-      submitBtnLabel = configs.submitBtnLabel || 'submit';
-      formLayout = configs.formLayout ? configs.formLayout : 'default';
+      showReset = formMeta.showReset || false;
+      resetBtnLabel = formMeta.resetBtnLabel || 'reset';
+      submitBtnLabel = formMeta.submitBtnLabel || 'submit';
+      formLayout = formMeta.formLayout ? formMeta.formLayout : FormLayout.GRID;
     };
   };
 }
@@ -45,10 +46,15 @@ export function setMetaData(
   metaData: any,
   controlType: ControlTypes
 ) {
+  // adding other meta data the makes specific details
+  //  that are not consistent to be seen at declaration
+  // like if you selected a date control it must be of type date control
+  // this hidden initialization is to make the api consistent its a bad practice
+  // but that side of the tool is supposed to be hidden
   metaData.propertyKey = propertyKey;
   metaData['controlType'] = controlType;
-  metaData['formControl'] = new FormControl();
-
+  metaData['formControl'] = new FormControl(null, metaData['validators']);
+  metaData['width'] = metaData['width'] || 6;
   const setter = function (val?: any) {
     metaData.formControl?.setValue(val);
   };

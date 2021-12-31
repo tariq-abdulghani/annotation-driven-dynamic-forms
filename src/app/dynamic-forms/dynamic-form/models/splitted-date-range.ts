@@ -6,11 +6,11 @@ export function SplittedDateRangeControl(metaData: {
   startDateInputName: string;
   startDateInputId: string;
   startDateInputPlaceHolder?: string;
-  startDateInputPlaceLabel?: string;
+  startDateInputLabel?: string;
   endDateInputName: string;
   endDateInputId: string;
   endDateInputPlaceHolder?: string;
-  endDateInputPlaceLabel?: string;
+  endDateInputLabel?: string;
   rangeStartDate: Date;
   rangeEndDate: Date;
   optional?: boolean;
@@ -29,13 +29,13 @@ export function SplittedDateRangeControl(metaData: {
       maxDate: metaData.rangeEndDate,
       controlType: ControlTypes.Date,
       formControl: new FormControl(metaData.rangeStartDate, [maxDateValidator(metaData.rangeEndDate), optionalValidator(metaData.optional || false)]),
-      width: metaData.width,
+      width: metaData.width || 6,
       style: metaData.style,
       class: metaData.class,
       validators:[],
       id: metaData.endDateInputId,
       placeHolder: metaData.endDateInputPlaceHolder,
-      label: metaData.endDateInputPlaceLabel,
+      label: metaData.endDateInputLabel,
     }
 
     const endDateSetter = (n: Date) => {
@@ -63,8 +63,8 @@ export function SplittedDateRangeControl(metaData: {
         validators:[],
       id: metaData.startDateInputId,
       placeHolder: metaData.startDateInputPlaceHolder,
-      label: metaData.startDateInputPlaceLabel,
-      width: metaData.width,
+      label: metaData.startDateInputLabel,
+      width: metaData.width || 6,
       style: metaData.style,
       class: metaData.class,
     }

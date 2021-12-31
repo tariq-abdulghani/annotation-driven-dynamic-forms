@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { PersonForm } from './dynamic-forms/dynamic-form/models/person-dto';
 
 @Component({
   selector: 'app-root',
@@ -13,7 +14,7 @@ export class AppComponent {
   form = new FormGroup({
     date: this.date
   })
-
+  personDto: PersonForm = new PersonForm('ahmed', 28);
   submit(){
     console.log(this.form.value, this.form);
   }

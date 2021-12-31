@@ -1,24 +1,212 @@
-<p>{{ personDTO | json }}</p>
 
-<form [formGroup]="formDescriptor.formGroup" (ngSubmit)="onSubmit($event)">
+
+<p>{{ formModel | json }}</p>
+<form class="row g-3" *ngIf="formDescriptor&&formDescriptor?.formLayout==FORM_LAYOUT_OPTS.GRID" [formGroup]="formDescriptor.formGroup" (ngSubmit)="onSubmit($event)">
+  <ng-container *ngFor="let controlMeta of formDescriptor.controlsMeta">
+    <ng-container [ngSwitch]="controlMeta.controlType">
+
+      <div [class]="'col-md-'+ controlMeta.width"  *ngSwitchCase="CONTROL_TYPES.Text">
+        <label [for]="controlMeta.id" class="form-label">{{controlMeta.label || controlMeta.name}}</label>
+        <input
+        class="form-control"
+        [id]="controlMeta.id"
+        [type]="controlMeta.type"
+        [formControl]="controlMeta.formControl"
+        [name]="controlMeta.name"
+      />
+      </div>
+      
+      <div [class]="'col-md-'+ controlMeta.width"  *ngSwitchCase="CONTROL_TYPES.Number">
+        <label [for]="controlMeta.id" class="form-label">{{controlMeta.label || controlMeta.name}}</label>
+        <input
+        class="form-control"
+        [id]="controlMeta.id"
+        [type]="controlMeta.type"
+        [formControl]="controlMeta.formControl"
+        [name]="controlMeta.name"
+      />
+      </div>
+
+      <div [class]="'col-md-'+ controlMeta.width"  *ngSwitchCase="CONTROL_TYPES.Date">
+        <label [for]="controlMeta.id" class="form-label">{{controlMeta.label || controlMeta.name}}</label>
+        <input
+        class="form-control"
+        [id]="controlMeta.id"
+        [type]="controlMeta.type"
+        [formControl]="controlMeta.formControl"
+        [name]="controlMeta.name"
+        [min]="controlMeta.minDate"
+        [max]="controlMeta.maxDate"
+      />
+      </div>
+
+      <div [class]="'col-md-'+ controlMeta.width"  *ngSwitchCase="CONTROL_TYPES.Select">
+        <label [for]="controlMeta.id" class="form-label">{{controlMeta.label || controlMeta.name}}</label>
+        <select
+        class="form-select"
+        [id]="controlMeta.id"
+        [formControl]="controlMeta.formControl"
+        [name]="controlMeta.name"
+        [compareWith]="$any(controlMeta).compareWith"
+      >
+        <option
+          *ngFor="let opt of loadData($any(controlMeta).dataSource) | async"
+          [ngValue]="
+            opt[$any(controlMeta).bindValue]
+              ? opt[$any(controlMeta).bindValue]
+              : opt
+          "
+        >
+          {{ opt[$any(controlMeta).bindLabel] }}
+        </option>
+      </select>
+      
+      </div>
+
+    </ng-container>
+  </ng-container>
+  
+  
+  <div class="col-12 mb-3">
+    <div class="gap-10 d-flex flex-row ">
+      <div >
+        <button class="btn btn-primary" type="submit">{{formDescriptor?.submitBtnLabel || "submit"}}</button>
+      </div>
+      <div >
+        <button class="btn btn-warning" *ngIf="formDescriptor.showReset" type="reset">{{formDescriptor?.resetBtnLabel || "reset"}}</button>
+      </div>
+    </div>
+    <!-- <div class="row">
+      <div class="col-sm-2">
+        <button class="btn btn-primary" type="submit">{{formDescriptor?.submitBtnLabel || "submit"}}</button>
+      </div>
+      <div class="col-sm-2">
+        <button class="btn btn-warning" *ngIf="formDescriptor.showReset" type="reset">{{formDescriptor?.resetBtnLabel || "reset"}}</button>
+      </div>
+    </div> -->
+  </div>
+</form>
+
+
+
+<form *ngIf="formDescriptor&&formDescriptor?.formLayout==FORM_LAYOUT_OPTS.SINGLE_COLUMN" [formGroup]="formDescriptor.formGroup" (ngSubmit)="onSubmit($event)">
+
+  <ng-container *ngFor="let controlMeta of formDescriptor.controlsMeta">
+    <ng-container [ngSwitch]="controlMeta.controlType">
+
+      <div class="row mb-3" *ngSwitchCase="CONTROL_TYPES.Text">
+        <label [for]="controlMeta.id" class="col-sm-2 col-form-label">{{controlMeta.label || controlMeta.name}}</label>
+        <div class="col-sm-10">
+          <input
+            class="form-control"
+
+            [id]="controlMeta.id"
+            [type]="controlMeta.type"
+            [formControl]="controlMeta.formControl"
+            [name]="controlMeta.name"
+          />
+        </div>
+      </div>
+
+      <div class="row mb-3" *ngSwitchCase="CONTROL_TYPES.Number">
+        <label [for]="controlMeta.id" class="col-sm-2 col-form-label">{{controlMeta.label || controlMeta.name}}</label>
+        <div class="col-sm-10">
+          <input
+            class="form-control"
+
+            [id]="controlMeta.id"
+            [type]="controlMeta.type"
+            [formControl]="controlMeta.formControl"
+            [name]="controlMeta.name"
+          />
+        </div>
+      </div>
+
+
+      <div class="row mb-3" *ngSwitchCase="CONTROL_TYPES.Date">
+        <label [for]="controlMeta.id" class="col-sm-2 col-form-label">{{controlMeta.label || controlMeta.name}}</label>
+        <div class="col-sm-10">
+          <input
+          class="form-control"
+          [id]="controlMeta.id"
+          [type]="controlMeta.type"
+          [formControl]="controlMeta.formControl"
+          [name]="controlMeta.name"
+          [min]="controlMeta.minDate"
+          [max]="controlMeta.maxDate"
+        />
+         
+        </div>
+      </div>
+
+
+      <div class="row mb-3" *ngSwitchCase="CONTROL_TYPES.Select">
+        <label [for]="controlMeta.id" class="col-sm-2 col-form-label">{{controlMeta.label || controlMeta.name}}</label>
+        <div class="col-sm-10">
+          <select class="form-select"
+          [id]="controlMeta.id"
+          [formControl]="controlMeta.formControl"
+          [name]="controlMeta.name"
+          [compareWith]="$any(controlMeta).compareWith"
+        >
+          <option
+            *ngFor="let opt of loadData($any(controlMeta).dataSource) | async"
+            [ngValue]="
+              opt[$any(controlMeta).bindValue]
+                ? opt[$any(controlMeta).bindValue]
+                : opt
+            "
+          >
+            {{ opt[$any(controlMeta).bindLabel] }}
+          </option>
+        </select>
+        </div>
+      </div>
+
+    </ng-container>
+  </ng-container>
+
+  <div class="row mb-3">
+    <div class="gap-10 d-flex flex-row ">
+      <div >
+        <button class="btn btn-primary" type="submit">{{formDescriptor?.submitBtnLabel || "submit"}}</button>
+      </div>
+      <div >
+        <button class="btn btn-warning" *ngIf="formDescriptor.showReset" type="reset">{{formDescriptor?.resetBtnLabel || "reset"}}</button>
+      </div>
+    </div>
+    <!-- <div class="col-md-2">
+      <button class="btn btn-primary" type="submit">{{formDescriptor?.submitBtnLabel || "submit"}}</button>
+    </div>
+    <div class="col-md-2">
+      <button class="btn btn-warning" *ngIf="formDescriptor.showReset" type="reset">{{formDescriptor?.resetBtnLabel || "reset"}}</button>
+    </div> -->
+  </div>
+</form> 
+
+
+
+<!-- old version -->
+<!--
+<form  *ngIf="false" [formGroup]="formDescriptor.formGroup" (ngSubmit)="onSubmit($event)">
   <ng-container *ngFor="let controlMeta of formDescriptor.controlsMeta">
     <ng-container [ngSwitch]="controlMeta.controlType">
       <input
-        *ngSwitchCase="controlTypes.Text"
+        *ngSwitchCase="CONTROL_TYPES.Text"
         [id]="controlMeta.id"
         [type]="controlMeta.type"
         [formControl]="controlMeta.formControl"
         [name]="controlMeta.name"
       />
       <input
-        *ngSwitchCase="controlTypes.Number"
+        *ngSwitchCase="CONTROL_TYPES.Number"
         [id]="controlMeta.id"
         [type]="controlMeta.type"
         [formControl]="controlMeta.formControl"
         [name]="controlMeta.name"
       />
       <input
-        *ngSwitchCase="controlTypes.Date"
+        *ngSwitchCase="CONTROL_TYPES.Date"
         [id]="controlMeta.id"
         [type]="controlMeta.type"
         [formControl]="controlMeta.formControl"
@@ -28,7 +216,7 @@
       />
 
       <select
-        *ngSwitchCase="controlTypes.Select"
+        *ngSwitchCase="CONTROL_TYPES.Select"
         [id]="controlMeta.id"
         [formControl]="controlMeta.formControl"
         [name]="controlMeta.name"
@@ -47,5 +235,7 @@
       </select>
     </ng-container>
   </ng-container>
-  <button>submit</button>
+  <button type="submit">{{formDescriptor?.submitBtnLabel || "submit"}}</button>
+  <button *ngIf="formDescriptor.showReset" type="reset">{{formDescriptor?.resetBtnLabel || "reset"}}</button>
 </form>
+-->

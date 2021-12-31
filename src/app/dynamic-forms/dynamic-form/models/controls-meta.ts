@@ -1,13 +1,14 @@
 import { ValidatorFn } from '@angular/forms';
 import 'reflect-metadata';
 import { Observable } from 'rxjs';
+import { FormLayout } from './form-layout-enum';
 import { ControlMeta } from './formEntityProcessor';
 
 export interface FormMeta {
   showReset?: boolean;
   resetBtnLabel?: string;
   submitBtnLabel?: string;
-  formLayout?: string;
+  formLayout?: FormLayout;
 }
 
 export interface ControlMetaData {
@@ -19,21 +20,22 @@ export interface ControlMetaData {
   style?: string;
   class?: string;
   [x: string]: any;
+  validators: ValidatorFn[];
 }
 
 export interface DateControlMeta extends ControlMetaData {
-  validators: ValidatorFn[];
+  // validators: ValidatorFn[];
   minDate?: Date;
   maxDate?: Date;
 }
 
 export interface TextControlMeta extends ControlMetaData {
   type: string;
-  validators: ValidatorFn[];
+  // validators: ValidatorFn[];
 }
 
 export interface NumberControlMeta extends ControlMetaData {
-  validators: ValidatorFn[];
+  // validators: ValidatorFn[];
   min?: number;
   max?: number;
 }
@@ -46,5 +48,5 @@ export interface SelectControlMeta extends ControlMetaData {
   bindValue: string | null;
   multiple: true | undefined;
   compareWith: (a: any, b: any) => boolean;
-  asyncDataSource: (params?: any) => Observable<any[]>;
+  dataSource: string | any[] | Observable<any[]>;
 }
