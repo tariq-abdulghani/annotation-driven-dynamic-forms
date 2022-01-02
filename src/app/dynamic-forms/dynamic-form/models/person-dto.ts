@@ -8,7 +8,7 @@ import { SplittedDateRangeControl } from './splitted-date-range';
 
 @FormModel({
   showReset: true,
-  submitBtnLabel: 'save',
+  submitBtnLabel: 'Sign Up',
   resetBtnLabel: 'reset',
   formLayout: FormLayout.SINGLE_COLUMN,
 })
