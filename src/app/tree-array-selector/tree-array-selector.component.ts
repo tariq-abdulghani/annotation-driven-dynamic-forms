@@ -16,11 +16,11 @@ type Branch = {
 type TreeArray = Branch[];
 
 @Component({
-  selector: 'app-tree-selector',
-  templateUrl: './tree-selector.component.html',
-  styleUrls: ['./tree-selector.component.css'],
+  selector: 'app-tree-array-selector',
+  templateUrl: './tree-array-selector.component.html',
+  styleUrls: ['./tree-array-selector.component.css'],
 })
-export class TreeSelectorComponent implements OnInit {
+export class TreeArraySelectorComponent implements OnInit {
   selectorsDescription: SelectorsDescription[] = [
     {
       level: 'country',
