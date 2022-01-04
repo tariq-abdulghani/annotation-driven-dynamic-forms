@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { DemoComponent } from './decorator-demo/demo/demo.component';
 import { DynamicFormComponent } from './dynamic-forms/dynamic-form/dynamic-form.component';
 import { TreeArraySelectorComponent } from './tree-array-selector/tree-array-selector.component';
+import { DynamicFromControlComponent } from './dynamic-forms/dynamic-from-control/dynamic-from-control.component';
 
 
 @NgModule({
@@ -15,6 +16,7 @@ import { TreeArraySelectorComponent } from './tree-array-selector/tree-array-sel
     DemoComponent,
     DynamicFormComponent,
     TreeArraySelectorComponent,
+    DynamicFromControlComponent,
   ],
   imports: [
     BrowserModule,

@@ -8,6 +8,7 @@ import {
 } from './controls-meta';
 import 'reflect-metadata';
 import { FormLayout } from './form-layout-enum';
+import { FormDescriptor, FormEntityProcessor } from './formEntityProcessor';
 
 export function FormModel(formMeta: FormMeta) {
   return function <T extends { new (...args: any[]): {} }>(constructor: T) {
@@ -16,6 +17,24 @@ export function FormModel(formMeta: FormMeta) {
       resetBtnLabel = formMeta.resetBtnLabel || 'reset';
       submitBtnLabel = formMeta.submitBtnLabel || 'submit';
       formLayout = formMeta.formLayout ? formMeta.formLayout : FormLayout.GRID;
+
+      smartSetter = (value: any) =>{
+       console.warn("implement smart setter for null value");
+        if(value == null){
+
+        }
+        if(value instanceof Object){
+          for(const key in this){
+            if(value[key] != undefined){
+              //@ts-ignore
+              this[key] = value[key];
+            }
+          }
+        }
+      }
+      // smartGetter = ()=>{
+      //   return 
+      // }
     };
   };
 }
@@ -70,5 +89,41 @@ export function setMetaData(
   });
 
   Reflect.defineMetadata(propertyKey, metaData, target, propertyKey);
-  console.log('property decorator run', propertyKey);
+}
+
+
+export function NestedFormModel(metaData:{name: string, instance: any}) {
+  return function (target: any, propertyKey: string) {
+   const descriptor =  FormEntityProcessor.generateFormDescriptor(metaData.instance);
+    setNestedMetaData(target, propertyKey, metaData, descriptor);
+  }
+}
+
+export function setNestedMetaData(
+  target: any,
+  propertyKey: string,
+  metaData: any,
+  descriptor?: FormDescriptor
+) {
+  metaData.propertyKey = propertyKey;
+  metaData['controlType'] = ControlTypes.Composite;
+  metaData['formGroup']=descriptor?.formGroup;
+  metaData['controlsMeta']=descriptor?.controlsMeta;
+  // metaData['width'] = metaData['width'] || 6;
+  const setter = function (val?: any) {
+    metaData.instance.smartSetter(val);
+  };
+
+  const getter = function () {
+    return metaData.formGroup?.value;
+  };
+
+  Object.defineProperty(target, propertyKey, {
+    set: setter,
+    get: getter,
+    enumerable: true,
+  });
+
+  Reflect.defineMetadata(propertyKey, metaData, target, propertyKey);
+  console.log('NestedFormModel decorator run', propertyKey);
 }

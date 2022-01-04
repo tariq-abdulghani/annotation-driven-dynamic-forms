@@ -1,7 +1,8 @@
 import { Validators } from '@angular/forms';
 import { of } from 'rxjs';
+import { Address } from './address-dto';
 
-import { FormModel, TextControl, NumberControl } from './common-controls';
+import { FormModel, TextControl, NumberControl, NestedFormModel } from './common-controls';
 import { FormLayout } from './form-layout-enum';
 import { SelectControl } from './select-control';
 import { SplittedDateRangeControl } from './splitted-date-range';
@@ -84,6 +85,10 @@ export class PersonForm {
     title: string;
     body: string;
   } | null;
+
+
+  @NestedFormModel({name:'address', instance: new Address()})
+  address: Address = {city: 'city wow', state: 'state wow', zipCode: '1234'};
 
   constructor(name: string, age: number) {
     this.name = name;

@@ -20,43 +20,45 @@ export type FormDescriptor = {
   formGroup: FormGroup;
 };
 
+export type NestedFormDescriptor = {
+    controlsMeta: ControlMeta[];
+    formGroup: FormGroup;
+}
+
 export class FormEntityProcessor{
 
+    /**
+     * Generates Form Discriptor an object that contains metata data in a structured way
+     * 
+     * @param formEntity instance of Calss annotated with '@FormModel'
+     * @returns 
+     */
     public static generateFormDescriptor(formEntity: any):FormDescriptor{
-        const obj = {controlsMeta:[]} as {[x:string] : any};
-        const formGroupInitializer = {}as {[x:string] : any};
+        console.warn("only two levels are supported in this functions if more levels are needed please implement that");
+        const obj = {controlsMeta:[]} as {[x:string] : any}; // formDescriptor empty object
+        const formGroupInitializer = {}as {[x:string] : any}; // form group initializer key string control name value FormControl
 
+        // getting fields and set them in the descriptor
         Object.entries(formEntity).forEach(keyValue =>{
             obj[keyValue[0]] = keyValue[1];
         });
 
+        // scans all enumerated fileds including property setters and getters
         for (const key in formEntity) {
             const metaData = Reflect.getMetadata(key, formEntity, key);
-            if(metaData){
+
+            if(metaData && metaData.controlType != ControlTypes.Composite){
                 obj.controlsMeta.push(metaData);
                 formGroupInitializer[metaData.name] = metaData.formControl;
             }
+
+            if(metaData && metaData.controlType == ControlTypes.Composite){
+                obj.controlsMeta.push(metaData);
+                formGroupInitializer[metaData.name] = metaData.formGroup;
+            }
         }
-        // console.log(formGroupInitializer);
         obj.formGroup = new FormGroup(formGroupInitializer);
-        // obj.formGroup.valueChanges.subscribe((v: any) => console.log(v));
         //@ts-ignore
     return obj;
     }
-
-    // public static generateFormDescriptor(formEntity: any):{[x:string]: any, controlsMeta: any[]}{
-    //     const obj = {controlsMeta:[]} as {[x: string]: any, controlsMeta: any[]};
-        
-    //     Object.entries(formEntity).forEach(keyValue =>{
-    //         obj[keyValue[0]] = keyValue[1];
-    //     });
-
-    //     for (const key in formEntity) {
-    //         const metaData = Reflect.getMetadata(key, formEntity, key);
-    //         if(metaData){
-    //             obj.controlsMeta.push(metaData)
-    //         }
-    //     }
-    // return obj;
-    // }
 }

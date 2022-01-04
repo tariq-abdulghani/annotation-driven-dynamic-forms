@@ -1,0 +1,93 @@
+<div [formGroup]=formDescriptor.formGroup>
+    <ng-container *ngFor="let controlMeta of formDescriptor.controlsMeta">
+        <ng-container [ngSwitch]="controlMeta.controlType">
+          <div
+            [class]="'col-md-' + controlMeta.width"
+            *ngSwitchCase="CONTROL_TYPES.Text"
+          >
+            <label [for]="controlMeta.id" class="form-label">{{
+              controlMeta.label || controlMeta.name
+            }}</label>
+            <input
+              class="form-control"
+              [id]="controlMeta.id"
+              [type]="controlMeta.type"
+              [formControl]="controlMeta.formControl"
+              [name]="controlMeta.name"
+            />
+          </div>
+  
+          <div
+            [class]="'col-md-' + controlMeta.width"
+            *ngSwitchCase="CONTROL_TYPES.Number"
+          >
+            <label [for]="controlMeta.id" class="form-label">{{
+              controlMeta.label || controlMeta.name
+            }}</label>
+            <input
+              class="form-control"
+              [id]="controlMeta.id"
+              [type]="controlMeta.type"
+              [formControl]="controlMeta.formControl"
+              [name]="controlMeta.name"
+            />
+          </div>
+  
+          <div
+            [class]="'col-md-' + controlMeta.width"
+            *ngSwitchCase="CONTROL_TYPES.Date"
+          >
+            <label [for]="controlMeta.id" class="form-label">{{
+              controlMeta.label || controlMeta.name
+            }}</label>
+            <input
+              class="form-control"
+              [id]="controlMeta.id"
+              [type]="controlMeta.type"
+              [formControl]="controlMeta.formControl"
+              [name]="controlMeta.name"
+              [min]="controlMeta.minDate"
+              [max]="controlMeta.maxDate"
+            />
+          </div>
+  
+          <!-- <div
+            [class]="'col-md-' + controlMeta.width"
+            *ngSwitchCase="CONTROL_TYPES.Select"
+          >
+            <label [for]="controlMeta.id" class="form-label">{{
+              controlMeta.label || controlMeta.name
+            }}</label>
+            <select
+              class="form-select"
+              [id]="controlMeta.id"
+              [formControl]="controlMeta.formControl"
+              [name]="controlMeta.name"
+              [compareWith]="$any(controlMeta).compareWith"
+            >
+              <option
+                *ngFor="let opt of loadData($any(controlMeta).dataSource) | async"
+                [ngValue]="
+                  opt[$any(controlMeta).bindValue]
+                    ? opt[$any(controlMeta).bindValue]
+                    : opt
+                "
+              >
+                {{ opt[$any(controlMeta).bindLabel] }}
+              </option>
+            </select>
+          </div> -->
+          
+
+          <div
+            [class]="'col-md-' + controlMeta.width"
+            *ngSwitchCase="CONTROL_TYPES.Composite"
+          >
+            <label [for]="controlMeta.id" class="form-label">{{
+              controlMeta.label || controlMeta.name
+            }}</label>
+            <app-dynamic-from-control  [formDescriptor]="$any(controlMeta)"></app-dynamic-from-control>
+          </div>
+        </ng-container>
+      </ng-container>
+</div>
