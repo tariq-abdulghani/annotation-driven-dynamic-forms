@@ -3,10 +3,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { ControlTypes } from '../dynamic-form/models/control-types.enum';
 import { FormLayout } from '../dynamic-form/models/form-layout-enum';
-import {
-  FormDescriptor,
-  NestedFormDescriptor,
-} from '../dynamic-form/models/formEntityProcessor';
+import { FormDescriptor } from '../dynamic-form/models/formEntityProcessor';
 
 @Component({
   selector: 'app-dynamic-from-control',
@@ -21,7 +18,7 @@ export class DynamicFromControlComponent implements OnInit {
   constructor(private httpClient: HttpClient) {}
 
   ngOnInit(): void {
-    console.log(this.formDescriptor);
+    // console.log(this.formDescriptor);
   }
 
   loadData(

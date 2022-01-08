@@ -99,7 +99,6 @@ export function NestedFormModel(metaData: {
     //@ts-ignore
     metaData['instance'] = instance;
     const descriptor = FormEntityProcessor.generateFormDescriptor(instance);
-    console.log('descriptor nested', descriptor);
     setNestedMetaData(target, propertyKey, metaData, descriptor);
   };
 }

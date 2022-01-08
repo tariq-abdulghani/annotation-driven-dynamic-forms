@@ -6,15 +6,12 @@ import {
   OnInit,
   SimpleChanges,
 } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { ajax } from 'rxjs/ajax';
 import { ControlTypes } from './models/control-types.enum';
 import { FormLayout } from './models/form-layout-enum';
 import {
   FormDescriptor,
   FormEntityProcessor,
 } from './models/formEntityProcessor';
-import { PersonForm } from './models/person-dto';
 
 @Component({
   selector: 'app-dynamic-form',
@@ -24,50 +21,24 @@ import { PersonForm } from './models/person-dto';
 export class DynamicFormComponent implements OnInit, OnChanges {
   readonly CONTROL_TYPES = ControlTypes;
   readonly FORM_LAYOUT_OPTS = FormLayout;
-
   formDescriptor!: FormDescriptor;
   @Input('formModel') formModel!: any;
-  constructor(private httpClient: HttpClient) {}
+  constructor() {}
 
-  ngOnInit(): void {
-    // console.log("init #############33");
-  }
+  ngOnInit(): void {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.formModel) {
-      // console.log("onchange #############33");
       this.formModel = changes.formModel.currentValue;
       this.formDescriptor = FormEntityProcessor.generateFormDescriptor(
         this.formModel
       );
-      console.log(this.formDescriptor);
-      console.log(this.formModel);
+      // console.log(this.formDescriptor);
+      // console.log(this.formModel);
     }
   }
-
-  private dataSources = new Map<string, Observable<any[]>>();
 
   onSubmit(v: any) {
     console.log(this.formDescriptor.formGroup);
-  }
-
-  count = 0;
-  loadData(
-    dataSource: URL | any[] | Observable<any[]>
-  ): Observable<any[]> | Promise<any[]> {
-    // console.log("$$$$$$$$$$$$$$$$$$$$load data is called ", dataSource, this.count++);
-    if (dataSource instanceof URL) {
-      if (!this.dataSources.get(dataSource.href)) {
-        this.dataSources.set(
-          dataSource.href,
-          this.httpClient.get<any[]>(dataSource.href)
-        );
-      }
-      return this.dataSources.get(dataSource.href) || of([]);
-    } else if (Array.isArray(dataSource)) {
-      return of(dataSource);
-    } else {
-      return dataSource;
-    }
   }
 }
