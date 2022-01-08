@@ -1,14 +1,15 @@
 import { FormControl } from '@angular/forms';
-import { ControlTypes } from './control-types.enum';
+import { ControlTypes } from '../types/control-types.enum';
 import {
   FormMeta,
   TextControlMeta,
   NumberControlMeta,
   DateControlMeta,
-} from './controls-meta';
+} from '../types/controls-meta';
 import 'reflect-metadata';
-import { FormLayout } from './form-layout-enum';
-import { FormDescriptor, FormEntityProcessor } from './formEntityProcessor';
+import { FormLayout } from '../types/form-layout-enum';
+import { FormEntityProcessor } from '../../utils/formEntityProcessor';
+import { FormDescriptor } from '../types/forms-meta';
 
 export function FormModel(formMeta: FormMeta) {
   return function <T extends { new (...args: any[]): {} }>(constructor: T) {

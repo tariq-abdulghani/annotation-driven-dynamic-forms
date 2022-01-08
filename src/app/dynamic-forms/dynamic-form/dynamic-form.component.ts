@@ -6,12 +6,10 @@ import {
   OnInit,
   SimpleChanges,
 } from '@angular/core';
-import { ControlTypes } from './models/control-types.enum';
-import { FormLayout } from './models/form-layout-enum';
-import {
-  FormDescriptor,
-  FormEntityProcessor,
-} from './models/formEntityProcessor';
+import { ControlTypes } from './models/types/control-types.enum';
+import { FormLayout } from './models/types/form-layout-enum';
+import { FormDescriptor } from './models/types/forms-meta';
+import { FormEntityProcessor } from './utils/formEntityProcessor';
 
 @Component({
   selector: 'app-dynamic-form',

@@ -1,5 +1,5 @@
 import { Validators } from '@angular/forms';
-import { FormModel, TextControl } from './common-controls';
+import { FormModel, TextControl } from './decorators/common-controls';
 
 @FormModel({})
 export class Address {

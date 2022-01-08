@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { ControlTypes } from '../dynamic-form/models/control-types.enum';
-import { FormLayout } from '../dynamic-form/models/form-layout-enum';
-import { FormDescriptor } from '../dynamic-form/models/formEntityProcessor';
+import { ControlTypes } from '../dynamic-form/models/types/control-types.enum';
+import { FormLayout } from '../dynamic-form/models/types/form-layout-enum';
+import { FormDescriptor } from '../dynamic-form/models/types/forms-meta';
 
 @Component({
   selector: 'app-dynamic-from-control',
@@ -18,7 +18,7 @@ export class DynamicFromControlComponent implements OnInit {
   constructor(private httpClient: HttpClient) {}
 
   ngOnInit(): void {
-    // console.log(this.formDescriptor);
+    console.log(this.formDescriptor);
   }
 
   loadData(

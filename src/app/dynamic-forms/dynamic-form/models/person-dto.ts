@@ -7,10 +7,10 @@ import {
   TextControl,
   NumberControl,
   NestedFormModel,
-} from './common-controls';
-import { FormLayout } from './form-layout-enum';
-import { SelectControl } from './select-control';
-import { SplittedDateRangeControl } from './splitted-date-range';
+} from './decorators/common-controls';
+import { FormLayout } from './types/form-layout-enum';
+import { SelectControl } from './decorators/select-control';
+import { SplittedDateRangeControl } from './decorators/splitted-date-range';
 
 @FormModel({
   showReset: true,
