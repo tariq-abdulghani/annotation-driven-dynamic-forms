@@ -18,22 +18,21 @@ export function FormModel(formMeta: FormMeta) {
       submitBtnLabel = formMeta.submitBtnLabel || 'submit';
       formLayout = formMeta.formLayout ? formMeta.formLayout : FormLayout.GRID;
 
-      smartSetter = (value: any) =>{
-       console.warn("implement smart setter for null value");
-        if(value == null){
-
+      smartSetter = (value: any) => {
+        console.warn('implement smart setter for null value');
+        if (value == null) {
         }
-        if(value instanceof Object){
-          for(const key in this){
-            if(value[key] != undefined){
+        if (value instanceof Object) {
+          for (const key in this) {
+            if (value[key] != undefined) {
               //@ts-ignore
               this[key] = value[key];
             }
           }
         }
-      }
+      };
       // smartGetter = ()=>{
-      //   return 
+      //   return
       // }
     };
   };
@@ -91,12 +90,18 @@ export function setMetaData(
   Reflect.defineMetadata(propertyKey, metaData, target, propertyKey);
 }
 
-
-export function NestedFormModel(metaData:{name: string, instance: any}) {
+export function NestedFormModel(metaData: {
+  name: string;
+  classDeclaration: any;
+}) {
   return function (target: any, propertyKey: string) {
-   const descriptor =  FormEntityProcessor.generateFormDescriptor(metaData.instance);
+    const instance = new metaData.classDeclaration();
+    //@ts-ignore
+    metaData['instance'] = instance;
+    const descriptor = FormEntityProcessor.generateFormDescriptor(instance);
+    console.log('descriptor nested', descriptor);
     setNestedMetaData(target, propertyKey, metaData, descriptor);
-  }
+  };
 }
 
 export function setNestedMetaData(
@@ -107,8 +112,9 @@ export function setNestedMetaData(
 ) {
   metaData.propertyKey = propertyKey;
   metaData['controlType'] = ControlTypes.Composite;
-  metaData['formGroup']=descriptor?.formGroup;
-  metaData['controlsMeta']=descriptor?.controlsMeta;
+  metaData['formGroup'] = descriptor?.formGroup;
+  metaData['controlsMeta'] = descriptor?.controlsMeta;
+  metaData['formLayout'] = descriptor?.formLayout;
   // metaData['width'] = metaData['width'] || 6;
   const setter = function (val?: any) {
     metaData.instance.smartSetter(val);

@@ -11,4 +11,6 @@ export class AppComponent {
   title = 'decorator-driven-forms';
 
   personDto: PersonForm = new PersonForm('ahmed', 28);
+
+  constructor() {}
 }

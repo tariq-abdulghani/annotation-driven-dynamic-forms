@@ -1,0 +1,9 @@
+/* .nested-form-legened::after,
+.nested-form-legened:before {
+  content: "\00a0\00a0\00a0\00a0\00a0";
+  text-decoration: line-through;
+} */
+
+/* .nested-form-legend {
+  margin-top: -0.8em;
+} */
