@@ -6,7 +6,7 @@ import { FormModel } from './decorators/form-model';
 export class Address {
   @TextControl({
     name: 'city',
-    type: 'city',
+    type: 'text',
     id: 'city',
     width: 4,
     validators: [Validators.required],
@@ -15,7 +15,7 @@ export class Address {
 
   @TextControl({
     name: 'state',
-    type: 'state',
+    type: 'text',
     id: 'state',
     width: 4,
     validators: [Validators.required],
@@ -24,7 +24,7 @@ export class Address {
 
   @TextControl({
     name: 'zipCode',
-    type: 'zipCode',
+    type: 'text',
     id: 'zipCode',
     width: 4,
     validators: [Validators.required],

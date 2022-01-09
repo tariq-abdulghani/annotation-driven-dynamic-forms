@@ -5,7 +5,7 @@ import { FormDescriptor } from '../models/types/controls-descriptors.ts';
 
 export class FormEntityProcessor {
   /**
-   * Generates Form Descriptor an object that contains metata data in a structured way
+   * Generates Form Descriptor an object that contains meta data in a tree like data structure
    *
    * @param formEntity instance of Class annotated with '@FormModel'
    * @returns
@@ -13,9 +13,12 @@ export class FormEntityProcessor {
   public static generateFormDescriptor(formEntity: {
     [x: string]: any;
   }): FormDescriptor {
-    console.warn(
-      'only two levels are supported in this functions if more levels are needed please implement that'
-    );
+    // no need for recursion to generate all descriptors in child controls
+    // the way decorators work works on all of them
+
+    // console.warn(
+    //   'only two levels are supported in this functions if more levels are needed please implement that'
+    // );
 
     const formDescriptor = new FormDescriptor();
     const formGroupInitializer = {} as { [x: string]: any }; // form group initializer key string control name value FormControl
@@ -26,7 +29,7 @@ export class FormEntityProcessor {
       formDescriptor[keyValue[0]] = keyValue[1];
     });
 
-    // scans all enumerated fileds including property setters and getters
+    // scans all enumerated fields including property setters and getters
     for (const key in formEntity) {
       const metaData = Reflect.getMetadata(key, formEntity, key);
 

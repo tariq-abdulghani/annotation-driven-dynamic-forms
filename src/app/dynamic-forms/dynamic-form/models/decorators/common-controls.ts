@@ -4,22 +4,30 @@ import {
   TextControlMeta,
   NumberControlMeta,
   DateControlMeta,
-  NestedFormMeta,
 } from '../types/controls-meta';
 import 'reflect-metadata';
-import { FormEntityProcessor } from '../../utils/formEntityProcessor';
-import { NestedFormDescriptor } from '../types/controls-descriptors.ts';
+import {
+  ControlDescriptor,
+  Descriptors,
+} from '../types/controls-descriptors.ts';
 
 export function TextControl(textControlMeta: TextControlMeta) {
   return function (target: any, propertyKey: string) {
-    setMetaData(target, propertyKey, textControlMeta, ControlTypes.Text);
+    setMetaDataEnhanced(
+      target,
+      propertyKey,
+      Descriptors.text(textControlMeta, propertyKey)
+    );
   };
 }
 
 export function NumberControl(numberControlMeta: NumberControlMeta) {
   return function (target: any, propertyKey: string) {
-    numberControlMeta.type = 'number';
-    setMetaData(target, propertyKey, numberControlMeta, ControlTypes.Number);
+    setMetaDataEnhanced(
+      target,
+      propertyKey,
+      Descriptors.number(numberControlMeta, propertyKey)
+    );
   };
 }
 
@@ -28,6 +36,28 @@ export function DateControl(dateControlMeta: DateControlMeta) {
     dateControlMeta.type = 'date';
     setMetaData(target, propertyKey, dateControlMeta, ControlTypes.Date);
   };
+}
+
+export function setMetaDataEnhanced(
+  target: any,
+  propertyKey: string,
+  metaData: ControlDescriptor
+) {
+  const setter = function (val?: any) {
+    metaData.formControl?.setValue(val);
+  };
+
+  const getter = function () {
+    return metaData.formControl?.value;
+  };
+
+  Object.defineProperty(target, propertyKey, {
+    set: setter,
+    get: getter,
+    enumerable: true,
+  });
+
+  Reflect.defineMetadata(propertyKey, metaData, target, propertyKey);
 }
 
 export function setMetaData(

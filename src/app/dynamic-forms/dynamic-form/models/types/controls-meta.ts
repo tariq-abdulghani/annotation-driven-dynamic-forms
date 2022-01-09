@@ -28,18 +28,15 @@ export interface ControlMetaData {
 }
 
 export interface DateControlMeta extends ControlMetaData {
-  // validators: ValidatorFn[];
   minDate?: Date;
   maxDate?: Date;
 }
 
 export interface TextControlMeta extends ControlMetaData {
-  type: string;
-  // validators: ValidatorFn[];
+  type: 'text' | 'password' | 'email' | 'url' | 'tel';
 }
 
 export interface NumberControlMeta extends ControlMetaData {
-  // validators: ValidatorFn[];
   min?: number;
   max?: number;
 }

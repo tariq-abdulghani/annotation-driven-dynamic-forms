@@ -8,6 +8,7 @@ import { SelectControl } from './decorators/select-control';
 import { SplittedDateRangeControl } from './decorators/splitted-date-range';
 import { FormModel } from './decorators/form-model';
 import { NestedFormModel } from './decorators/nested-form-model';
+import { ContactInfo } from './types/contact-info';
 
 @FormModel({
   showReset: true,
@@ -21,6 +22,7 @@ export class PersonForm {
     type: 'text',
     id: 'full-name',
     label: 'user name',
+    placeHolder: 'example ...',
     validators: [Validators.required],
   })
   name: string;
@@ -51,6 +53,7 @@ export class PersonForm {
   @NumberControl({
     name: 'age',
     id: 'age',
+    placeHolder: 'example ...',
     validators: [Validators.required],
   })
   age: number;
@@ -87,8 +90,15 @@ export class PersonForm {
     body: string;
   } | null;
 
-  @NestedFormModel({ name: 'address', classDeclaration: Address })
-  address: Address = new Address('FGH', 'NBH', '4578'); //{ city: 'city wow', state: 'state wow', zipCode: '1234' };
+  // @NestedFormModel({ name: 'address', classDeclaration: Address })
+  // address: Address = new Address('FGH', 'NBH', '4578'); //{ city: 'city wow', state: 'state wow', zipCode: '1234' };
+
+  @NestedFormModel({ name: 'contactInfo', classDeclaration: ContactInfo })
+  contactInfo: ContactInfo = {
+    telA: '012-3458',
+    telB: '015-1425',
+    address: { city: 'city wow', state: 'state wow', zipCode: '1234' },
+  };
 
   constructor(name: string, age: number) {
     this.name = name;
