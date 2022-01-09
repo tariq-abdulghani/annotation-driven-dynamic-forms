@@ -82,6 +82,7 @@ export class PersonForm {
     bindValue: null,
     multiple: undefined,
     validators: [Validators.required],
+    label: 'users post',
   })
   post: {
     userId: number;

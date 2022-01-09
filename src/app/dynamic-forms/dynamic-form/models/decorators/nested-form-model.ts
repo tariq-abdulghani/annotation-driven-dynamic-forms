@@ -1,4 +1,4 @@
-import { FormEntityProcessor } from '../../utils/formEntityProcessor';
+import { FormEntityProcessor } from '../../utils/form-entity-processor';
 import { NestedFormDescriptor } from '../types/controls-descriptors.ts';
 import { NestedFormMeta } from '../types/controls-meta';
 
@@ -37,5 +37,5 @@ export function setNestedMetaData(
   });
 
   Reflect.defineMetadata(propertyKey, metaData, target, propertyKey);
-  console.log('NestedFormModel decorator run', propertyKey);
+  // console.log('NestedFormModel decorator run', propertyKey);
 }

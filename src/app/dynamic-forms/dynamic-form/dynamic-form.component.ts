@@ -9,7 +9,7 @@ import {
 import { ControlTypes } from './models/types/control-types.enum';
 import { FormLayout } from './models/types/form-layout-enum';
 import { FormDescriptor } from './models/types/controls-descriptors.ts';
-import { FormEntityProcessor } from './utils/formEntityProcessor';
+import { FormEntityProcessor } from './utils/form-entity-processor';
 
 @Component({
   selector: 'app-dynamic-form',
