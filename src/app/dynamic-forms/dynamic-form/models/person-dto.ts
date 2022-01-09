@@ -3,7 +3,6 @@ import { of } from 'rxjs';
 import { Address } from './address-dto';
 
 import {
-  FormModel,
   TextControl,
   NumberControl,
   NestedFormModel,
@@ -11,6 +10,7 @@ import {
 import { FormLayout } from './types/form-layout-enum';
 import { SelectControl } from './decorators/select-control';
 import { SplittedDateRangeControl } from './decorators/splitted-date-range';
+import { FormModel } from './decorators/form-model';
 
 @FormModel({
   showReset: true,

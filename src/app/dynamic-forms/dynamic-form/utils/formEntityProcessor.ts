@@ -1,7 +1,7 @@
 import { FormControl, FormGroup } from '@angular/forms';
 import { ControlTypes } from '../models/types/control-types.enum';
 import { FormLayout } from '../models/types/form-layout-enum';
-import { FormDescriptor } from '../models/types/forms-meta';
+import { FormDescriptor } from '../models/types/controls-descriptors.ts';
 
 export class FormEntityProcessor {
   /**

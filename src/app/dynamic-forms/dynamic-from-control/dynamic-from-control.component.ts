@@ -3,7 +3,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { ControlTypes } from '../dynamic-form/models/types/control-types.enum';
 import { FormLayout } from '../dynamic-form/models/types/form-layout-enum';
-import { FormDescriptor } from '../dynamic-form/models/types/forms-meta';
+import { FormDescriptor } from '../dynamic-form/models/types/controls-descriptors.ts';
 
 @Component({
   selector: 'app-dynamic-from-control',

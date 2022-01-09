@@ -1,44 +1,14 @@
 import { FormControl } from '@angular/forms';
 import { ControlTypes } from '../types/control-types.enum';
 import {
-  FormMeta,
   TextControlMeta,
   NumberControlMeta,
   DateControlMeta,
   NestedFormMeta,
 } from '../types/controls-meta';
 import 'reflect-metadata';
-import { FormLayout } from '../types/form-layout-enum';
 import { FormEntityProcessor } from '../../utils/formEntityProcessor';
-import { FormDescriptor, NestedFormDescriptor } from '../types/forms-meta';
-
-export function FormModel(formMeta: FormMeta) {
-  return function <T extends { new (...args: any[]): {} }>(constructor: T) {
-    return class extends constructor {
-      showReset = formMeta.showReset || false;
-      resetBtnLabel = formMeta.resetBtnLabel || 'reset';
-      submitBtnLabel = formMeta.submitBtnLabel || 'submit';
-      formLayout = formMeta.formLayout ? formMeta.formLayout : FormLayout.GRID;
-
-      smartSetter = (value: any) => {
-        console.warn('implement smart setter for null value');
-        if (value == null) {
-        }
-        if (value instanceof Object) {
-          for (const key in this) {
-            if (value[key] != undefined) {
-              //@ts-ignore
-              this[key] = value[key];
-            }
-          }
-        }
-      };
-      // smartGetter = ()=>{
-      //   return
-      // }
-    };
-  };
-}
+import { NestedFormDescriptor } from '../types/controls-descriptors.ts';
 
 export function TextControl(textControlMeta: TextControlMeta) {
   return function (target: any, propertyKey: string) {
@@ -97,12 +67,12 @@ export function NestedFormModel(metaData: NestedFormMeta) {
     const instance = new metaData.classDeclaration();
     const nestedFormDescriptor = new NestedFormDescriptor();
     const descriptor = FormEntityProcessor.generateFormDescriptor(instance);
-    nestedFormDescriptor['instance'] = instance;
+    nestedFormDescriptor.instance = instance;
     nestedFormDescriptor.name = metaData.name;
     nestedFormDescriptor.propertyKey = propertyKey;
-    nestedFormDescriptor['formGroup'] = descriptor?.formGroup;
-    nestedFormDescriptor['controlsDescriptor'] = descriptor?.controlsDescriptor;
-    nestedFormDescriptor['formLayout'] = descriptor?.formLayout;
+    nestedFormDescriptor.formGroup = descriptor.formGroup;
+    nestedFormDescriptor.controlsDescriptor = descriptor.controlsDescriptor;
+    nestedFormDescriptor.formLayout = descriptor.formLayout;
     setNestedMetaData(target, propertyKey, nestedFormDescriptor);
   };
 }
