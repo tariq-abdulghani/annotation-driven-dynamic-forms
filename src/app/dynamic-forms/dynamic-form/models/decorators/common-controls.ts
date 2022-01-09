@@ -5,11 +5,12 @@ import {
   TextControlMeta,
   NumberControlMeta,
   DateControlMeta,
+  NestedFormMeta,
 } from '../types/controls-meta';
 import 'reflect-metadata';
 import { FormLayout } from '../types/form-layout-enum';
 import { FormEntityProcessor } from '../../utils/formEntityProcessor';
-import { FormDescriptor } from '../types/forms-meta';
+import { FormDescriptor, NestedFormDescriptor } from '../types/forms-meta';
 
 export function FormModel(formMeta: FormMeta) {
   return function <T extends { new (...args: any[]): {} }>(constructor: T) {
@@ -91,31 +92,26 @@ export function setMetaData(
   Reflect.defineMetadata(propertyKey, metaData, target, propertyKey);
 }
 
-export function NestedFormModel(metaData: {
-  name: string;
-  classDeclaration: any;
-}) {
+export function NestedFormModel(metaData: NestedFormMeta) {
   return function (target: any, propertyKey: string) {
     const instance = new metaData.classDeclaration();
-    //@ts-ignore
-    metaData['instance'] = instance;
+    const nestedFormDescriptor = new NestedFormDescriptor();
     const descriptor = FormEntityProcessor.generateFormDescriptor(instance);
-    setNestedMetaData(target, propertyKey, metaData, descriptor);
+    nestedFormDescriptor['instance'] = instance;
+    nestedFormDescriptor.name = metaData.name;
+    nestedFormDescriptor.propertyKey = propertyKey;
+    nestedFormDescriptor['formGroup'] = descriptor?.formGroup;
+    nestedFormDescriptor['controlsDescriptor'] = descriptor?.controlsDescriptor;
+    nestedFormDescriptor['formLayout'] = descriptor?.formLayout;
+    setNestedMetaData(target, propertyKey, nestedFormDescriptor);
   };
 }
 
 export function setNestedMetaData(
   target: any,
   propertyKey: string,
-  metaData: any,
-  descriptor?: FormDescriptor
+  metaData: NestedFormDescriptor
 ) {
-  metaData.propertyKey = propertyKey;
-  metaData['controlType'] = ControlTypes.Composite;
-  metaData['formGroup'] = descriptor?.formGroup;
-  metaData['controlsMeta'] = descriptor?.controlsMeta;
-  metaData['formLayout'] = descriptor?.formLayout;
-  // metaData['width'] = metaData['width'] || 6;
   const setter = function (val?: any) {
     metaData.instance.smartSetter(val);
   };

@@ -3,7 +3,7 @@
   [formGroup]="formDescriptor.formGroup"
   *ngIf="formDescriptor?.formLayout == FORM_LAYOUT_OPTS.GRID"
 >
-  <ng-container *ngFor="let controlMeta of formDescriptor.controlsMeta">
+  <ng-container *ngFor="let controlMeta of formDescriptor.controlsDescriptor">
     <div
       [ngSwitch]="controlMeta.controlType"
       [class]="'col-sm-' + controlMeta.width"
@@ -80,7 +80,7 @@
   [formGroup]="formDescriptor.formGroup"
   *ngIf="formDescriptor?.formLayout == FORM_LAYOUT_OPTS.SINGLE_COLUMN"
 >
-  <ng-container *ngFor="let controlMeta of formDescriptor.controlsMeta">
+  <ng-container *ngFor="let controlMeta of formDescriptor.controlsDescriptor">
     <div [ngSwitch]="controlMeta.controlType" class="row mb-3">
       <label
         [attr.for]="controlMeta.id"

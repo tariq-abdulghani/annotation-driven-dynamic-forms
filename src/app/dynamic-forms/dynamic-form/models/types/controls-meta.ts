@@ -10,6 +10,11 @@ export interface FormMeta {
   formLayout?: FormLayout;
 }
 
+export interface NestedFormMeta {
+  name: string;
+  classDeclaration: any;
+}
+
 export interface ControlMetaData {
   name: string;
   id: string;

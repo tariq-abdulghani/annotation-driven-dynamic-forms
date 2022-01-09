@@ -1,7 +1,8 @@
 import { FormControl, FormGroup } from '@angular/forms';
 import { ControlTypes } from './control-types.enum';
+import { FormLayout } from './form-layout-enum';
 
-export type ControlMeta = {
+export interface ControlDescriptor {
   name: string;
   controlType: ControlTypes;
   width?: number;
@@ -9,18 +10,24 @@ export type ControlMeta = {
   class?: string;
   formControl: FormControl;
   [x: string]: any;
-};
+}
 
-export type FormDescriptor = {
-  showReset: boolean;
-  resetBtnLabel: string;
-  submitBtnLabel: string;
-  formLayout?: string;
-  controlsMeta: ControlMeta[];
-  formGroup: FormGroup;
-};
+export class FormDescriptor {
+  showReset: boolean = false;
+  resetBtnLabel: string = 'reset';
+  submitBtnLabel: string = 'submit';
+  formLayout: string = FormLayout.GRID;
+  controlsDescriptor: (ControlDescriptor & NestedFormDescriptor)[] = [];
+  formGroup!: FormGroup;
+  smartSetter: (value: any) => void = () => {};
+}
 
-export type NestedFormDescriptor = {
-  controlsMeta: ControlMeta[];
-  formGroup: FormGroup;
-};
+export class NestedFormDescriptor {
+  name: string = '';
+  controlType = ControlTypes.Composite;
+  formLayout: string = FormLayout.GRID;
+  controlsDescriptor: ControlDescriptor[] = [];
+  formGroup!: FormGroup;
+  instance: any;
+  propertyKey: string = '';
+}

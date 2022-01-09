@@ -1,5 +1,6 @@
 import { FormControl, FormGroup } from '@angular/forms';
 import { ControlTypes } from '../models/types/control-types.enum';
+import { FormLayout } from '../models/types/form-layout-enum';
 import { FormDescriptor } from '../models/types/forms-meta';
 
 export class FormEntityProcessor {
@@ -9,16 +10,20 @@ export class FormEntityProcessor {
    * @param formEntity instance of Class annotated with '@FormModel'
    * @returns
    */
-  public static generateFormDescriptor(formEntity: any): FormDescriptor {
+  public static generateFormDescriptor(formEntity: {
+    [x: string]: any;
+  }): FormDescriptor {
     console.warn(
       'only two levels are supported in this functions if more levels are needed please implement that'
     );
-    const obj = { controlsMeta: [] } as { [x: string]: any }; // formDescriptor empty object
+
+    const formDescriptor = new FormDescriptor();
     const formGroupInitializer = {} as { [x: string]: any }; // form group initializer key string control name value FormControl
 
     // getting fields and set them in the descriptor
     Object.entries(formEntity).forEach((keyValue) => {
-      obj[keyValue[0]] = keyValue[1];
+      //@ts-ignore
+      formDescriptor[keyValue[0]] = keyValue[1];
     });
 
     // scans all enumerated fileds including property setters and getters
@@ -26,17 +31,16 @@ export class FormEntityProcessor {
       const metaData = Reflect.getMetadata(key, formEntity, key);
 
       if (metaData && metaData.controlType != ControlTypes.Composite) {
-        obj.controlsMeta.push(metaData);
+        formDescriptor.controlsDescriptor.push(metaData);
         formGroupInitializer[metaData.name] = metaData.formControl;
       }
 
       if (metaData && metaData.controlType == ControlTypes.Composite) {
-        obj.controlsMeta.push(metaData);
+        formDescriptor.controlsDescriptor.push(metaData);
         formGroupInitializer[metaData.name] = metaData.formGroup;
       }
     }
-    obj.formGroup = new FormGroup(formGroupInitializer);
-    //@ts-ignore
-    return obj;
+    formDescriptor.formGroup = new FormGroup(formGroupInitializer);
+    return formDescriptor;
   }
 }
