@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { PersonForm } from './dynamic-forms/dynamic-form/models/person-dto';
+import { PersonForm } from './dynamic-forms/dynamic-form/models/demo-models/person-dto';
 
 @Component({
   selector: 'app-root',

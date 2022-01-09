@@ -2,13 +2,13 @@ import { Validators } from '@angular/forms';
 import { of } from 'rxjs';
 import { Address } from './address-dto';
 
-import { TextControl, NumberControl } from './decorators/common-controls';
-import { FormLayout } from './types/form-layout-enum';
-import { SelectControl } from './decorators/select-control';
-import { SplittedDateRangeControl } from './decorators/splitted-date-range';
-import { FormModel } from './decorators/form-model';
-import { NestedFormModel } from './decorators/nested-form-model';
-import { ContactInfo } from './types/contact-info';
+import { TextControl, NumberControl } from '../decorators/common-controls';
+import { FormLayout } from '../types/form-layout-enum';
+import { SelectControl } from '../decorators/select-control';
+import { SplittedDateRangeControl } from '../decorators/splitted-date-range';
+import { FormModel } from '../decorators/form-model';
+import { NestedFormModel } from '../decorators/nested-form-model';
+import { ContactInfo } from './contact-info';
 
 @FormModel({
   showReset: true,

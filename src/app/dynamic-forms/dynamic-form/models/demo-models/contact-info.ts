@@ -1,4 +1,4 @@
-import { Address } from '../address-dto';
+import { Address } from './address-dto';
 import { TextControl } from '../decorators/common-controls';
 import { FormModel } from '../decorators/form-model';
 import { NestedFormModel } from '../decorators/nested-form-model';
