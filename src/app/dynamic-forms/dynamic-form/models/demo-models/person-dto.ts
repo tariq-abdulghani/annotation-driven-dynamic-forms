@@ -5,16 +5,16 @@ import { Address } from './address-dto';
 import { TextControl, NumberControl } from '../decorators/common-controls';
 import { FormLayout } from '../types/form-layout-enum';
 import { SelectControl } from '../decorators/select-control';
-import { SplittedDateRangeControl } from '../decorators/splitted-date-range';
+import { SplittedDateRangeControl } from '../decorators/splitted-date-range/splitted-date-range';
 import { FormModel } from '../decorators/form-model';
 import { NestedFormModel } from '../decorators/nested-form-model';
 import { ContactInfo } from './contact-info';
 
 @FormModel({
-  showReset: true,
-  submitBtnLabel: 'Sign Up',
-  resetBtnLabel: 'reset',
-  formLayout: FormLayout.SINGLE_COLUMN,
+  // showReset: true,
+  // submitBtnLabel: 'Sign Up',
+  // resetBtnLabel: 'reset',
+  // formLayout: FormLayout.SINGLE_COLUMN,
 })
 export class PersonForm {
   @TextControl({
@@ -36,16 +36,20 @@ export class PersonForm {
   password!: string | null;
 
   @SplittedDateRangeControl({
-    startDateInputId: 'date-of-birth',
-    startDateInputPlaceHolder: 'yyyy/mm/dd',
-    startDateInputName: 'dateOfBirth',
-    startDateInputLabel: 'birth date',
-    rangeStartDate: new Date(),
-    rangeEndDate: new Date(2030, 10, 10),
-    endDateInputName: 'dateOfDeath',
-    endDateInputId: 'date-of-death',
-    endDateInputPlaceHolder: 'yyyy/mm/dd',
-    endDateInputLabel: 'quietus date',
+    startDate: {
+      id: 'date-of-birth',
+      name: 'dateOfBirth',
+      placeHolder: 'yyyy/mm/dd',
+      label: 'birth date',
+    },
+    endDate: {
+      id: 'date-of-death',
+      name: 'dateOfDeath',
+      placeHolder: 'yyyy/mm/dd',
+      label: 'quietus date',
+    },
+    minDate: new Date(),
+    maxDate: new Date(2030, 10, 10),
     optional: true,
   })
   dates!: [Date | null | string, Date | null | string]; //= [new Date(), new Date()];
