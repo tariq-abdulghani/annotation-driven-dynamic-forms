@@ -1,15 +1,16 @@
 import { Validators } from '@angular/forms';
 import { TextControl } from '../decorators/common-controls';
 import { FormModel } from '../decorators/form-model';
+import { NotNull } from '../decorators/validation/common-validators';
 
 @FormModel({})
 export class Address {
+  @NotNull({ message: 'city is required ' })
   @TextControl({
     name: 'city',
     type: 'text',
     id: 'city',
     width: 4,
-    validators: [Validators.required],
   })
   city!: string;
 
@@ -18,16 +19,15 @@ export class Address {
     type: 'text',
     id: 'state',
     width: 4,
-    validators: [Validators.required],
   })
   state!: string;
 
+  @NotNull({ message: 'zipCode is required ' })
   @TextControl({
     name: 'zipCode',
     type: 'text',
     id: 'zipCode',
     width: 4,
-    validators: [Validators.required],
   })
   zipCode!: string;
 

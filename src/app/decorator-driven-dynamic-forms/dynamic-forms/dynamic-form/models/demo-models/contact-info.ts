@@ -10,7 +10,6 @@ export class ContactInfo {
     name: 'tel',
     type: 'tel',
     label: 'tel 1',
-    validators: [],
   })
   telA!: string;
 
@@ -19,7 +18,6 @@ export class ContactInfo {
     name: 'tel2',
     type: 'tel',
     label: 'tel 2',
-    validators: [],
   })
   telB!: string;
 
