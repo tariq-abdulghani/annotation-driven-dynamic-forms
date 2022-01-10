@@ -5,27 +5,20 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DemoComponent } from './decorator-demo/demo/demo.component';
-import { DynamicFormComponent } from './dynamic-forms/dynamic-form/dynamic-form.component';
 import { TreeArraySelectorComponent } from './tree-array-selector/tree-array-selector.component';
-import { DynamicFromControlComponent } from './dynamic-forms/dynamic-from-control/dynamic-from-control.component';
-
+import { DecoratorDrivenDynamicFormsModule } from './decorator-driven-dynamic-forms/decorator-driven-dynamic-forms.module';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    DemoComponent,
-    DynamicFormComponent,
-    TreeArraySelectorComponent,
-    DynamicFromControlComponent,
-  ],
+  declarations: [AppComponent, DemoComponent, TreeArraySelectorComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    DecoratorDrivenDynamicFormsModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
