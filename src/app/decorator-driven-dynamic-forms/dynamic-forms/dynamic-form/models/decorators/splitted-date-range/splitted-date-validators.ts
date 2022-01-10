@@ -40,9 +40,9 @@ export const endDateLessThanStartDateValidator = function (
   return function (control: AbstractControl) {
     // const err = { error: 'minDate', value: control.value, min: minVal };
     const validationError = {
-      endDateLessThanStartDateValidator: {
-        minDate: minVal,
-        value: control.value,
+      endDateLessThanStartDate: {
+        startDate: minVal,
+        endDate: control.value,
       },
     };
     if (control.value == null) {
