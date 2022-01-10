@@ -6,6 +6,7 @@ import {
   maxDateValidator,
   optionalValidator,
   minDateValidator,
+  endDateLessThanStartDateValidator,
 } from './splitted-date-validators';
 
 export function SplittedDateRangeControl(metaData: SplittedDateRangeMeta) {
@@ -48,7 +49,7 @@ export function SplittedDateRangeControl(metaData: SplittedDateRangeMeta) {
       endDateDescriptor.minDate = new Date(n);
       endDateDescriptor.formControl.setValue(endDateDescriptor.minDate);
       endDateDescriptor.formControl.setValidators([
-        minDateValidator(endDateDescriptor.minDate),
+        endDateLessThanStartDateValidator(endDateDescriptor.minDate),
         maxDateValidator(metaData.to),
         optionalValidator(metaData.optional || false),
       ]);

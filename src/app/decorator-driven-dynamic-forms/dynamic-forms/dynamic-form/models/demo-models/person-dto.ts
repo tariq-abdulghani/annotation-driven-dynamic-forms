@@ -55,6 +55,8 @@ export class PersonForm {
   password!: string | null;
 
   @SplittedDateRangeControl({
+    from: new Date(),
+    to: new Date(2030, 10, 10),
     startDate: {
       id: 'date-of-birth',
       name: 'dateOfBirth',
@@ -67,8 +69,6 @@ export class PersonForm {
       placeHolder: 'yyyy/mm/dd',
       label: 'quietus date',
     },
-    from: new Date(),
-    to: new Date(2030, 10, 10),
     optional: true,
   })
   dates!: [Date | null | string, Date | null | string]; //= [new Date(), new Date()];
