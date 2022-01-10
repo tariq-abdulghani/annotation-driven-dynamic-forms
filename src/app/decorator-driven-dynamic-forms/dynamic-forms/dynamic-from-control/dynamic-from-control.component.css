@@ -7,3 +7,16 @@
 /* .nested-form-legend {
   margin-top: -0.8em;
 } */
+
+.invalid-label {
+  color: #dc3545;
+}
+
+.required-control-label::before {
+  content: "*";
+}
+
+.invalid-label::before {
+  color: #dc3545;
+  content: "*";
+}

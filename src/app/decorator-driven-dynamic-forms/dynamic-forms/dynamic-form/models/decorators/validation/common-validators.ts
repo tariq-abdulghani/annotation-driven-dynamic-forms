@@ -9,6 +9,7 @@ export function NotNull(errConfig: { message: string }) {
     const metaData = initialMetaCheck(target, propertyKey);
     metaData.formControl.addValidators([Validators.required]);
     metaData.errorMap.set('required', errConfig.message);
+    metaData.required = true;
     console.log('not null is called', metaData, errConfig);
   };
 }

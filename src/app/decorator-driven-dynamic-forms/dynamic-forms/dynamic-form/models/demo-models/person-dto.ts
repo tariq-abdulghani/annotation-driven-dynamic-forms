@@ -40,6 +40,7 @@ export class PersonForm {
   })
   name: string;
 
+  @NotNull({ message: 'password is required!' })
   @Pattern({
     pattern: /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/,
     message:
@@ -49,7 +50,7 @@ export class PersonForm {
     name: 'password',
     type: 'password',
     id: 'password',
-    validators: [Validators.required],
+    // validators: [Validators.required],
   })
   password!: string | null;
 

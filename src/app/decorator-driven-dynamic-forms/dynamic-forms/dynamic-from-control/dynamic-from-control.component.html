@@ -11,6 +11,11 @@
       <label
         [attr.for]="controlMeta.id"
         class="form-label"
+        [ngClass]="{
+          'required-control-label': controlMeta.required,
+          'invalid-label':
+            controlMeta.formControl?.touched && controlMeta.formControl.invalid
+        }"
         *ngIf="controlMeta.controlType != CONTROL_TYPES.Composite"
         >{{ controlMeta.label || controlMeta.name }}</label
       >
