@@ -37,6 +37,8 @@ export class DynamicFormComponent implements OnInit, OnChanges {
   }
 
   onSubmit(v: any) {
+    // default behavior is to validate on submit so i mark all form groups as touched
+    this.formDescriptor.formGroup.markAllAsTouched();
     console.log(this.formDescriptor.formGroup);
   }
 }

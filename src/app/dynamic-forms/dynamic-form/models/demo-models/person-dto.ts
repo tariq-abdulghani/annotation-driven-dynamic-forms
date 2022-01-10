@@ -9,6 +9,7 @@ import { SplittedDateRangeControl } from '../decorators/splitted-date-range/spli
 import { FormModel } from '../decorators/form-model';
 import { NestedFormModel } from '../decorators/nested-form-model';
 import { ContactInfo } from './contact-info';
+import { NotNull } from '../decorators/validation/not-null';
 
 @FormModel({
   // showReset: true,
@@ -54,6 +55,7 @@ export class PersonForm {
   })
   dates!: [Date | null | string, Date | null | string]; //= [new Date(), new Date()];
 
+  @NotNull({ message: 'age is required' })
   @NumberControl({
     name: 'age',
     id: 'age',
@@ -77,6 +79,7 @@ export class PersonForm {
   })
   gender: { label: string; value: string };
 
+  @NotNull({ message: 'please select a post' })
   @SelectControl({
     name: 'post',
     id: 'post',

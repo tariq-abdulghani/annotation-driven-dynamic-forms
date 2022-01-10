@@ -17,6 +17,10 @@
       <input
         *ngSwitchCase="CONTROL_TYPES.Text"
         class="form-control"
+        [ngClass]="{
+          'is-invalid':
+            controlMeta.formControl?.touched && controlMeta.formControl.errors
+        }"
         [id]="controlMeta.id"
         [type]="controlMeta.type"
         [formControl]="controlMeta.formControl"
@@ -26,6 +30,10 @@
       <input
         *ngSwitchCase="CONTROL_TYPES.Number"
         class="form-control"
+        [ngClass]="{
+          'is-invalid':
+            controlMeta.formControl?.touched && controlMeta.formControl.errors
+        }"
         [id]="controlMeta.id"
         [type]="controlMeta.type"
         [formControl]="controlMeta.formControl"
@@ -35,6 +43,10 @@
       <input
         *ngSwitchCase="CONTROL_TYPES.Date"
         class="form-control"
+        [ngClass]="{
+          'is-invalid':
+            controlMeta.formControl?.touched && controlMeta.formControl.errors
+        }"
         [id]="controlMeta.id"
         [type]="controlMeta.type"
         [formControl]="controlMeta.formControl"
@@ -46,6 +58,10 @@
       <select
         *ngSwitchCase="CONTROL_TYPES.Select"
         class="form-select"
+        [ngClass]="{
+          'is-invalid':
+            controlMeta.formControl?.touched && controlMeta.formControl.errors
+        }"
         [id]="controlMeta.id"
         [formControl]="controlMeta.formControl"
         [name]="controlMeta.name"
@@ -71,6 +87,15 @@
           [formDescriptor]="$any(controlMeta)"
         ></app-dynamic-from-control>
       </fieldset>
+
+      <div
+        class="invalid-feedback"
+        *ngIf="
+          controlMeta.formControl?.touched && controlMeta.formControl?.errors
+        "
+      >
+        {{ controlMeta.errorMap?.get("required") }}
+      </div>
     </div>
   </ng-container>
 </div>

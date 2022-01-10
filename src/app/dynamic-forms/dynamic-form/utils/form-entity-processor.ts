@@ -43,7 +43,10 @@ export class FormEntityProcessor {
         formGroupInitializer[metaData.name] = metaData.formGroup;
       }
     }
-    formDescriptor.formGroup = new FormGroup(formGroupInitializer);
+    // updates form group on submit
+    formDescriptor.formGroup = new FormGroup(formGroupInitializer, {
+      updateOn: 'submit',
+    });
     return formDescriptor;
   }
 }

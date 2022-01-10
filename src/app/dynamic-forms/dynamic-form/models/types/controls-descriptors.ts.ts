@@ -13,6 +13,7 @@ export interface ControlDescriptor extends ControlMetaData {
   controlType: ControlTypes;
   propertyKey: string;
   formControl: FormControl;
+  errorMap?: Map<string, string>;
 }
 
 export interface TextControlDescriptor
