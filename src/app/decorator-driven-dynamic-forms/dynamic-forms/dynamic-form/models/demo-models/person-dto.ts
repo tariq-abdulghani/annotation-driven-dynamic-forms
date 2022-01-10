@@ -67,8 +67,8 @@ export class PersonForm {
       placeHolder: 'yyyy/mm/dd',
       label: 'quietus date',
     },
-    minDate: new Date(),
-    maxDate: new Date(2030, 10, 10),
+    from: new Date(),
+    to: new Date(2030, 10, 10),
     optional: true,
   })
   dates!: [Date | null | string, Date | null | string]; //= [new Date(), new Date()];

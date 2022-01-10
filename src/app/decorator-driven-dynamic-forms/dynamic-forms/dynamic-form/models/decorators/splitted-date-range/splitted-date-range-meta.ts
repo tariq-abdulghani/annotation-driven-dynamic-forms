@@ -4,6 +4,7 @@ export interface SplittedDateRangeMeta {
     id: string;
     placeHolder?: string;
     label?: string;
+    notNull?: { message: string };
   };
   endDate: {
     name: string;
@@ -11,8 +12,8 @@ export interface SplittedDateRangeMeta {
     placeHolder?: string;
     label?: string;
   };
-  minDate: Date;
-  maxDate: Date;
+  from: Date;
+  to: Date;
   optional?: boolean;
   width?: number;
   style?: string;

@@ -49,7 +49,7 @@ export function SplittedDateRangeControl(metaData: SplittedDateRangeMeta) {
       endDateDescriptor.formControl.setValue(endDateDescriptor.minDate);
       endDateDescriptor.formControl.setValidators([
         minDateValidator(endDateDescriptor.minDate),
-        maxDateValidator(metaData.maxDate),
+        maxDateValidator(metaData.to),
         optionalValidator(metaData.optional || false),
       ]);
       endDateDescriptor.formControl.updateValueAndValidity();
@@ -97,12 +97,12 @@ function generateSplittedDatesDescriptors(
     type: 'date',
     name: metaData.startDate.name,
     propertyKey: metaData.startDate.name,
-    minDate: metaData.minDate,
-    maxDate: metaData.maxDate,
+    minDate: metaData.from,
+    maxDate: metaData.to,
     controlType: ControlTypes.Date,
-    formControl: new FormControl(metaData.minDate, [
-      minDateValidator(metaData.minDate),
-      maxDateValidator(metaData.maxDate),
+    formControl: new FormControl(metaData.from, [
+      minDateValidator(metaData.from),
+      maxDateValidator(metaData.to),
       optionalValidator(metaData.optional || false),
     ]),
     validators: [],
@@ -118,11 +118,11 @@ function generateSplittedDatesDescriptors(
     type: 'date',
     name: metaData.endDate.name,
     propertyKey: metaData.endDate.name,
-    minDate: metaData.minDate,
-    maxDate: metaData.maxDate,
+    minDate: metaData.from,
+    maxDate: metaData.to,
     controlType: ControlTypes.Date,
-    formControl: new FormControl(metaData.minDate, [
-      maxDateValidator(metaData.maxDate),
+    formControl: new FormControl(metaData.from, [
+      maxDateValidator(metaData.to),
       optionalValidator(metaData.optional || false),
     ]),
     width: metaData.width || 6,
