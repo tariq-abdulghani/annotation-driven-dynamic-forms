@@ -24,7 +24,7 @@ export interface ControlMetaData {
   style?: string;
   class?: string;
   [x: string]: any;
-  validators: ValidatorFn[];
+  // validators: ValidatorFn[];
 }
 
 export interface DateControlMeta extends ControlMetaData {

@@ -9,7 +9,14 @@ import { SplittedDateRangeControl } from '../decorators/splitted-date-range/spli
 import { FormModel } from '../decorators/form-model';
 import { NestedFormModel } from '../decorators/nested-form-model';
 import { ContactInfo } from './contact-info';
-import { NotNull } from '../decorators/validation/not-null';
+import {
+  Max,
+  MaxLength,
+  Min,
+  MinLength,
+  NotNull,
+  Pattern,
+} from '../decorators/validation/common-validators';
 
 @FormModel({
   // showReset: true,
@@ -18,16 +25,26 @@ import { NotNull } from '../decorators/validation/not-null';
   // formLayout: FormLayout.SINGLE_COLUMN,
 })
 export class PersonForm {
+  @MaxLength({ maxlength: 10, message: 'name cant be > 10' })
+  @MinLength({
+    minlength: 3,
+    message: 'user name cant be less than 3 characters ',
+  })
+  @NotNull({ message: 'user name is required!' })
   @TextControl({
     name: 'fullName',
     type: 'text',
     id: 'full-name',
     label: 'user name',
     placeHolder: 'example ...',
-    validators: [Validators.required],
   })
   name: string;
 
+  @Pattern({
+    pattern: /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/,
+    message:
+      'password must be 8 chars and contains uppercase and special and alphanumeric',
+  })
   @TextControl({
     name: 'password',
     type: 'password',
@@ -55,12 +72,13 @@ export class PersonForm {
   })
   dates!: [Date | null | string, Date | null | string]; //= [new Date(), new Date()];
 
-  @NotNull({ message: 'age is required' })
+  @Max({ maxValue: 100, message: 'age cant be more than 100 years' })
+  @Min({ minValue: 7, message: 'age cant be lass than 7' })
+  @NotNull({ message: 'age is required and must make some fucking sense' })
   @NumberControl({
     name: 'age',
     id: 'age',
     placeHolder: 'example ...',
-    validators: [Validators.required],
   })
   age: number;
 

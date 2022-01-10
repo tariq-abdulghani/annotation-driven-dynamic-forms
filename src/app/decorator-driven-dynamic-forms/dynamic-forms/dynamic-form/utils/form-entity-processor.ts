@@ -44,9 +44,7 @@ export class FormEntityProcessor {
       }
     }
     // updates form group on submit
-    formDescriptor.formGroup = new FormGroup(formGroupInitializer, {
-      updateOn: 'submit',
-    });
+    formDescriptor.formGroup = new FormGroup(formGroupInitializer);
     return formDescriptor;
   }
 }

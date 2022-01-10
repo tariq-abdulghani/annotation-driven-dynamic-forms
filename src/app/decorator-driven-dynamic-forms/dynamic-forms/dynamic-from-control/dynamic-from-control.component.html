@@ -19,7 +19,7 @@
         class="form-control"
         [ngClass]="{
           'is-invalid':
-            controlMeta.formControl?.touched && controlMeta.formControl.errors
+            controlMeta.formControl?.touched && controlMeta.formControl.invalid
         }"
         [id]="controlMeta.id"
         [type]="controlMeta.type"
@@ -32,7 +32,7 @@
         class="form-control"
         [ngClass]="{
           'is-invalid':
-            controlMeta.formControl?.touched && controlMeta.formControl.errors
+            controlMeta.formControl?.touched && controlMeta.formControl.invalid
         }"
         [id]="controlMeta.id"
         [type]="controlMeta.type"
@@ -45,7 +45,7 @@
         class="form-control"
         [ngClass]="{
           'is-invalid':
-            controlMeta.formControl?.touched && controlMeta.formControl.errors
+            controlMeta.formControl?.touched && controlMeta.formControl.invalid
         }"
         [id]="controlMeta.id"
         [type]="controlMeta.type"
@@ -60,7 +60,7 @@
         class="form-select"
         [ngClass]="{
           'is-invalid':
-            controlMeta.formControl?.touched && controlMeta.formControl.errors
+            controlMeta.formControl?.touched && controlMeta.formControl.invalid
         }"
         [id]="controlMeta.id"
         [formControl]="controlMeta.formControl"
@@ -91,10 +91,10 @@
       <div
         class="invalid-feedback"
         *ngIf="
-          controlMeta.formControl?.touched && controlMeta.formControl?.errors
+          controlMeta.formControl?.touched && controlMeta.formControl?.invalid
         "
       >
-        {{ controlMeta.errorMap?.get("required") }}
+        {{ controlMeta | errorMessage }}
       </div>
     </div>
   </ng-container>

@@ -1,4 +1,4 @@
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, ValidatorFn } from '@angular/forms';
 import { ControlTypes } from './control-types.enum';
 import {
   ControlMetaData,
@@ -14,6 +14,13 @@ export interface ControlDescriptor extends ControlMetaData {
   propertyKey: string;
   formControl: FormControl;
   errorMap?: Map<string, string>;
+  // validators?: ValidatorFn[];
+}
+export interface InitializedControlDescriptor extends ControlMetaData {
+  controlType: ControlTypes;
+  propertyKey: string;
+  formControl: FormControl;
+  errorMap: Map<string, string>;
 }
 
 export interface TextControlDescriptor
