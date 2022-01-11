@@ -9,7 +9,7 @@
    class attributes
 2. take most used defaults into considerations we can't create something that abstracts every thing, but we can make
    some things that really fits in the common problems and repeated tasks
-3. the ability to creates form fast, simple forms' ex: forms that search forms that perform crud operations
+3. the ability to create forms fast _forms that search forms that perform crud operations_
    is a perfect example
 4. intuitive API I think creating something great means we can use it easily and really understand it without many efforts
 5. composable forms you can nest forms to any level to make form creation easily
@@ -20,6 +20,8 @@
    6.2 single column
 
 7. opinionated based on commons and defaults
+8. binding form model to form control and view which mean you create the form model
+   and any updates on it will be reflected on _UI_ and on form controls
 
 ## Dependencies
 
@@ -79,7 +81,56 @@ import { DecoratorDrivenDynamicFormsModule } from "decorator-driven-dynamic-form
 export class AppModule {}
 ```
 
-2. create form model class
+2. create form model classes
+
+address class which is a form that will be nested in another form
+
+```typescript
+import { TextControl } from "decorator-driven-dynamic-forms/models/decorators/common-controls";
+import { FormModel } from "decorator-driven-dynamic-forms/models/decorators/form-model";
+import { NotNull } from "decorator-driven-dynamic-forms/models/decorators/validation/common-validators";
+
+@FormModel()
+export class Address {
+  @NotNull({ message: "city is required " })
+  @TextControl({
+    name: "city",
+    type: "text",
+    id: "city",
+    width: 4,
+  })
+  city!: string;
+
+  @TextControl({
+    name: "state",
+    type: "text",
+    id: "state",
+    width: 4,
+  })
+  state!: string;
+
+  @MinLength({
+    minlength: 3,
+    message: "zipCode be less than ${requiredLength} characters ",
+  })
+  @NotNull({ message: "zipCode is required " })
+  @TextControl({
+    name: "zipCode",
+    type: "text",
+    id: "zipCode",
+    width: 4,
+  })
+  zipCode!: string;
+
+  constructor(city: string, sate: string, zipCode: string) {
+    this.city = city;
+    this.state = sate;
+    this.zipCode = zipCode;
+  }
+}
+```
+
+contact info our root form
 
 ```typescript
 import { FormModel } from "DecoratorDrivenDynamicFormsModule/models/decorators/form-model";
@@ -136,6 +187,16 @@ export class AppComponent {
 Run `ng run start` and see the result your self.
 
 ## API summary
+
+### Component API
+
+| Input         |   type   |                                                                           description |
+| ------------- | :------: | ------------------------------------------------------------------------------------: |
+| `[formModel]` | `Object` | any instance of class annotated with `@FormModel()`, the input form model to the view |
+
+| Output          |   type   |                            description |
+| --------------- | :------: | -------------------------------------: |
+| `(submitEvent)` | `Object` | `FormGroup` value of the rendered form |
 
 ### Decorators
 
