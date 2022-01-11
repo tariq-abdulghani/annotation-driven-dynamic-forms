@@ -1,7 +1,7 @@
 import { Address } from './address-dto';
-import { TextControl } from '../decorators/common-controls';
-import { FormModel } from '../decorators/form-model';
-import { NestedFormModel } from '../decorators/nested-form-model';
+import { TextControl } from '../decorator-driven-dynamic-forms/models/decorators/common-controls';
+import { FormModel } from '../decorator-driven-dynamic-forms/models/decorators/form-model';
+import { NestedFormModel } from '../decorator-driven-dynamic-forms/models/decorators/nested-form-model';
 
 @FormModel({})
 export class ContactInfo {

@@ -2,12 +2,15 @@ import { Validators } from '@angular/forms';
 import { of } from 'rxjs';
 import { Address } from './address-dto';
 
-import { TextControl, NumberControl } from '../decorators/common-controls';
-import { FormLayout } from '../types/form-layout-enum';
-import { SelectControl } from '../decorators/select-control';
-import { SplittedDateRangeControl } from '../decorators/splitted-date-range/splitted-date-range';
-import { FormModel } from '../decorators/form-model';
-import { NestedFormModel } from '../decorators/nested-form-model';
+import {
+  TextControl,
+  NumberControl,
+} from '../decorator-driven-dynamic-forms/models/decorators/common-controls';
+import { FormLayout } from '../decorator-driven-dynamic-forms/models/types/form-layout-enum';
+import { SelectControl } from '../decorator-driven-dynamic-forms/models/decorators/select-control';
+import { SplittedDateRangeControl } from '../decorator-driven-dynamic-forms/models/decorators/splitted-date-range/splitted-date-range';
+import { FormModel } from '../decorator-driven-dynamic-forms/models/decorators/form-model';
+import { NestedFormModel } from '../decorator-driven-dynamic-forms/models/decorators/nested-form-model';
 import { ContactInfo } from './contact-info';
 import {
   Max,
@@ -16,7 +19,7 @@ import {
   MinLength,
   NotNull,
   Pattern,
-} from '../decorators/validation/common-validators';
+} from '../decorator-driven-dynamic-forms/models/decorators/validation/common-validators';
 
 @FormModel({
   // showReset: true,
@@ -25,8 +28,14 @@ import {
   // formLayout: FormLayout.SINGLE_COLUMN,
 })
 export class PersonForm {
-  @MaxLength({ maxlength: 10, message: 'name cant be larger than  ${requiredLength} characters' })
-  @MinLength({minlength: 3, message: 'user name cant be less than ${requiredLength} characters '})
+  @MaxLength({
+    maxlength: 10,
+    message: 'name cant be larger than  ${requiredLength} characters',
+  })
+  @MinLength({
+    minlength: 3,
+    message: 'user name cant be less than ${requiredLength} characters ',
+  })
   @NotNull({ message: 'user name is required!' })
   @TextControl({
     name: 'fullName',
@@ -40,7 +49,9 @@ export class PersonForm {
   @NotNull({ message: 'password is required!' })
   @Pattern({
     pattern: /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/,
-    message: 'password must be 8 chars and contains uppercase and special and alphanumeric'})
+    message:
+      'password must be 8 chars and contains uppercase and special and alphanumeric',
+  })
   @TextControl({
     name: 'password',
     type: 'password',
@@ -71,7 +82,7 @@ export class PersonForm {
   @Max({ maxValue: 100, message: 'age cant be more than ${max} years' })
   @Min({ minValue: 7, message: 'age cant be lass than ${min}' })
   @NotNull({ message: 'age is required and must make some fucking sense' })
-  @NumberControl({name: 'age', id: 'age', placeHolder: 'example ...'})
+  @NumberControl({ name: 'age', id: 'age', placeHolder: 'example ...' })
   age: number;
 
   @SelectControl({
