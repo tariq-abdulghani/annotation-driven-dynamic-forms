@@ -25,11 +25,8 @@ import {
   // formLayout: FormLayout.SINGLE_COLUMN,
 })
 export class PersonForm {
-  @MaxLength({ maxlength: 10, message: 'name cant be > 10' })
-  @MinLength({
-    minlength: 3,
-    message: 'user name cant be less than 3 characters ',
-  })
+  @MaxLength({ maxlength: 10, message: 'name cant be larger than  ${requiredLength} characters' })
+  @MinLength({minlength: 3, message: 'user name cant be less than ${requiredLength} characters '})
   @NotNull({ message: 'user name is required!' })
   @TextControl({
     name: 'fullName',
@@ -43,9 +40,7 @@ export class PersonForm {
   @NotNull({ message: 'password is required!' })
   @Pattern({
     pattern: /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/,
-    message:
-      'password must be 8 chars and contains uppercase and special and alphanumeric',
-  })
+    message: 'password must be 8 chars and contains uppercase and special and alphanumeric'})
   @TextControl({
     name: 'password',
     type: 'password',
@@ -73,14 +68,10 @@ export class PersonForm {
   })
   dates!: [Date | null | string, Date | null | string]; //= [new Date(), new Date()];
 
-  @Max({ maxValue: 100, message: 'age cant be more than 100 years' })
-  @Min({ minValue: 7, message: 'age cant be lass than 7' })
+  @Max({ maxValue: 100, message: 'age cant be more than ${max} years' })
+  @Min({ minValue: 7, message: 'age cant be lass than ${min}' })
   @NotNull({ message: 'age is required and must make some fucking sense' })
-  @NumberControl({
-    name: 'age',
-    id: 'age',
-    placeHolder: 'example ...',
-  })
+  @NumberControl({name: 'age', id: 'age', placeHolder: 'example ...'})
   age: number;
 
   @SelectControl({

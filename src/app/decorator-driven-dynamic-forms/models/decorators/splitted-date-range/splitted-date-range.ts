@@ -14,7 +14,7 @@ export function SplittedDateRangeControl(metaData: SplittedDateRangeMeta) {
     // console.log("splitted date decorator runs");
 
     const [startDateDescriptor, endDateDescriptor] =
-      generateSplittedDatesDescriptors(metaData);
+      generateSplitDatesDescriptors(metaData);
 
     const endDateSetter = (n: Date) => {
       endDateDescriptor.formControl.setValue(n);
@@ -91,14 +91,14 @@ export function SplittedDateRangeControl(metaData: SplittedDateRangeMeta) {
   };
 }
 
-function generateSplittedDatesDescriptors(
+function generateSplitDatesDescriptors(
   metaData: SplittedDateRangeMeta
 ): [DateControlDescriptor, DateControlDescriptor] {
 
   const errorMap = new Map();
   errorMap.set("minDate", "date is less than allowed min value");
   errorMap.set("maxDate", "date is larger than allowed max value");
-  errorMap.set("endDateLessThanStartDate", "cant be less than start date");
+  errorMap.set("endDateLessThanStartDate", "field cant be less than ${startDate}");
 
 
   const startDateMeta: DateControlDescriptor = {

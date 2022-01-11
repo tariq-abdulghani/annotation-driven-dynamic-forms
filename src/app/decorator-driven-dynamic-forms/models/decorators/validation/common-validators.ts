@@ -10,7 +10,7 @@ export function NotNull(errConfig: { message: string }) {
     metaData.formControl.addValidators([Validators.required]);
     metaData.errorMap.set('required', errConfig.message);
     metaData.required = true;
-    console.log('not null is called', metaData, errConfig);
+    // console.log('not null is called', metaData, errConfig);
   };
 }
 
@@ -19,7 +19,7 @@ export function Min(errConfig: { message: string; minValue: number }) {
     const metaData = initialMetaCheck(target, propertyKey);
     metaData.formControl.addValidators([Validators.min(errConfig.minValue)]);
     metaData.errorMap.set('min', errConfig.message);
-    console.log('min is called', metaData, errConfig);
+    // console.log('min is called', metaData, errConfig);
   };
 }
 
@@ -29,7 +29,7 @@ export function Max(errConfig: { message: string; maxValue: number }) {
     metaData.formControl.addValidators([Validators.max(errConfig.maxValue)]);
     metaData.errorMap.set('max', errConfig.message);
     // metaData.formControl.updateValueAndValidity();
-    console.log('max is called', metaData, errConfig);
+    // console.log('max is called', metaData, errConfig);
   };
 }
 
@@ -41,7 +41,7 @@ export function MaxLength(errConfig: { message: string; maxlength: number }) {
     ]);
     metaData.errorMap.set('maxlength', errConfig.message);
     // metaData.formControl.updateValueAndValidity();
-    console.log('maxLength is called', metaData, errConfig);
+    // console.log('maxLength is called', metaData, errConfig);
   };
 }
 
@@ -53,7 +53,7 @@ export function MinLength(errConfig: { message: string; minlength: number }) {
     ]);
     metaData.errorMap.set('minlength', errConfig.message);
     // metaData.formControl.updateValueAndValidity();
-    console.log('minlength is called', metaData, errConfig);
+    // console.log('minlength is called', metaData, errConfig);
   };
 }
 
@@ -63,7 +63,7 @@ export function Pattern(errConfig: { message: string; pattern: RegExp }) {
     metaData.formControl.addValidators([Validators.pattern(errConfig.pattern)]);
     metaData.errorMap.set('pattern', errConfig.message);
     // metaData.formControl.updateValueAndValidity();
-    console.log('pattern is called', metaData, errConfig);
+    // console.log('pattern is called', metaData, errConfig);
   };
 }
 
