@@ -18,7 +18,7 @@ export class DynamicFromControlComponent implements OnInit {
   constructor(private httpClient: HttpClient) {}
 
   ngOnInit(): void {
-    console.log(this.formDescriptor);
+    // console.log(this.formDescriptor);
   }
 
   loadData(

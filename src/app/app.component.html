@@ -3,6 +3,6 @@ hello
 <div class="container">
   <!-- <app-demo>
     </app-demo> -->
-  <app-dynamic-form [formModel]="personDto"></app-dynamic-form>
+  <app-dynamic-form [formModel]="personDto" (submit)="onSubmit($event)"></app-dynamic-form>
   <!-- <app-tree-array-selector></app-tree-array-selector> -->
 </div>

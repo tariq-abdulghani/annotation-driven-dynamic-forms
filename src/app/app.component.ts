@@ -11,6 +11,8 @@ export class AppComponent {
   title = 'decorator-driven-forms';
 
   personDto: PersonForm = new PersonForm('ahmed', 28);
-
+  onSubmit($event: any){
+    console.log($event);
+  }
   constructor() {}
 }

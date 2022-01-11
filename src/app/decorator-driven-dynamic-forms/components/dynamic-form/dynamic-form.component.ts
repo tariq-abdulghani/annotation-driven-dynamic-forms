@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import {
-  Component,
+  Component, EventEmitter,
   Input,
   OnChanges,
-  OnInit,
+  OnInit, Output,
   SimpleChanges,
 } from '@angular/core';
 import { ControlTypes } from '../../models/types/control-types.enum';
@@ -21,6 +21,7 @@ export class DynamicFormComponent implements OnInit, OnChanges {
   readonly FORM_LAYOUT_OPTS = FormLayout;
   formDescriptor!: FormDescriptor;
   @Input('formModel') formModel!: any;
+  @Output('submit') submitEvent: EventEmitter<any> = new EventEmitter<any>();
   constructor() {}
 
   ngOnInit(): void {}
@@ -38,7 +39,10 @@ export class DynamicFormComponent implements OnInit, OnChanges {
 
   onSubmit(v: any) {
     // default behavior is to validate on submit so i mark all form groups as touched
-    this.formDescriptor.formGroup.markAllAsTouched();
-    console.log(this.formDescriptor.formGroup);
+    if( !this.formDescriptor.formGroup.touched){
+      this.formDescriptor.formGroup.markAllAsTouched();
+    }
+    // console.log(this.formDescriptor.formGroup);
+    this.submitEvent.emit(this.formDescriptor.formGroup.valid? this.formDescriptor.formGroup.value: null);
   }
 }
