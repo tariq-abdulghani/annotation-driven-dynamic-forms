@@ -6,7 +6,7 @@ import { FormLayout } from '../../models/types/form-layout-enum';
 import { FormDescriptor } from '../../models/types/controls-descriptors.ts';
 
 @Component({
-  selector: 'app-dynamic-from-control',
+  selector: 'dd-dynamic-from-control',
   templateUrl: './dynamic-from-control.component.html',
   styleUrls: ['./dynamic-from-control.component.css'],
 })
