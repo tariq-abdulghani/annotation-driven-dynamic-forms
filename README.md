@@ -33,6 +33,7 @@
 ## Features
 
 - [x] validation
+- [x] customized error messages and string interpolation can be used `some text...${var} some text ..`
 - [x] decorator driven
 - [x] defaults like required controls have an `*` default error class
 - [x] supports composition of forms
