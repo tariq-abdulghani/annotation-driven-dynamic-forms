@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { ControlDescriptor } from '../dynamic-forms/dynamic-form/models/types/controls-descriptors.ts';
+import { ControlDescriptor } from '../models/types/controls-descriptors.ts';
 
 @Pipe({
   name: 'errorMessage',
