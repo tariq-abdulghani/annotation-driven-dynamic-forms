@@ -94,6 +94,13 @@ export function SplittedDateRangeControl(metaData: SplittedDateRangeMeta) {
 function generateSplittedDatesDescriptors(
   metaData: SplittedDateRangeMeta
 ): [DateControlDescriptor, DateControlDescriptor] {
+
+  const errorMap = new Map();
+  errorMap.set("minDate", "date is less than allowed min value");
+  errorMap.set("maxDate", "date is larger than allowed max value");
+  errorMap.set("endDateLessThanStartDate", "cant be less than start date");
+
+
   const startDateMeta: DateControlDescriptor = {
     type: 'date',
     name: metaData.startDate.name,
@@ -113,6 +120,7 @@ function generateSplittedDatesDescriptors(
     width: metaData.width || 6,
     style: metaData.style,
     class: metaData.class,
+    errorMap: errorMap
   };
 
   const endDateMeta: DateControlDescriptor = {
@@ -133,6 +141,7 @@ function generateSplittedDatesDescriptors(
     id: metaData.endDate.id,
     placeHolder: metaData.endDate.placeHolder,
     label: metaData.endDate.label,
+    errorMap: errorMap
   };
   return [startDateMeta, endDateMeta];
 }
