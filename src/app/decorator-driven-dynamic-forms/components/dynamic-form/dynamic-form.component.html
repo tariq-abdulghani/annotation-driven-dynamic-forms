@@ -7,17 +7,20 @@
     <div class="col-12 mb-3">
       <div class="gap-10 d-flex flex-row">
         <div>
-          <button class="btn btn-primary" type="submit">
-            {{ formDescriptor?.submitBtnLabel || "submit" }}
+          <button
+            [class]="formDescriptor.submit.class || 'btn btn-primary'"
+            type="submit"
+          >
+            {{ formDescriptor?.submit?.label }}
           </button>
         </div>
         <div>
           <button
-            class="btn btn-warning"
-            *ngIf="formDescriptor.showReset"
+            [class]="formDescriptor.reset.class || 'btn btn-danger'"
+            *ngIf="formDescriptor.reset"
             type="reset"
           >
-            {{ formDescriptor?.resetBtnLabel || "reset" }}
+            {{ formDescriptor?.reset?.label }}
           </button>
         </div>
       </div>

@@ -1,4 +1,3 @@
-import { Validators } from '@angular/forms';
 import { of } from 'rxjs';
 import { Address } from './address-dto';
 
@@ -6,7 +5,6 @@ import {
   TextControl,
   NumberControl,
 } from '../decorator-driven-dynamic-forms/models/decorators/common-controls';
-import { FormLayout } from '../decorator-driven-dynamic-forms/models/types/form-layout-enum';
 import { SelectControl } from '../decorator-driven-dynamic-forms/models/decorators/select-control';
 import { SplittedDateRangeControl } from '../decorator-driven-dynamic-forms/models/decorators/splitted-date-range/splitted-date-range';
 import { FormModel } from '../decorator-driven-dynamic-forms/models/decorators/form-model';
@@ -20,13 +18,14 @@ import {
   NotNull,
   Pattern,
 } from '../decorator-driven-dynamic-forms/models/decorators/validation/common-validators';
+import {
+  Reset,
+  Submit,
+} from '../decorator-driven-dynamic-forms/models/decorators/actions';
 
-@FormModel({
-  // showReset: true,
-  // submitBtnLabel: 'Sign Up',
-  // resetBtnLabel: 'reset',
-  // formLayout: FormLayout.SINGLE_COLUMN,
-})
+@Reset({ label: 'clear', class: 'btn btn-danger' })
+@Submit({ label: 'save', class: 'btn btn-primary' })
+@FormModel()
 export class PersonForm {
   @MaxLength({
     maxlength: 10,
@@ -50,13 +49,12 @@ export class PersonForm {
   @Pattern({
     pattern: /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/,
     message:
-      'password must be 8 chars and contains uppercase and special and alphanumeric',
+      'password must be 8 letters at least, and contains uppercase and special character and alphanumeric',
   })
   @TextControl({
     name: 'password',
     type: 'password',
     id: 'password',
-    // validators: [Validators.required],
   })
   password!: string | null;
 
@@ -81,7 +79,7 @@ export class PersonForm {
 
   @Max({ maxValue: 100, message: 'age cant be more than ${max} years' })
   @Min({ minValue: 7, message: 'age cant be lass than ${min}' })
-  @NotNull({ message: 'age is required and must make some fucking sense' })
+  @NotNull({ message: 'age is required' })
   @NumberControl({ name: 'age', id: 'age', placeHolder: 'example ...' })
   age: number;
 

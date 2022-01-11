@@ -1,6 +1,7 @@
 # DecoratorDrivenForms
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.2.6.
+> Opinionated way to create dynamic forms with **no json** , **no inheritance**
+> just use **decorators**
 
 ## Project Goals
 
@@ -22,9 +23,10 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Dependencies
 
-| Version | Angular |
-| ------- | :-----: |
-| ---     |   ---   |
+| Dependency | Version |
+| ---------- | :-----: |
+| Angular    |   ---   |
+| bootstrap  |   ---   |
 
 ## Features
 
@@ -33,8 +35,10 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 - [x] defaults like required controls have an `*` default error class
 - [x] supports composition of forms
 - [x] supports submit and reset actions
+- [x] responsive relies on bootstrap5
 
 - [ ] theming is not supported yet
+- [ ] single column layout is not supported yet
 - [ ] custom styling is not supported yet
 - [ ] internationalization is not supported yet
 
@@ -48,14 +52,14 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 - [x] single select controls
 
-- [ ] multiple select
-- [ ] range
-- [ ] radio buttons
-- [ ] check boxes
+- [ ] multiple select is not supported yet
+- [ ] range is not supported yet
+- [ ] radio buttons is not supported yet
+- [ ] check boxes is not supported yet
 
 ## Install
 
-`untill now you can download the source `
+`until now you can download the source `
 
 [`npm install decorator-driven-dynamic-forms --save`]: #
 
@@ -81,7 +85,9 @@ export class AppModule {}
 import { FormModel } from "DecoratorDrivenDynamicFormsModule/models/decorators/form-model";
 import { NestedFormModel } from "DecoratorDrivenDynamicFormsModule/models/decorators/nested-form-model";
 
-@FormModel({})
+@Reset({ label: "clear", class: "btn btn-danger" })
+@Submit({ label: "save", class: "btn btn-primary" })
+@FormModel()
 export class ContactInfo {
   @TextControl({
     id: "tel",

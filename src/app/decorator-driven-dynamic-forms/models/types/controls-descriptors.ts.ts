@@ -1,4 +1,5 @@
 import { FormControl, FormGroup, ValidatorFn } from '@angular/forms';
+import { BasicActionMeta } from '../decorators/actions';
 import { ControlTypes } from './control-types.enum';
 import {
   ControlMetaData,
@@ -51,12 +52,14 @@ export interface SelectControlDescriptor
 }
 
 export class FormDescriptor {
-  showReset: boolean = false;
-  resetBtnLabel: string = 'reset';
-  submitBtnLabel: string = 'submit';
+  // showReset: boolean = false;
+  // resetBtnLabel: string = 'reset';
+  // submitBtnLabel: string = 'submit';
   formLayout: string = FormLayout.GRID;
   controlsDescriptor: (ControlDescriptor & NestedFormDescriptor)[] = [];
   formGroup!: FormGroup;
+  submit: BasicActionMeta = { label: 'submit', class: 'btn btn-primary' };
+  reset: BasicActionMeta | null = null;
   smartSetter: (value: any) => void = () => {};
 }
 

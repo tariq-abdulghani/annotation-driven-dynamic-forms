@@ -1,14 +1,12 @@
 import { FormMeta } from '../types/controls-meta';
 import { FormLayout } from '../types/form-layout-enum';
 
-export function FormModel(formMeta: FormMeta) {
+export function FormModel(formMeta?: FormMeta) {
   return function <T extends { new (...args: any[]): {} }>(constructor: T) {
     return class extends constructor {
-      showReset = formMeta.showReset || false;
-      resetBtnLabel = formMeta.resetBtnLabel || 'reset';
-      submitBtnLabel = formMeta.submitBtnLabel || 'submit';
-      formLayout = formMeta.formLayout ? formMeta.formLayout : FormLayout.GRID;
-
+      formLayout =
+        formMeta && formMeta.formLayout ? formMeta.formLayout : FormLayout.GRID;
+      submit = { label: 'submit', class: 'btn btn-primary' };
       smartSetter = (value: any) => {
         console.warn('implement smart setter for null value');
         if (value == null) {
