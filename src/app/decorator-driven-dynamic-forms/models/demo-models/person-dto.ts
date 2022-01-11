@@ -85,7 +85,6 @@ export class PersonForm {
     ]),
     bindValue: null,
     multiple: undefined,
-    validators: [Validators.required],
   })
   gender: { label: string; value: string };
 
@@ -98,7 +97,6 @@ export class PersonForm {
     dataSource: new URL('https://jsonplaceholder.typicode.com/posts'),
     bindValue: null,
     multiple: undefined,
-    validators: [Validators.required],
     label: 'users post',
   })
   post: {
