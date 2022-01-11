@@ -175,13 +175,19 @@ export class AppComponent {
   contactInfoForm: ContactInfo = new ContactInfo();
 
   constructor() {}
+  onSubmit($event: any) {
+    console.log($event);
+  }
 }
 ```
 
 4. pass it to the dynamic-form-component
 
 ```angular2html
-<dd-dynamic-form [formModel]="contactInfoForm"></dd-dynamic-form>
+    <dd-dynamic-form
+      [formModel]="contactInfoForm"
+      (submitEvent)="onSubmit($event)">
+    </dd-dynamic-form>
 ```
 
 Run `ng run start` and see the result your self.
