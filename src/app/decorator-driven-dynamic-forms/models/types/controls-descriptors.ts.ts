@@ -1,5 +1,4 @@
 import { FormControl, FormGroup, ValidatorFn } from '@angular/forms';
-import { BasicActionMeta } from '../decorators/actions';
 import { ControlTypes } from './control-types.enum';
 import {
   ControlMetaData,
@@ -9,6 +8,7 @@ import {
   TextControlMeta,
 } from './controls-meta';
 import { FormLayout } from './form-layout-enum';
+import {BasicActionMeta} from "./actions-api";
 
 export interface ControlDescriptor extends ControlMetaData {
   controlType: ControlTypes;

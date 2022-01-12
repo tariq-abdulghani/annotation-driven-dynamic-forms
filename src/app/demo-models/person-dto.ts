@@ -18,10 +18,8 @@ import {
   NotNull,
   Pattern,
 } from '../decorator-driven-dynamic-forms/models/decorators/validation/common-validators';
-import {
-  Reset,
-  Submit,
-} from '../decorator-driven-dynamic-forms/models/decorators/actions';
+import {Reset, Submit} from "../decorator-driven-dynamic-forms/models/decorators/common-actions";
+
 
 @Reset({ label: 'clear', class: 'btn btn-danger' })
 @Submit({ label: 'save', class: 'btn btn-primary' })

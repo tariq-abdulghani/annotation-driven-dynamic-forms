@@ -1,10 +1,5 @@
-export interface ActionMeta {}
+import {BasicActionMeta} from "../types/actions-api";
 
-export interface BasicActionMeta {
-  label: string;
-  width?: number;
-  class?: string;
-}
 
 export function Submit(meta: BasicActionMeta) {
   return function <T extends { new (...args: any[]): {} }>(constructor: T) {

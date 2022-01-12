@@ -4,6 +4,7 @@ import {MessageStringInterpolation} from "../utils/message-string-interpolation"
 
 @Pipe({
   name: 'errorMessage',
+  pure: false
 })
 export class ErrorMessagePipe implements PipeTransform {
   transform(value: ControlDescriptor): string | null {
