@@ -2,6 +2,7 @@ import { Address } from './address-dto';
 import { TextControl } from '../decorator-driven-dynamic-forms/models/decorators/common-controls';
 import { FormModel } from '../decorator-driven-dynamic-forms/models/decorators/form-model';
 import { NestedFormModel } from '../decorator-driven-dynamic-forms/models/decorators/nested-form-model';
+import {Email, NotNull} from "../decorator-driven-dynamic-forms/models/decorators/validation/common-validators";
 
 @FormModel({})
 export class ContactInfo {
@@ -20,6 +21,17 @@ export class ContactInfo {
     label: 'tel 2',
   })
   telB!: string;
+
+
+  @NotNull({message: 'email is required'})
+  @Email({message: 'email must be a valid email pattern'})
+  @TextControl({
+    id: 'email',
+    name: 'email',
+    type: 'email',
+    label: 'email',
+  })
+  email!: string;
 
   @NestedFormModel({ name: 'address', classDeclaration: Address })
   address!: Address; // new Address('FGH', 'NBH', '4578'); //{ city: 'city wow', state: 'state wow', zipCode: '1234' };

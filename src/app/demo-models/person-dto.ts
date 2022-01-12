@@ -122,6 +122,7 @@ export class PersonForm {
   contactInfo: ContactInfo = {
     telA: '012-3458',
     telB: '015-1425',
+    email: '',
     address: { city: 'city wow', state: 'state wow', zipCode: '1234' },
   };
 
