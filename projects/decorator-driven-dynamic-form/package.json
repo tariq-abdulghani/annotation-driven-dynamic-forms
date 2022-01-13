@@ -1,6 +1,6 @@
 {
-  "name": "decorator-driven-dynamic-form",
-  "version": "1.0.0-a.1",
+  "name": "ddd-form",
+  "version": "0.1.0",
   "peerDependencies": {
     "@angular/common": "^12.2.0",
     "@angular/core": "^12.2.0",

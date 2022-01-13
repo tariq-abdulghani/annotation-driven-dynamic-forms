@@ -62,7 +62,7 @@
 
 ## Install
 
-`until now you can download the source `
+`npm i ddd-form`
 
 [`npm install decorator-driven-dynamic-forms --save`]: #
 
