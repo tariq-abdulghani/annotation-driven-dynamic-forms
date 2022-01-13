@@ -1,0 +1,184 @@
+<div
+  class="row g-3 mb-3"
+  [formGroup]="formDescriptor.formGroup"
+  *ngIf="formDescriptor?.formLayout == FORM_LAYOUT_OPTS.GRID"
+>
+  <ng-container *ngFor="let controlMeta of formDescriptor.controlsDescriptor">
+    <div
+      [ngSwitch]="controlMeta.controlType"
+      [class]="'col-sm-' + controlMeta.width"
+    >
+      <label
+        [attr.for]="controlMeta.id"
+        class="form-label"
+        [ngClass]="{
+          'required-control-label': controlMeta.required,
+          'invalid-label':
+            controlMeta.formControl?.touched && controlMeta.formControl.invalid
+        }"
+        *ngIf="controlMeta.controlType != CONTROL_TYPES.Composite"
+        >{{ controlMeta.label || controlMeta.name }}</label
+      >
+      <input
+        *ngSwitchCase="CONTROL_TYPES.Text"
+        class="form-control"
+        [ngClass]="{
+          'is-invalid':
+            controlMeta.formControl?.touched && controlMeta.formControl.invalid
+        }"
+        [id]="controlMeta.id"
+        [type]="controlMeta.type"
+        [formControl]="controlMeta.formControl"
+        [name]="controlMeta.name"
+      />
+
+      <input
+        *ngSwitchCase="CONTROL_TYPES.Number"
+        class="form-control"
+        [ngClass]="{
+          'is-invalid':
+            controlMeta.formControl?.touched && controlMeta.formControl.invalid
+        }"
+        [id]="controlMeta.id"
+        [type]="controlMeta.type"
+        [formControl]="controlMeta.formControl"
+        [name]="controlMeta.name"
+      />
+
+      <input
+        *ngSwitchCase="CONTROL_TYPES.Date"
+        class="form-control"
+        [ngClass]="{
+          'is-invalid':
+            controlMeta.formControl?.touched && controlMeta.formControl.invalid
+        }"
+        [id]="controlMeta.id"
+        [type]="controlMeta.type"
+        [formControl]="controlMeta.formControl"
+        [name]="controlMeta.name"
+        [min]="controlMeta.minDate"
+        [max]="controlMeta.maxDate"
+      />
+
+      <select
+        *ngSwitchCase="CONTROL_TYPES.Select"
+        class="form-select"
+        [ngClass]="{
+          'is-invalid':
+            controlMeta.formControl?.touched && controlMeta.formControl.invalid
+        }"
+        [id]="controlMeta.id"
+        [formControl]="controlMeta.formControl"
+        [name]="controlMeta.name"
+        [compareWith]="$any(controlMeta).compareWith"
+      >
+        <option
+          *ngFor="let opt of loadData($any(controlMeta).dataSource) | async"
+          [ngValue]="
+            opt[$any(controlMeta).bindValue]
+              ? opt[$any(controlMeta).bindValue]
+              : opt
+          "
+        >
+          {{ opt[$any(controlMeta).bindLabel] }}
+        </option>
+      </select>
+
+      <fieldset *ngSwitchCase="CONTROL_TYPES.Composite">
+        <legend class="nested-form-legend">
+          {{ controlMeta.label || controlMeta.name }}
+        </legend>
+        <dd-dynamic-from-control
+          [formDescriptor]="$any(controlMeta)"
+        ></dd-dynamic-from-control>
+      </fieldset>
+
+      <div
+        class="invalid-feedback"
+        *ngIf="
+          controlMeta.formControl?.touched && controlMeta.formControl?.invalid
+        "
+      >
+        {{ controlMeta | errorMessage }}
+      </div>
+    </div>
+  </ng-container>
+</div>
+
+<div
+  class="g-3 mb-3"
+  [formGroup]="formDescriptor.formGroup"
+  *ngIf="formDescriptor?.formLayout == FORM_LAYOUT_OPTS.SINGLE_COLUMN"
+>
+  <ng-container *ngFor="let controlMeta of formDescriptor.controlsDescriptor">
+    <div [ngSwitch]="controlMeta.controlType" class="row mb-3">
+      <label
+        [attr.for]="controlMeta.id"
+        class="col-sm-2 col-form-label"
+        *ngIf="controlMeta.controlType != CONTROL_TYPES.Composite"
+        >{{ controlMeta.label || controlMeta.name }}</label
+      >
+
+      <div
+        [ngClass]="{
+          'col-sm-10': controlMeta.controlType != CONTROL_TYPES.Composite
+        }"
+      >
+        <input
+          *ngSwitchCase="CONTROL_TYPES.Text"
+          class="form-control"
+          [id]="controlMeta.id"
+          [type]="controlMeta.type"
+          [formControl]="controlMeta.formControl"
+          [name]="controlMeta.name"
+        />
+        <input
+          *ngSwitchCase="CONTROL_TYPES.Number"
+          class="form-control"
+          [id]="controlMeta.id"
+          [type]="controlMeta.type"
+          [formControl]="controlMeta.formControl"
+          [name]="controlMeta.name"
+        />
+        <input
+          *ngSwitchCase="CONTROL_TYPES.Date"
+          class="form-control"
+          [id]="controlMeta.id"
+          [type]="controlMeta.type"
+          [formControl]="controlMeta.formControl"
+          [name]="controlMeta.name"
+          [min]="controlMeta.minDate"
+          [max]="controlMeta.maxDate"
+        />
+        <select
+          *ngSwitchCase="CONTROL_TYPES.Select"
+          class="form-select"
+          [id]="controlMeta.id"
+          [formControl]="controlMeta.formControl"
+          [name]="controlMeta.name"
+          [compareWith]="$any(controlMeta).compareWith"
+        >
+          <option
+            *ngFor="let opt of loadData($any(controlMeta).dataSource) | async"
+            [ngValue]="
+              opt[$any(controlMeta).bindValue]
+                ? opt[$any(controlMeta).bindValue]
+                : opt
+            "
+          >
+            {{ opt[$any(controlMeta).bindLabel] }}
+          </option>
+        </select>
+
+        <fieldset *ngSwitchCase="CONTROL_TYPES.Composite">
+          <legend class="nested-form-legend">
+            {{ controlMeta.label || controlMeta.name }}
+          </legend>
+          <dd-dynamic-from-control
+            [formDescriptor]="$any(controlMeta)"
+          ></dd-dynamic-from-control>
+        </fieldset>
+      </div>
+    </div>
+  </ng-container>
+</div>
