@@ -1,9 +1,9 @@
 {
-  "name": "decorator-driven-forms",
+  "name": "dynamic-forms",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --port=4994",
+    "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
@@ -18,14 +18,12 @@
     "@angular/platform-browser": "~12.2.0",
     "@angular/platform-browser-dynamic": "~12.2.0",
     "@angular/router": "~12.2.0",
-    "@fortawesome/fontawesome-free": "^5.15.4",
-    "bootstrap": "^5.1.3",
     "rxjs": "~6.6.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~12.2.6",
+    "@angular-devkit/build-angular": "~12.2.15",
     "@angular/cli": "~12.2.6",
     "@angular/compiler-cli": "~12.2.0",
     "@types/jasmine": "~3.8.0",
@@ -36,7 +34,7 @@
     "karma-coverage": "~2.0.3",
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "~1.7.0",
-    "reflect-metadata": "^0.1.13",
+    "ng-packagr": "^12.1.1",
     "typescript": "~4.3.5"
   }
 }

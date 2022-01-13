@@ -4,6 +4,12 @@
   "compilerOptions": {
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
+    "paths": {
+      "decorator-driven-dynamic-form": [
+        "dist/decorator-driven-dynamic-form/decorator-driven-dynamic-form",
+        "dist/decorator-driven-dynamic-form"
+      ]
+    },
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "noImplicitReturns": true,
@@ -12,7 +18,6 @@
     "declaration": false,
     "downlevelIteration": true,
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
     "moduleResolution": "node",
     "importHelpers": true,
     "target": "es2017",
