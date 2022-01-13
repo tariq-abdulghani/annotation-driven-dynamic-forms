@@ -27,7 +27,8 @@
               "projects/dynamic-forms-driver/src/assets"
             ],
             "styles": [
-              "projects/dynamic-forms-driver/src/styles.css"
+              "projects/dynamic-forms-driver/src/styles.css",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css"
             ],
             "scripts": []
           },
@@ -93,9 +94,7 @@
               "projects/dynamic-forms-driver/src/favicon.ico",
               "projects/dynamic-forms-driver/src/assets"
             ],
-            "styles": [
-              "projects/dynamic-forms-driver/src/styles.css"
-            ],
+            "styles": ["projects/dynamic-forms-driver/src/styles.css"],
             "scripts": []
           }
         }
