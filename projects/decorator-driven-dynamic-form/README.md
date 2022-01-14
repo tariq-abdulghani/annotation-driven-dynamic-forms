@@ -1,4 +1,4 @@
-# DecoratorDrivenForms
+# Decorator Driven Dynamic Forms
 
 > Opinionated way to create dynamic forms with **no json** , **no inheritance**
 > just use **decorators**
@@ -25,10 +25,9 @@
 
 ## Dependencies
 
-| Dependency | Version |
-| ---------- | :-----: |
-| Angular    |   ---   |
-| bootstrap  |   ---   |
+| Version | Angular version | bootstrap Version |
+| ------- | --------------- | :---------------: |
+| 0.1.0   | 12.2.15         |       5.1.3       |
 
 ## Features
 
@@ -55,10 +54,15 @@
 
 - [x] single select controls
 
+- [x] check boxes
+
 - [ ] multiple select is not supported yet
 - [ ] range is not supported yet
 - [ ] radio buttons is not supported yet
-- [ ] check boxes is not supported yet
+
+## Repositories
+
+[source on github ](https://github.com/tariq-abdulghani/annotation-driven-dynamic-forms.git), [npm package](https://www.npmjs.com/package/ddd-form)
 
 ## Install
 
