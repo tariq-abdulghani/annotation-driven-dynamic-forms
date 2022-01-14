@@ -6,6 +6,7 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
+    "watch-ddd-form": "ng build --watch decorator-driven-dynamic-form",
     "test": "ng test"
   },
   "private": true,

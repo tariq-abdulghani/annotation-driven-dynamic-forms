@@ -8,10 +8,24 @@
       [ngSwitch]="controlMeta.controlType"
       [class]="'col-sm-' + controlMeta.width"
     >
+      <input
+        *ngSwitchCase="CONTROL_TYPES.Checkbox"
+        class="form-check-input"
+        [ngClass]="{
+          'is-invalid':
+            controlMeta.formControl?.touched && controlMeta.formControl.invalid
+        }"
+        [id]="controlMeta.id"
+        type="checkbox"
+        [formControl]="controlMeta.formControl"
+        [name]="controlMeta.name"
+      />
       <label
         [attr.for]="controlMeta.id"
-        class="form-label"
         [ngClass]="{
+          'form-check-label ml-2':
+            controlMeta.controlType == CONTROL_TYPES.Checkbox,
+          'form-label': controlMeta.controlType != CONTROL_TYPES.Checkbox,
           'required-control-label': controlMeta.required,
           'invalid-label':
             controlMeta.formControl?.touched && controlMeta.formControl.invalid
@@ -104,7 +118,7 @@
     </div>
   </ng-container>
 </div>
-
+<!-- 
 <div
   class="g-3 mb-3"
   [formGroup]="formDescriptor.formGroup"
@@ -181,4 +195,4 @@
       </div>
     </div>
   </ng-container>
-</div>
+</div> -->

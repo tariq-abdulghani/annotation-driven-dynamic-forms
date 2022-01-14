@@ -57,11 +57,19 @@ export function Pattern(errConfig: { message: string; pattern: RegExp }) {
   };
 }
 
-export function Email(errConfig: { message: string;}) {
+export function Email(errConfig: { message: string }) {
   return function (target: any, propertyKey: string) {
     const metaData = initialMetaCheck(target, propertyKey);
     metaData.formControl.addValidators([Validators.email]);
     metaData.errorMap.set('email', errConfig.message);
+  };
+}
+
+export function RequiredTrue(errConfig: { message: string }) {
+  return function (target: any, propertyKey: string) {
+    const metaData = initialMetaCheck(target, propertyKey);
+    metaData.formControl.addValidators([Validators.requiredTrue]);
+    metaData.errorMap.set('required', errConfig.message);
   };
 }
 

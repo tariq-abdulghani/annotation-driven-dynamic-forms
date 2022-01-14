@@ -13,6 +13,8 @@ import {
   NumberControl,
   SelectControl,
   NestedFormModel,
+  RequiredTrue,
+  CheckboxControl,
 } from 'decorator-driven-dynamic-form';
 import { of } from 'rxjs';
 import { ContactInfo } from './contact-info';
@@ -120,6 +122,12 @@ export class PersonForm {
     address: { city: 'city wow', state: 'state wow', zipCode: '1234' },
   };
 
+  @RequiredTrue({ message: 'is required! to be true' })
+  @CheckboxControl({ id: 'married', name: 'married', label: 'married' })
+  married!: boolean;
+
+  @CheckboxControl({ id: 'employed', name: 'employed', label: 'employed' })
+  employed!: boolean;
   constructor(name: string, age: number) {
     this.name = name;
     this.age = age;

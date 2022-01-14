@@ -52,3 +52,5 @@ export interface SelectControlMeta extends ControlMetaData {
   compareWith: (a: any, b: any) => boolean;
   dataSource: URL | any[] | Observable<any[]>;
 }
+
+export interface CheckboxMeta extends ControlMetaData {}

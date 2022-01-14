@@ -6,8 +6,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ErrorMessagePipe } from './pipes/error-message.pipe';
 
 @NgModule({
-  declarations: [DynamicFormComponent, DynamicFromControlComponent, ErrorMessagePipe],
+  declarations: [
+    DynamicFormComponent,
+    DynamicFromControlComponent,
+    ErrorMessagePipe,
+  ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule],
-  exports: [DynamicFormComponent, DynamicFromControlComponent],
+  exports: [DynamicFormComponent],
 })
 export class DecoratorDrivenDynamicFormsModule {}

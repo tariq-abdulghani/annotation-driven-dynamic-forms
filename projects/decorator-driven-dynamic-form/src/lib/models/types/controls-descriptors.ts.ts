@@ -1,6 +1,7 @@
 import { FormControl, FormGroup, ValidatorFn } from '@angular/forms';
 import { ControlTypes } from './control-types.enum';
 import {
+  CheckboxMeta,
   ControlMetaData,
   DateControlMeta,
   NumberControlMeta,
@@ -8,7 +9,7 @@ import {
   TextControlMeta,
 } from './controls-meta';
 import { FormLayout } from './form-layout-enum';
-import {BasicActionMeta} from "./actions-api";
+import { BasicActionMeta } from './actions-api';
 
 export interface ControlDescriptor extends ControlMetaData {
   controlType: ControlTypes;
@@ -49,6 +50,12 @@ export interface SelectControlDescriptor
   extends ControlDescriptor,
     SelectControlMeta {
   controlType: ControlTypes.Select;
+}
+
+//@ts-ignore
+export interface CheckboxDescriptor extends ControlDescriptor, CheckboxMeta {
+  controlType: ControlTypes.Checkbox;
+  type: 'checkbox';
 }
 
 export class FormDescriptor {
@@ -125,6 +132,20 @@ export class Descriptors {
       formControl: new FormControl(null, dateControlMeta.validators),
       type: 'date',
       controlType: ControlTypes.Date,
+    };
+  }
+
+  public static checkbox(
+    checkboxMeta: CheckboxMeta,
+    propertyKey: string
+  ): CheckboxDescriptor {
+    return {
+      ...(!checkboxMeta.width && { width: 12 }),
+      ...checkboxMeta,
+      propertyKey: propertyKey,
+      formControl: new FormControl(null),
+      type: 'checkbox',
+      controlType: ControlTypes.Checkbox,
     };
   }
 }
