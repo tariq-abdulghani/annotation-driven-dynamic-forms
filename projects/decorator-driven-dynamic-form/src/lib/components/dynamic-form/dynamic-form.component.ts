@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { ControlTypes } from '../../models/types/control-types.enum';
 import { FormLayout } from '../../models/types/form-layout-enum';
-import { FormDescriptor } from '../../models/types/controls-descriptors.ts';
+import { FormDescriptor } from '../../models/types/descriptors';
 import { FormEntityProcessor } from '../../utils/form-entity-processor';
 
 @Component({

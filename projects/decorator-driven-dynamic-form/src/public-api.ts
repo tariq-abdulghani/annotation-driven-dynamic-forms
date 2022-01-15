@@ -22,6 +22,6 @@ export * from './lib/models/decorators/splitted-date-range/splitted-date-validat
 
 export * from './lib/models/types/actions-api';
 export * from './lib/models/types/control-types.enum';
-export * from './lib/models/types/controls-descriptors.ts';
+export * from './lib/models/types/descriptors';
 export * from './lib/models/types/controls-meta';
 export * from './lib/models/types/form-layout-enum';

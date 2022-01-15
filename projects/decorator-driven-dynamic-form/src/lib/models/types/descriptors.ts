@@ -17,7 +17,6 @@ export interface ControlDescriptor extends ControlMetaData {
   propertyKey: string;
   formControl: FormControl;
   errorMap?: Map<string, string>;
-  // validators?: ValidatorFn[];
 }
 export interface InitializedControlDescriptor extends ControlMetaData {
   controlType: ControlTypes;
@@ -66,15 +65,15 @@ export interface RadioButtonsDescriptor
 }
 
 export class FormDescriptor {
-  // showReset: boolean = false;
-  // resetBtnLabel: string = 'reset';
-  // submitBtnLabel: string = 'submit';
   formLayout: string = FormLayout.GRID;
   controlsDescriptor: (ControlDescriptor & NestedFormDescriptor)[] = [];
   formGroup!: FormGroup;
   submit: BasicActionMeta = { label: 'submit', class: 'btn btn-primary' };
   reset: BasicActionMeta | null = null;
   smartSetter: (value: any) => void = () => {};
+  isGrid = () => {
+    return this.formLayout == FormLayout.GRID;
+  };
 }
 
 export class NestedFormDescriptor {
@@ -85,6 +84,9 @@ export class NestedFormDescriptor {
   formGroup!: FormGroup;
   instance: any;
   propertyKey: string = '';
+  isGrid = () => {
+    return this.formLayout == FormLayout.GRID;
+  };
 }
 
 export class Descriptors {

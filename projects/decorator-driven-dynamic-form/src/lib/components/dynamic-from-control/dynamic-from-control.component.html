@@ -1,10 +1,6 @@
 <legend
   *ngIf="$any(formDescriptor).controlType"
-  [class]="
-    formDescriptor?.formLayout == FORM_LAYOUT_OPTS.GRID
-      ? 'col-12'
-      : 'col-form-label col-sm-2 pt-0'
-  "
+  [class]="formDescriptor?.isGrid() ? 'col-12' : 'col-form-label col-sm-2 pt-0'"
 >
   {{ $any(formDescriptor).label || $any(formDescriptor).name }}
 </legend>
@@ -15,19 +11,11 @@
       controlMeta.controlType == CONTROL_TYPES.Number ||
       controlMeta.controlType == CONTROL_TYPES.Date
     "
-    [class]="
-      formDescriptor?.formLayout == FORM_LAYOUT_OPTS.GRID
-        ? 'col-md-6'
-        : 'row mb-3'
-    "
+    [class]="formDescriptor?.isGrid() ? 'col-md-6' : 'row mb-3'"
   >
     <label
       [attr.for]="controlMeta.id"
-      [class]="
-        formDescriptor?.formLayout == FORM_LAYOUT_OPTS.GRID
-          ? 'form-label'
-          : 'col-md-2'
-      "
+      [class]="formDescriptor?.isGrid() ? 'form-label' : 'col-md-2'"
       [ngClass]="{
         'required-control-label': controlMeta.required,
         'invalid-label':
@@ -35,13 +23,7 @@
       }"
       >{{ controlMeta.label || controlMeta.name }}</label
     >
-    <div
-      [class]="
-        formDescriptor?.formLayout == FORM_LAYOUT_OPTS.GRID
-          ? 'col-12'
-          : 'col-md-10'
-      "
-    >
+    <div [class]="formDescriptor?.isGrid() ? 'col-12' : 'col-md-10'">
       <input
         class="form-control"
         [ngClass]="{
@@ -68,19 +50,11 @@
 
   <div
     *ngIf="controlMeta.controlType == CONTROL_TYPES.Select"
-    [class]="
-      formDescriptor?.formLayout == FORM_LAYOUT_OPTS.GRID
-        ? 'col-md-6'
-        : 'row mb-3'
-    "
+    [class]="formDescriptor?.isGrid() ? 'col-md-6' : 'row mb-3'"
   >
     <label
       [attr.for]="controlMeta.id"
-      [class]="
-        formDescriptor?.formLayout == FORM_LAYOUT_OPTS.GRID
-          ? 'form-label'
-          : 'col-md-2'
-      "
+      [class]="formDescriptor?.isGrid() ? 'form-label' : 'col-md-2'"
       [ngClass]="{
         'required-control-label': controlMeta.required,
         'invalid-label':
@@ -88,13 +62,7 @@
       }"
       >{{ controlMeta.label || controlMeta.name }}</label
     >
-    <div
-      [class]="
-        formDescriptor?.formLayout == FORM_LAYOUT_OPTS.GRID
-          ? 'col-12'
-          : 'col-md-10'
-      "
-    >
+    <div [class]="formDescriptor?.isGrid() ? 'col-12' : 'col-md-10'">
       <select
         class="form-select"
         [ngClass]="{
@@ -131,11 +99,7 @@
 
   <div
     *ngIf="controlMeta.controlType == CONTROL_TYPES.Checkbox"
-    [class]="
-      formDescriptor?.formLayout == FORM_LAYOUT_OPTS.GRID
-        ? 'col-sm-6'
-        : 'col-sm-10 offset-sm-2'
-    "
+    [class]="formDescriptor?.isGrid() ? 'col-sm-6' : 'col-sm-10 offset-sm-2'"
   >
     <div class="form-check">
       <input
@@ -151,11 +115,7 @@
       />
       <label
         [attr.for]="controlMeta.id"
-        [class]="
-          formDescriptor?.formLayout == FORM_LAYOUT_OPTS.GRID
-            ? 'form-label'
-            : 'col-md-2'
-        "
+        [class]="formDescriptor?.isGrid() ? 'form-label' : 'col-md-2'"
         [ngClass]="{
           'required-control-label': controlMeta.required,
           'invalid-label':
@@ -180,24 +140,14 @@
   >
     <legend
       [class]="
-        formDescriptor?.formLayout == FORM_LAYOUT_OPTS.GRID
-          ? 'col-12'
-          : 'col-form-label col-sm-2 pt-0'
+        formDescriptor?.isGrid() ? 'col-12' : 'col-form-label col-sm-2 pt-0'
       "
     >
       {{ controlMeta.legend }}
     </legend>
-    <div
-      [class]="
-        formDescriptor?.formLayout == FORM_LAYOUT_OPTS.GRID
-          ? 'row'
-          : 'col-sm-10'
-      "
-    >
+    <div [class]="formDescriptor?.isGrid() ? 'row' : 'col-sm-10'">
       <div
-        [class]="
-          formDescriptor?.formLayout == FORM_LAYOUT_OPTS.GRID ? 'col-sm-6' : ''
-        "
+        [class]="formDescriptor?.isGrid() ? 'col-sm-6' : ''"
         *ngFor="
           let opt of loadData($any(controlMeta).dataSource) | async;
           let i = index

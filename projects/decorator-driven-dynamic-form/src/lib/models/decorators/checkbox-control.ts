@@ -1,4 +1,4 @@
-import { Descriptors } from '../types/controls-descriptors.ts';
+import { Descriptors } from '../types/descriptors';
 import { CheckboxMeta } from '../types/controls-meta';
 import { setMetaData } from './common-controls';
 

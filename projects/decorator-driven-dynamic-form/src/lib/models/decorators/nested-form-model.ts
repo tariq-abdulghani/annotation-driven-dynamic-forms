@@ -1,5 +1,5 @@
 import { FormEntityProcessor } from '../../utils/form-entity-processor';
-import { NestedFormDescriptor } from '../types/controls-descriptors.ts';
+import { NestedFormDescriptor } from '../types/descriptors';
 import { NestedFormMeta } from '../types/controls-meta';
 
 export function NestedFormModel(metaData: NestedFormMeta) {

@@ -20,6 +20,10 @@ export function FormModel(formMeta?: FormMeta) {
           }
         }
       };
+
+      isGrid = () => {
+        return this.formLayout == FormLayout.GRID;
+      };
       // smartGetter = ()=>{
       //   return
       // }

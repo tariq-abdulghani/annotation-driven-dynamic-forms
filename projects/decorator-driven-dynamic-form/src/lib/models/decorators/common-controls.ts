@@ -6,10 +6,7 @@ import {
   DateControlMeta,
 } from '../types/controls-meta';
 import 'reflect-metadata';
-import {
-  ControlDescriptor,
-  Descriptors,
-} from '../types/controls-descriptors.ts';
+import { ControlDescriptor, Descriptors } from '../types/descriptors';
 
 export function TextControl(textControlMeta: TextControlMeta) {
   return function (target: any, propertyKey: string) {

@@ -1,6 +1,6 @@
 import { FormControl } from '@angular/forms';
 import { ControlTypes } from '../../types/control-types.enum';
-import { DateControlDescriptor } from '../../types/controls-descriptors.ts';
+import { DateControlDescriptor } from '../../types/descriptors';
 import { SplittedDateRangeMeta } from './splitted-date-range-meta';
 import {
   maxDateValidator,
@@ -94,12 +94,13 @@ export function SplittedDateRangeControl(metaData: SplittedDateRangeMeta) {
 function generateSplitDatesDescriptors(
   metaData: SplittedDateRangeMeta
 ): [DateControlDescriptor, DateControlDescriptor] {
-
   const errorMap = new Map();
-  errorMap.set("minDate", "date is less than allowed min value");
-  errorMap.set("maxDate", "date is larger than allowed max value");
-  errorMap.set("endDateLessThanStartDate", "field cant be less than ${startDate}");
-
+  errorMap.set('minDate', 'date is less than allowed min value');
+  errorMap.set('maxDate', 'date is larger than allowed max value');
+  errorMap.set(
+    'endDateLessThanStartDate',
+    'field cant be less than ${startDate}'
+  );
 
   const startDateMeta: DateControlDescriptor = {
     type: 'date',
@@ -120,7 +121,7 @@ function generateSplitDatesDescriptors(
     width: metaData.width || 6,
     style: metaData.style,
     class: metaData.class,
-    errorMap: errorMap
+    errorMap: errorMap,
   };
 
   const endDateMeta: DateControlDescriptor = {
@@ -141,7 +142,7 @@ function generateSplitDatesDescriptors(
     id: metaData.endDate.id,
     placeHolder: metaData.endDate.placeHolder,
     label: metaData.endDate.label,
-    errorMap: errorMap
+    errorMap: errorMap,
   };
   return [startDateMeta, endDateMeta];
 }

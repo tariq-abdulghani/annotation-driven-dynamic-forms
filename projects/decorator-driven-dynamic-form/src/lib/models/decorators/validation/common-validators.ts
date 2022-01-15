@@ -2,7 +2,7 @@ import { Validators } from '@angular/forms';
 import {
   ControlDescriptor,
   InitializedControlDescriptor,
-} from '../../types/controls-descriptors.ts';
+} from '../../types/descriptors';
 
 export function NotNull(errConfig: { message: string }) {
   return function (target: any, propertyKey: string) {
