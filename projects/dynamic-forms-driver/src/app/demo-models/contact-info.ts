@@ -4,10 +4,11 @@ import {
   NotNull,
   Email,
   NestedFormModel,
+  FormLayout,
 } from 'decorator-driven-dynamic-form';
 import { Address } from './address-dto';
 
-@FormModel({})
+@FormModel({ formLayout: FormLayout.GRID })
 export class ContactInfo {
   @TextControl({
     id: 'tel',

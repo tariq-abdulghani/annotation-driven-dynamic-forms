@@ -1,7 +1,243 @@
+<legend
+  *ngIf="$any(formDescriptor).controlType"
+  [class]="
+    formDescriptor?.formLayout == FORM_LAYOUT_OPTS.GRID
+      ? 'col-12'
+      : 'col-form-label col-sm-2 pt-0'
+  "
+>
+  {{ $any(formDescriptor).label || $any(formDescriptor).name }}
+</legend>
+<ng-container *ngFor="let controlMeta of formDescriptor.controlsDescriptor">
+  <div
+    *ngIf="
+      controlMeta.controlType == CONTROL_TYPES.Text ||
+      controlMeta.controlType == CONTROL_TYPES.Number ||
+      controlMeta.controlType == CONTROL_TYPES.Date
+    "
+    [class]="
+      formDescriptor?.formLayout == FORM_LAYOUT_OPTS.GRID
+        ? 'col-md-6'
+        : 'row mb-3'
+    "
+  >
+    <label
+      [attr.for]="controlMeta.id"
+      [class]="
+        formDescriptor?.formLayout == FORM_LAYOUT_OPTS.GRID
+          ? 'form-label'
+          : 'col-md-2'
+      "
+      [ngClass]="{
+        'required-control-label': controlMeta.required,
+        'invalid-label':
+          controlMeta.formControl?.touched && controlMeta.formControl.invalid
+      }"
+      >{{ controlMeta.label || controlMeta.name }}</label
+    >
+    <div
+      [class]="
+        formDescriptor?.formLayout == FORM_LAYOUT_OPTS.GRID
+          ? 'col-12'
+          : 'col-md-10'
+      "
+    >
+      <input
+        class="form-control"
+        [ngClass]="{
+          'is-invalid':
+            controlMeta.formControl?.touched && controlMeta.formControl.invalid
+        }"
+        [placeholder]="controlMeta.placeHolder || ''"
+        [id]="controlMeta.id"
+        [type]="controlMeta.type"
+        [formControl]="controlMeta.formControl"
+        [name]="controlMeta.name"
+      />
+
+      <div
+        class="invalid-feedback"
+        *ngIf="
+          controlMeta.formControl?.touched && controlMeta.formControl?.invalid
+        "
+      >
+        {{ controlMeta | errorMessage }}
+      </div>
+    </div>
+  </div>
+
+  <div
+    *ngIf="controlMeta.controlType == CONTROL_TYPES.Select"
+    [class]="
+      formDescriptor?.formLayout == FORM_LAYOUT_OPTS.GRID
+        ? 'col-md-6'
+        : 'row mb-3'
+    "
+  >
+    <label
+      [attr.for]="controlMeta.id"
+      [class]="
+        formDescriptor?.formLayout == FORM_LAYOUT_OPTS.GRID
+          ? 'form-label'
+          : 'col-md-2'
+      "
+      [ngClass]="{
+        'required-control-label': controlMeta.required,
+        'invalid-label':
+          controlMeta.formControl?.touched && controlMeta.formControl.invalid
+      }"
+      >{{ controlMeta.label || controlMeta.name }}</label
+    >
+    <div
+      [class]="
+        formDescriptor?.formLayout == FORM_LAYOUT_OPTS.GRID
+          ? 'col-12'
+          : 'col-md-10'
+      "
+    >
+      <select
+        class="form-select"
+        [ngClass]="{
+          'is-invalid':
+            controlMeta.formControl?.touched && controlMeta.formControl.invalid
+        }"
+        [id]="controlMeta.id"
+        [formControl]="controlMeta.formControl"
+        [name]="controlMeta.name"
+        [compareWith]="$any(controlMeta).compareWith"
+      >
+        <option
+          *ngFor="let opt of loadData($any(controlMeta).dataSource) | async"
+          [ngValue]="
+            opt[$any(controlMeta).bindValue]
+              ? opt[$any(controlMeta).bindValue]
+              : opt
+          "
+        >
+          {{ opt[$any(controlMeta).bindLabel] }}
+        </option>
+      </select>
+
+      <div
+        class="invalid-feedback"
+        *ngIf="
+          controlMeta.formControl?.touched && controlMeta.formControl?.invalid
+        "
+      >
+        {{ controlMeta | errorMessage }}
+      </div>
+    </div>
+  </div>
+
+  <div
+    *ngIf="controlMeta.controlType == CONTROL_TYPES.Checkbox"
+    [class]="
+      formDescriptor?.formLayout == FORM_LAYOUT_OPTS.GRID
+        ? 'col-sm-6'
+        : 'col-sm-10 offset-sm-2'
+    "
+  >
+    <div class="form-check">
+      <input
+        class="form-check-input"
+        [ngClass]="{
+          'is-invalid':
+            controlMeta.formControl?.touched && controlMeta.formControl.invalid
+        }"
+        [id]="controlMeta.id"
+        type="checkbox"
+        [formControl]="controlMeta.formControl"
+        [name]="controlMeta.name"
+      />
+      <label
+        [attr.for]="controlMeta.id"
+        [class]="
+          formDescriptor?.formLayout == FORM_LAYOUT_OPTS.GRID
+            ? 'form-label'
+            : 'col-md-2'
+        "
+        [ngClass]="{
+          'required-control-label': controlMeta.required,
+          'invalid-label':
+            controlMeta.formControl?.touched && controlMeta.formControl.invalid
+        }"
+        >{{ controlMeta.label || controlMeta.name }}</label
+      >
+      <div
+        class="invalid-feedback"
+        *ngIf="
+          controlMeta.formControl?.touched && controlMeta.formControl?.invalid
+        "
+      >
+        {{ controlMeta | errorMessage }}
+      </div>
+    </div>
+  </div>
+
+  <fieldset
+    class="row mt-3 mb-3"
+    *ngIf="controlMeta.controlType == CONTROL_TYPES.RadioButtons"
+  >
+    <legend
+      [class]="
+        formDescriptor?.formLayout == FORM_LAYOUT_OPTS.GRID
+          ? 'col-12'
+          : 'col-form-label col-sm-2 pt-0'
+      "
+    >
+      {{ controlMeta.legend }}
+    </legend>
+    <div
+      [class]="
+        formDescriptor?.formLayout == FORM_LAYOUT_OPTS.GRID
+          ? 'row'
+          : 'col-sm-10'
+      "
+    >
+      <div
+        [class]="
+          formDescriptor?.formLayout == FORM_LAYOUT_OPTS.GRID ? 'col-sm-6' : ''
+        "
+        *ngFor="
+          let opt of loadData($any(controlMeta).dataSource) | async;
+          let i = index
+        "
+      >
+        <input
+          class="form-check-input mr-50"
+          [id]="controlMeta.id + i"
+          type="radio"
+          [formControl]="controlMeta.formControl"
+          [value]="opt"
+        />
+        <label class="form-check-label" [attr.for]="controlMeta.id + i">
+          {{ opt[$any(controlMeta).bindLabel] }}
+        </label>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset
+    class="row mt-3 mb-3"
+    dd-dynamic-from-control
+    [formDescriptor]="$any(controlMeta)"
+    *ngIf="controlMeta.controlType == CONTROL_TYPES.Composite"
+  ></fieldset>
+
+  <div
+    class="invalid-feedback"
+    *ngIf="controlMeta.formControl?.touched && controlMeta.formControl?.invalid"
+  >
+    {{ controlMeta | errorMessage }}
+  </div>
+</ng-container>
+
+<!-- old code -->
+<!-- 
 <div
   class="row g-3 mb-3"
   [formGroup]="formDescriptor.formGroup"
-  *ngIf="formDescriptor?.formLayout == FORM_LAYOUT_OPTS.GRID"
+  *ngIf="formDescriptor?.formLayout == FORM_LAYOUT_OPTS.GRID && false"
 >
   <ng-container *ngFor="let controlMeta of formDescriptor.controlsDescriptor">
     <div
@@ -102,10 +338,6 @@
         <legend class="nested-form-legend">
           {{ controlMeta.label || controlMeta.name }}
         </legend>
-        <dd-dynamic-from-control
-          [formDescriptor]="$any(controlMeta)"
-        ></dd-dynamic-from-control>
-      </fieldset>
 
       <fieldset *ngSwitchCase="CONTROL_TYPES.RadioButtons">
         <legend class="nested-form-legend">
@@ -136,84 +368,6 @@
         "
       >
         {{ controlMeta | errorMessage }}
-      </div>
-    </div>
-  </ng-container>
-</div>
-<!-- 
-<div
-  class="g-3 mb-3"
-  [formGroup]="formDescriptor.formGroup"
-  *ngIf="formDescriptor?.formLayout == FORM_LAYOUT_OPTS.SINGLE_COLUMN"
->
-  <ng-container *ngFor="let controlMeta of formDescriptor.controlsDescriptor">
-    <div [ngSwitch]="controlMeta.controlType" class="row mb-3">
-      <label
-        [attr.for]="controlMeta.id"
-        class="col-sm-2 col-form-label"
-        *ngIf="controlMeta.controlType != CONTROL_TYPES.Composite"
-        >{{ controlMeta.label || controlMeta.name }}</label
-      >
-
-      <div
-        [ngClass]="{
-          'col-sm-10': controlMeta.controlType != CONTROL_TYPES.Composite
-        }"
-      >
-        <input
-          *ngSwitchCase="CONTROL_TYPES.Text"
-          class="form-control"
-          [id]="controlMeta.id"
-          [type]="controlMeta.type"
-          [formControl]="controlMeta.formControl"
-          [name]="controlMeta.name"
-        />
-        <input
-          *ngSwitchCase="CONTROL_TYPES.Number"
-          class="form-control"
-          [id]="controlMeta.id"
-          [type]="controlMeta.type"
-          [formControl]="controlMeta.formControl"
-          [name]="controlMeta.name"
-        />
-        <input
-          *ngSwitchCase="CONTROL_TYPES.Date"
-          class="form-control"
-          [id]="controlMeta.id"
-          [type]="controlMeta.type"
-          [formControl]="controlMeta.formControl"
-          [name]="controlMeta.name"
-          [min]="controlMeta.minDate"
-          [max]="controlMeta.maxDate"
-        />
-        <select
-          *ngSwitchCase="CONTROL_TYPES.Select"
-          class="form-select"
-          [id]="controlMeta.id"
-          [formControl]="controlMeta.formControl"
-          [name]="controlMeta.name"
-          [compareWith]="$any(controlMeta).compareWith"
-        >
-          <option
-            *ngFor="let opt of loadData($any(controlMeta).dataSource) | async"
-            [ngValue]="
-              opt[$any(controlMeta).bindValue]
-                ? opt[$any(controlMeta).bindValue]
-                : opt
-            "
-          >
-            {{ opt[$any(controlMeta).bindLabel] }}
-          </option>
-        </select>
-
-        <fieldset *ngSwitchCase="CONTROL_TYPES.Composite">
-          <legend class="nested-form-legend">
-            {{ controlMeta.label || controlMeta.name }}
-          </legend>
-          <dd-dynamic-from-control
-            [formDescriptor]="$any(controlMeta)"
-          ></dd-dynamic-from-control>
-        </fieldset>
       </div>
     </div>
   </ng-container>

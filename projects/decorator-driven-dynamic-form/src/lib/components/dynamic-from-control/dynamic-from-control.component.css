@@ -20,3 +20,7 @@
   color: #dc3545;
   content: "*";
 }
+
+.mr-50 {
+  margin-right: 0.5em;
+}

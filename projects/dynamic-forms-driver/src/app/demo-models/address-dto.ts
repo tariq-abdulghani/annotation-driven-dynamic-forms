@@ -1,6 +1,11 @@
-import { FormModel, NotNull, TextControl } from 'decorator-driven-dynamic-form';
+import {
+  FormLayout,
+  FormModel,
+  NotNull,
+  TextControl,
+} from 'decorator-driven-dynamic-form';
 
-@FormModel({})
+@FormModel({ formLayout: FormLayout.GRID })
 export class Address {
   @NotNull({ message: 'city is required ' })
   @TextControl({

@@ -16,13 +16,14 @@ import {
   RequiredTrue,
   CheckboxControl,
   RadioButtons,
+  FormLayout,
 } from 'decorator-driven-dynamic-form';
 import { of } from 'rxjs';
 import { ContactInfo } from './contact-info';
 
 @Reset({ label: 'clear', class: 'btn btn-danger' })
 @Submit({ label: 'save', class: 'btn btn-primary' })
-@FormModel()
+@FormModel({ formLayout: FormLayout.GRID })
 export class PersonForm {
   @MaxLength({
     maxlength: 10,
