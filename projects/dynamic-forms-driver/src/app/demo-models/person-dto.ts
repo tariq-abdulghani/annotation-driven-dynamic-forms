@@ -15,6 +15,7 @@ import {
   NestedFormModel,
   RequiredTrue,
   CheckboxControl,
+  RadioButtons,
 } from 'decorator-driven-dynamic-form';
 import { of } from 'rxjs';
 import { ContactInfo } from './contact-info';
@@ -128,6 +129,19 @@ export class PersonForm {
 
   @CheckboxControl({ id: 'employed', name: 'employed', label: 'employed' })
   employed!: boolean;
+
+  @RadioButtons({
+    id: 'radios',
+    name: 'paymentMethod',
+    legend: 'payment method',
+    dataSource: [
+      { key: 'visa', value: 'visa' },
+      { key: 'cash', value: 'cash' },
+    ],
+    bindLabel: 'value',
+    bindValue: null,
+  })
+  paymentMethod!: any;
   constructor(name: string, age: number) {
     this.name = name;
     this.age = age;

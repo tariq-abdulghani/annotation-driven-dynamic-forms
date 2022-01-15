@@ -5,4 +5,5 @@ export enum ControlTypes {
   Date = 2,
   Select = 3,
   Checkbox = 4,
+  RadioButtons = 5,
 }

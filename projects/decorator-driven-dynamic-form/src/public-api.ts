@@ -13,6 +13,7 @@ export * from './lib/models/decorators/form-model';
 export * from './lib/models/decorators/nested-form-model';
 export * from './lib/models/decorators/select-control';
 export * from './lib/models/decorators/checkbox-control';
+export * from './lib/models/decorators/radio-buttons';
 
 export * from './lib/models/decorators/validation/common-validators';
 export * from './lib/models/decorators/splitted-date-range/splitted-date-range';

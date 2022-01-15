@@ -107,6 +107,28 @@
         ></dd-dynamic-from-control>
       </fieldset>
 
+      <fieldset *ngSwitchCase="CONTROL_TYPES.RadioButtons">
+        <legend class="nested-form-legend">
+          {{ controlMeta.legend }}
+        </legend>
+        <ng-container
+          *ngFor="
+            let opt of loadData($any(controlMeta).dataSource) | async;
+            let i = index
+          "
+        >
+          <input
+            [id]="controlMeta.id + i"
+            type="radio"
+            [formControl]="controlMeta.formControl"
+            [value]="opt"
+          />
+          <label class="form-check-label" [attr.for]="controlMeta.id + i">
+            {{ opt[$any(controlMeta).bindLabel] }}
+          </label>
+        </ng-container>
+      </fieldset>
+
       <div
         class="invalid-feedback"
         *ngIf="

@@ -5,6 +5,7 @@ import {
   ControlMetaData,
   DateControlMeta,
   NumberControlMeta,
+  RadioButtonsMeta,
   SelectControlMeta,
   TextControlMeta,
 } from './controls-meta';
@@ -56,6 +57,12 @@ export interface SelectControlDescriptor
 export interface CheckboxDescriptor extends ControlDescriptor, CheckboxMeta {
   controlType: ControlTypes.Checkbox;
   type: 'checkbox';
+}
+
+export interface RadioButtonsDescriptor
+  extends ControlDescriptor,
+    RadioButtonsMeta {
+  controlType: ControlTypes.RadioButtons;
 }
 
 export class FormDescriptor {
@@ -146,6 +153,20 @@ export class Descriptors {
       formControl: new FormControl(null),
       type: 'checkbox',
       controlType: ControlTypes.Checkbox,
+    };
+  }
+
+  public static radioButtons(
+    radioMeta: RadioButtonsMeta,
+    propertyKey: string
+  ): RadioButtonsDescriptor {
+    return {
+      ...(!radioMeta.width && { width: 12 }),
+      ...radioMeta,
+      propertyKey: propertyKey,
+      formControl: new FormControl(null),
+      type: 'radio',
+      controlType: ControlTypes.RadioButtons,
     };
   }
 }

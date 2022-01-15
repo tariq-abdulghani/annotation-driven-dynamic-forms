@@ -14,7 +14,9 @@ export interface NestedFormMeta {
   name: string;
   classDeclaration: any;
 }
-
+export interface FieldSetMeta {
+  legend: string;
+}
 export interface ControlMetaData {
   name: string;
   id: string;
@@ -54,3 +56,9 @@ export interface SelectControlMeta extends ControlMetaData {
 }
 
 export interface CheckboxMeta extends ControlMetaData {}
+
+export interface RadioButtonsMeta extends ControlMetaData, FieldSetMeta {
+  bindLabel: string;
+  bindValue: string | null;
+  dataSource: URL | any[] | Observable<any[]>;
+}
