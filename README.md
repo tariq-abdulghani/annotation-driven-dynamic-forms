@@ -47,18 +47,14 @@
 ## Supported Controls
 
 - [x] text controls
-
 - [x] number controls
-
 - [x] date controls
-
 - [x] single select controls
-
 - [x] check boxes
+- [x] radio buttons
 
 - [ ] multiple select is not supported yet
 - [ ] range is not supported yet
-- [ ] radio buttons is not supported yet
 
 ## Repositories
 
@@ -209,11 +205,12 @@ Run `ng run start` and see the result your self.
 | --------------- | :------: | -------------------------------------: |
 | `(submitEvent)` | `Object` | `FormGroup` value of the rendered form |
 
+<!--
 ### Decorators
 
 | Decorator                    | param |                                                                     Usage |
 | ---------------------------- | :---: | ------------------------------------------------------------------------: |
-| `@FormModel(param:FormMeta)` | `{}`  | to declare class as form model that can be used in dynamic from component |
+| `@FormModel(param:FormMeta)` | `{}`  | to declare class as form model that can be used in dynamic from component | -->
 
 ## License
 
