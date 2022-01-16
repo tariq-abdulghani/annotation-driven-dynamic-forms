@@ -11,7 +11,9 @@
       controlMeta.controlType == CONTROL_TYPES.Number ||
       controlMeta.controlType == CONTROL_TYPES.Date
     "
-    [class]="formDescriptor?.isGrid() ? 'col-md-6' : 'row mb-3'"
+    [class]="
+      formDescriptor?.isGrid() ? 'col-md-' + controlMeta.width : 'row mb-3'
+    "
   >
     <label
       [attr.for]="controlMeta.id"
@@ -50,7 +52,9 @@
 
   <div
     *ngIf="controlMeta.controlType == CONTROL_TYPES.Select"
-    [class]="formDescriptor?.isGrid() ? 'col-md-6' : 'row mb-3'"
+    [class]="
+      formDescriptor?.isGrid() ? 'col-md-' + controlMeta.width : 'row mb-3'
+    "
   >
     <label
       [attr.for]="controlMeta.id"
@@ -99,7 +103,11 @@
 
   <div
     *ngIf="controlMeta.controlType == CONTROL_TYPES.Checkbox"
-    [class]="formDescriptor?.isGrid() ? 'col-sm-6' : 'col-sm-10 offset-sm-2'"
+    [class]="
+      formDescriptor?.isGrid()
+        ? 'col-sm-' + controlMeta.width
+        : 'col-sm-10 offset-sm-2'
+    "
   >
     <div class="form-check">
       <input
@@ -147,7 +155,7 @@
     </legend>
     <div [class]="formDescriptor?.isGrid() ? 'row' : 'col-sm-10'">
       <div
-        [class]="formDescriptor?.isGrid() ? 'col-sm-6' : ''"
+        [class]="formDescriptor?.isGrid() ? 'col-sm-' + controlMeta.width : ''"
         *ngFor="
           let opt of loadData($any(controlMeta).dataSource) | async;
           let i = index
