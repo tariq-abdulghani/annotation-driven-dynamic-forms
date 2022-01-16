@@ -13,7 +13,7 @@ import { FormDescriptor } from '../../models/types/descriptors';
 import { FormEntityProcessor } from '../../utils/form-entity-processor';
 
 @Component({
-  selector: 'dd-dynamic-form',
+  selector: 'ddd-form',
   templateUrl: './dynamic-form.component.html',
   styleUrls: ['./dynamic-form.component.css'],
 })

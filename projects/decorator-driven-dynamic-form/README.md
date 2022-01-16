@@ -38,9 +38,9 @@
 - [x] supports composition of forms
 - [x] supports submit and reset actions
 - [x] responsive relies on bootstrap5
+- [x] single column layout
 
 - [ ] theming is not supported yet
-- [ ] single column layout is not supported yet
 - [ ] custom styling is not supported yet
 - [ ] internationalization is not supported yet
 
@@ -62,6 +62,10 @@
 
 ## Install
 
+> Note that:
+> library is under active development so some API may change in the future
+
+install boot strap if you don't have it`npm i bootstrap` and add it in styles
 `npm i ddd-form`
 
 [`npm install decorator-driven-dynamic-forms --save`]: #
@@ -185,10 +189,7 @@ export class AppComponent {
 4. pass it to the dynamic-form-component
 
 ```angular2html
-    <dd-dynamic-form
-      [formModel]="contactInfoForm"
-      (submitEvent)="onSubmit($event)">
-    </dd-dynamic-form>
+      <ddd-form [formModel]="personDto" (submitEvent)="onSubmit($event)"></ddd-form>
 ```
 
 Run `ng run start` and see the result your self.
@@ -205,12 +206,201 @@ Run `ng run start` and see the result your self.
 | --------------- | :------: | -------------------------------------: |
 | `(submitEvent)` | `Object` | `FormGroup` value of the rendered form |
 
-<!--
 ### Decorators
 
-| Decorator                    | param |                                                                     Usage |
-| ---------------------------- | :---: | ------------------------------------------------------------------------: |
-| `@FormModel(param:FormMeta)` | `{}`  | to declare class as form model that can be used in dynamic from component | -->
+#### `@FormModel(param?:FormMeta)`
+
+to declare class as form model that can be used in dynamic from component
+param of type
+
+```typescript
+interface FormMeta {
+  formLayout?: FormLayout; // defaults to `FormLayout.GRID`
+}
+```
+
+form layout is of type
+
+```typescript
+enum FormLayout {
+  SINGLE_COLUMN = "SINGLE_COLUMN",
+  GRID = "GRID",
+}
+```
+
+#### `@NestedFormModel(param: NestedFormMeta)`
+
+to include formModel as field in another model
+param of type
+
+```typescript
+interface NestedFormMeta {
+  name: string;
+  classDeclaration: any;
+}
+```
+
+**name** : is the form group name you give to these form
+**classDeclaration**: in the class it self that you want to make it as field `constructor`
+
+#### `@Reset({ label: string, class: any })`
+
+to set reset button meta data like label or even it class
+default is null it has no configuration but
+
+#### `@Submit({ label: 'save', class: 'btn btn-primary' })`
+
+to set submit button meta data like label or even it class
+in the future it should support its place left or right or center
+default is `submit` and class is `btn btn-primary`.
+
+#### `@TextControl(textCtrlMeta: TextControlMeta)`
+
+```typescript
+interface ControlMetaData {
+  name: string;
+  id: string;
+  label?: string;
+  placeHolder?: string;
+  width?: number; // control width in bootstrap grid its value from 1 to 12
+  style?: string; // inline style no supported yet
+  class?: string; // you can provide your custom css class (not supported yet)
+  [x: string]: any;
+}
+interface TextControlMeta extends ControlMetaData {
+  type: "text" | "password" | "email" | "url" | "tel";
+}
+```
+
+#### `@NumberControl(numCtrlMeta: NumberControlMeta)`
+
+```typescript
+export interface NumberControlMeta extends ControlMetaData {}
+```
+
+#### `@DateControl(dateCtrlMeta: DateControlMeta)`
+
+```typescript
+export interface DateControlMeta extends ControlMetaData {}
+```
+
+#### `@SplittedDateRangeControl(sdrMeta: SplittedDateRangeMeta)`
+
+declares a date range but rendered in ui as two controls
+
+```typescript
+interface SplittedDateRangeMeta {
+  startDate: {
+    name: string;
+    id: string;
+    placeHolder?: string;
+    label?: string;
+    notNull?: { message: string };
+  };
+  endDate: {
+    name: string;
+    id: string;
+    placeHolder?: string;
+    label?: string;
+  };
+  from: Date; // range start
+  to: Date; // range end
+  optional?: boolean; // default false
+  width?: number;
+  style?: string;
+  class?: string;
+  [x: string]: any;
+}
+```
+
+**optional** used to make the two dates nullable or not
+it must be used with a field of type `[Date, Date]`
+
+ex:
+
+```typescript
+@SplittedDateRangeControl({
+    from: new Date(),
+    to: new Date(2030, 10, 10),
+    startDate: {
+      id: 'date-of-birth',
+      name: 'dateOfBirth',
+      placeHolder: 'yyyy/mm/dd',
+      label: 'birth date',
+    },
+    endDate: {
+      id: 'date-of-death',
+      name: 'dateOfDeath',
+      placeHolder: 'yyyy/mm/dd',
+      label: 'quietus date',
+    },
+    optional: true,
+  })
+  dates!: [Date | null | string, Date | null | string];
+```
+
+#### `@SelectControl(selectMeta: SelectControlMeta)`
+
+```typescript
+interface SelectControlMeta extends ControlMetaData {
+  bindLabel: string;
+  bindValue: string | null;
+  compareWith: (a: any, b: any) => boolean;
+  dataSource: URL | any[] | Observable<any[]>; // component loads the data for you you jst tell what data source
+  // URL: means the finding the resource through HTTP and GET
+}
+```
+
+#### `@CheckboxControl(chBx: CheckboxMeta)`
+
+```typescript
+interface CheckboxMeta extends ControlMetaData {}
+```
+
+#### `@RadioButtons(radiosMeta: RadioButtonsMeta)`
+
+```typescript
+interface RadioButtonsMeta extends ControlMetaData, FieldSetMeta {
+  bindLabel: string;
+  bindValue: string | null;
+  dataSource: URL | any[] | Observable<any[]>;
+}
+```
+
+#### Validation Decorators
+
+```typescript
+
+// some errors needs some value to be more meaningful like
+// min length or maxlength or min max
+// its meaningless to say date it larger than the max value
+// but its good to say `value is larger than  ${max}`
+
+// this string interpolation i simple at run time that string is interpolated by
+// `ValidationError` so `${var}` `var` is replaced by the value that the key `var` has
+// in the error object
+
+  @MaxLength({
+    maxlength: number,
+    message: string, // message can be parametrized ex: 'name cant be larger than  ${requiredLength} characters'
+  })
+
+  @MinLength({
+    minlength: number,
+    message: string ,
+  })
+
+  @NotNull({ message: string })
+
+  @Max({ maxValue: number, message:  string})//message can be parametrized 'age cant be more than ${max} years'
+
+  @Min({ minValue: number, message: string})//message can be parametrized 'age cant be lass than ${min}'
+
+  @RequiredTrue({ message: string })
+
+  @Email({ message: string })
+
+```
 
 ## License
 
