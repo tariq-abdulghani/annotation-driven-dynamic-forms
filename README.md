@@ -25,9 +25,9 @@
 
 ## Dependencies
 
-| Version | Angular version | bootstrap Version |
-| ------- | --------------- | :---------------: |
-| 0.1.0   | 12.2.15         |       5.1.3       |
+| Angular version | bootstrap Version |
+| --------------- | :---------------: |
+| 12.2.15         |       5.1.3       |
 
 ## Features
 
