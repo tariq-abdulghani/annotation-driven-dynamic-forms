@@ -9,5 +9,10 @@
   "dependencies": {
     "tslib": "^2.3.0"
   },
+  "keywords": [
+    "dynamic form",
+    "decorator driven",
+    "influenced by JPA and Dot Net"
+  ],
   "license": "MIT"
 }
