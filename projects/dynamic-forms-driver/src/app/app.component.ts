@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormModelSmartSetter } from 'projects/decorator-driven-dynamic-form/src/lib/models/decorators/form-setter-getter';
+import { LoginForm } from './demo-models/login-form';
 import { PersonForm } from './demo-models/person-dto';
 
 @Component({
@@ -10,8 +11,12 @@ import { PersonForm } from './demo-models/person-dto';
 export class AppComponent implements OnInit {
   title = 'dynamic-forms-driver';
 
-  @FormModelSmartSetter
-  personDto: PersonForm = new PersonForm('ahmed', 28);
+  // @FormModelSmartSetter
+  // personDto: PersonForm = new PersonForm('ahmed', 28);
+
+  loginForm = new LoginForm();
+
+  loginForm2 = new LoginForm();
 
   onSubmit($event: any) {
     console.log($event);

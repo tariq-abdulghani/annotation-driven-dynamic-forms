@@ -1,4 +1,4 @@
-import { FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { ControlTypes } from '../models/types/control-types.enum';
 import { FormLayout } from '../models/types/form-layout-enum';
 import { FormDescriptor } from '../models/types/descriptors';
@@ -32,10 +32,31 @@ export class FormEntityProcessor {
     // scans all enumerated fields including property setters and getters
     for (const key in formEntity) {
       const metaData = Reflect.getMetadata(key, formEntity, key);
-
+      // console.log('no meta data');
       if (metaData && metaData.controlType != ControlTypes.Composite) {
-        formDescriptor.controlsDescriptor.push(metaData);
-        formGroupInitializer[metaData.name] = metaData.formControl;
+        const descriptor = { ...metaData };
+
+        const formControl = new FormControl(
+          formEntity[key],
+          descriptor.validators
+        );
+
+        formGroupInitializer[descriptor.name] = formControl;
+        descriptor.formControl = formControl;
+        formDescriptor.controlsDescriptor.push(descriptor);
+        const setter = function (val?: any) {
+          formControl?.setValue(val);
+        };
+
+        const getter = function () {
+          return formControl?.value;
+        };
+
+        Object.defineProperty(formEntity, key, {
+          set: setter,
+          get: getter,
+          enumerable: true,
+        });
       }
 
       if (metaData && metaData.controlType == ControlTypes.Composite) {
@@ -47,4 +68,23 @@ export class FormEntityProcessor {
     formDescriptor.formGroup = new FormGroup(formGroupInitializer);
     return formDescriptor;
   }
+}
+
+export function bindObjectToForm(
+  obj: { [x: string]: any },
+  descriptors: any[]
+): FormGroup {
+  const objGroup = {} as { [x: string]: any };
+  Object.entries(obj).forEach((keyValue) => {
+    if (obj[keyValue[0]] instanceof Object) {
+      objGroup[keyValue[0]] = bindObjectToForm(obj[keyValue[0]], descriptors);
+      // proper setter and getter for form group
+      // get all meta data and convert it to descriptor
+    } else {
+      objGroup[keyValue[0]] = new FormControl(obj[keyValue[0]]);
+      // proper setter and getter for form control
+      // get all meta data and convert it to descriptor
+    }
+  });
+  return new FormGroup(objGroup);
 }

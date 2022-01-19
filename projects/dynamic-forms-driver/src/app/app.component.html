@@ -1,3 +1,10 @@
 <div class="container">
-  <ddd-form [formModel]="personDto" (submitEvent)="onSubmit($event)"></ddd-form>
+  <ddd-form [formModel]="loginForm" (submitEvent)="onSubmit($event)"></ddd-form>
+</div>
+
+<div class="container">
+  <ddd-form
+    [formModel]="loginForm2"
+    (submitEvent)="onSubmit($event)"
+  ></ddd-form>
 </div>

@@ -10,11 +10,28 @@ import { ControlDescriptor, Descriptors } from '../types/descriptors';
 
 export function TextControl(textControlMeta: TextControlMeta) {
   return function (target: any, propertyKey: string) {
-    setMetaData(
-      target,
-      propertyKey,
-      Descriptors.text(textControlMeta, propertyKey)
-    );
+    let value: any = null;
+    const setter = function (val?: any) {
+      value = val;
+    };
+
+    const getter = function () {
+      value;
+    };
+
+    Object.defineProperty(target, propertyKey, {
+      set: setter,
+      get: getter,
+      enumerable: true,
+    });
+
+    textControlMeta.controlType = ControlTypes.Text;
+    addMetaData(target, propertyKey, textControlMeta);
+    // setMetaData(
+    //   target,
+    //   propertyKey,
+    //   Descriptors.text(textControlMeta, propertyKey)
+    // );
   };
 }
 
@@ -59,6 +76,10 @@ export function setMetaData(
     enumerable: true,
   });
 
+  Reflect.defineMetadata(propertyKey, metaData, target, propertyKey);
+}
+
+export function addMetaData(target: any, propertyKey: string, metaData: any) {
   Reflect.defineMetadata(propertyKey, metaData, target, propertyKey);
 }
 

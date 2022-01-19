@@ -7,7 +7,8 @@ import {
 export function NotNull(errConfig: { message: string }) {
   return function (target: any, propertyKey: string) {
     const metaData = initialMetaCheck(target, propertyKey);
-    metaData.formControl.addValidators([Validators.required]);
+    // metaData.formControl.addValidators([Validators.required]);
+    metaData.validators.push(Validators.required);
     metaData.errorMap.set('required', errConfig.message);
     metaData.required = true;
   };
@@ -89,6 +90,10 @@ export function initialMetaCheck(
   }
   if (!metaData.errorMap) {
     metaData.errorMap = new Map<string, string>();
+  }
+
+  if (!metaData.validators) {
+    metaData.validators = [];
   }
   return metaData as InitializedControlDescriptor;
 }
