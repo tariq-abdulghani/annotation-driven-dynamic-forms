@@ -1,8 +1,8 @@
-import { FormEntityProcessor } from '../../utils/form-entity-processor';
-import { NestedFormDescriptor } from '../types/descriptors';
-import { NestedFormMeta } from '../types/controls-meta';
+import { FormEntityProcessor } from '../../../utils/form-entity-processor';
+import { NestedFormDescriptor } from '../../types/descriptors';
+import { NestedFormMeta } from '../../types/controls-meta/controls-meta';
 
-export function NestedFormModel(metaData: NestedFormMeta) {
+export function NestedFormEntity(metaData: NestedFormMeta) {
   return function (target: any, propertyKey: string) {
     const instance = new metaData.classDeclaration();
     const nestedFormDescriptor = new NestedFormDescriptor();

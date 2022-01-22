@@ -1,6 +1,6 @@
-import { Descriptors } from '../types/descriptors';
-import { RadioButtonsMeta } from '../types/controls-meta';
-import { setMetaData } from './common-controls';
+import { RadioButtonsMeta } from '../../types/controls-meta/controls-meta';
+import { Descriptors } from '../../types/descriptors';
+import { setMetaData } from './setMetaData';
 
 export function RadioButtons(radiosMeta: RadioButtonsMeta) {
   return function (target: any, propertyKey: string) {

@@ -1,14 +1,14 @@
 import {
-  FormModel,
   TextControl,
   NotNull,
   Email,
-  NestedFormModel,
   FormLayout,
+  FormEntity,
+  NestedFormEntity,
 } from 'decorator-driven-dynamic-form';
 import { Address } from './address-dto';
 
-@FormModel({ formLayout: FormLayout.GRID })
+@FormEntity({ formLayout: FormLayout.GRID })
 export class ContactInfo {
   @TextControl({
     id: 'tel',
@@ -36,6 +36,6 @@ export class ContactInfo {
   })
   email!: string;
 
-  @NestedFormModel({ name: 'address', classDeclaration: Address })
+  @NestedFormEntity({ name: 'address', classDeclaration: Address })
   address!: Address; // new Address('FGH', 'NBH', '4578'); //{ city: 'city wow', state: 'state wow', zipCode: '1234' };
 }

@@ -1,18 +1,17 @@
 import {
   Reset,
   Submit,
-  FormModel,
+  FormEntity,
   MaxLength,
   MinLength,
   NotNull,
   TextControl,
   Pattern,
-  SplittedDateRangeControl,
   Max,
   Min,
   NumberControl,
   SelectControl,
-  NestedFormModel,
+  NestedFormEntity,
   RequiredTrue,
   CheckboxControl,
   RadioButtons,
@@ -23,7 +22,7 @@ import { ContactInfo } from './contact-info';
 
 @Reset({ label: 'clear', class: 'btn btn-danger' })
 @Submit({ label: 'save', class: 'btn btn-primary' })
-@FormModel({ formLayout: FormLayout.GRID })
+@FormEntity({ formLayout: FormLayout.GRID })
 export class PersonForm {
   @MaxLength({
     maxlength: 10,
@@ -55,25 +54,6 @@ export class PersonForm {
     id: 'password',
   })
   password!: string | null;
-
-  @SplittedDateRangeControl({
-    from: new Date(),
-    to: new Date(2030, 10, 10),
-    startDate: {
-      id: 'date-of-birth',
-      name: 'dateOfBirth',
-      placeHolder: 'yyyy/mm/dd',
-      label: 'birth date',
-    },
-    endDate: {
-      id: 'date-of-death',
-      name: 'dateOfDeath',
-      placeHolder: 'yyyy/mm/dd',
-      label: 'quietus date',
-    },
-    optional: true,
-  })
-  dates!: [Date | null | string, Date | null | string]; //= [new Date(), new Date()];
 
   @Max({ maxValue: 100, message: 'age cant be more than ${max} years' })
   @Min({ minValue: 7, message: 'age cant be lass than ${min}' })
@@ -116,7 +96,7 @@ export class PersonForm {
   // @NestedFormModel({ name: 'address', classDeclaration: Address })
   // address: Address = new Address('FGH', 'NBH', '4578'); //{ city: 'city wow', state: 'state wow', zipCode: '1234' };
 
-  @NestedFormModel({ name: 'contactInfo', classDeclaration: ContactInfo })
+  @NestedFormEntity({ name: 'contactInfo', classDeclaration: ContactInfo })
   contactInfo: ContactInfo = {
     telA: '012-3458',
     telB: '015-1425',
@@ -146,7 +126,6 @@ export class PersonForm {
   constructor(name: string, age: number) {
     this.name = name;
     this.age = age;
-    this.dates = [null, null]; // [new Date(), new Date()]; ////[new Date(), new Date()]
     this.gender = { label: 'male', value: 'male' };
     this.password = '123456';
     this.post = null;

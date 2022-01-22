@@ -1,7 +1,7 @@
 import { ValidatorFn } from '@angular/forms';
 import 'reflect-metadata';
 import { Observable } from 'rxjs';
-import { FormLayout } from './form-layout-enum';
+import { FormLayout } from '../form-layout-enum';
 
 export interface FormMeta {
   // showReset?: boolean;

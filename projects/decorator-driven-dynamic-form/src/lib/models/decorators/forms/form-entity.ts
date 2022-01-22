@@ -1,7 +1,7 @@
-import { FormMeta } from '../types/controls-meta';
-import { FormLayout } from '../types/form-layout-enum';
+import { FormMeta } from '../../types/controls-meta/controls-meta';
+import { FormLayout } from '../../types/form-layout-enum';
 
-export function FormModel(formMeta?: FormMeta) {
+export function FormEntity(formMeta?: FormMeta) {
   return function <T extends { new (...args: any[]): {} }>(constructor: T) {
     return class extends constructor {
       formLayout =

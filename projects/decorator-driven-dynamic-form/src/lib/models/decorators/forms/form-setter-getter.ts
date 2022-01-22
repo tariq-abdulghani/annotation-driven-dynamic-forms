@@ -1,4 +1,4 @@
-import { FormDescriptor } from '../types/descriptors';
+import { FormDescriptor } from '../../types/descriptors';
 
 /**
  * Enables using objects to update form so no need to create new form model

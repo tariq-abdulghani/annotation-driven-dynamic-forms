@@ -7,6 +7,7 @@ import {
   Reset,
   Submit,
 } from 'decorator-driven-dynamic-form';
+import { NumberControl } from 'projects/decorator-driven-dynamic-form/src/public-api';
 
 @Reset({ label: 'clear', class: 'btn btn-danger' })
 @Submit({ label: 'save', class: 'btn btn-primary' })
@@ -41,4 +42,11 @@ export class LoginForm {
     id: 'password',
   })
   password!: string | null;
+
+  @NumberControl({
+    id: 'age1',
+    name: 'age',
+    label: 'age',
+  })
+  age!: number;
 }

@@ -8,7 +8,7 @@ import { MessageStringInterpolation } from '../utils/message-string-interpolatio
 })
 export class ErrorMessagePipe implements PipeTransform {
   transform(value: ControlDescriptor): string | null {
-    if (value.formControl.errors) {
+    if (value?.formControl?.errors) {
       let errorString: string | null = null;
       const key = Object.keys(value.formControl.errors)[0];
       errorString = value.errorMap?.get(key) || '';

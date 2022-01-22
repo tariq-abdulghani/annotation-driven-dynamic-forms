@@ -8,9 +8,17 @@ import {
   RadioButtonsMeta,
   SelectControlMeta,
   TextControlMeta,
-} from './controls-meta';
+} from './controls-meta/controls-meta';
 import { FormLayout } from './form-layout-enum';
 import { BasicActionMeta } from './actions-api';
+
+export interface UnboundControlDescriptor extends ControlMetaData {
+  controlType: ControlTypes;
+  propertyKey: string;
+  formControl: null;
+  errorMap: Map<string, string>;
+  validators: ValidatorFn[];
+}
 
 export interface ControlDescriptor extends ControlMetaData {
   controlType: ControlTypes;
@@ -18,6 +26,7 @@ export interface ControlDescriptor extends ControlMetaData {
   formControl: FormControl;
   errorMap?: Map<string, string>;
 }
+
 export interface InitializedControlDescriptor extends ControlMetaData {
   controlType: ControlTypes;
   propertyKey: string;
@@ -98,7 +107,6 @@ export class Descriptors {
       ...(!textControlMeta.width && { width: 6 }),
       ...textControlMeta,
       controlType: ControlTypes.Text,
-      formControl: new FormControl(null, textControlMeta.validators),
       propertyKey: propertyKey,
     } as TextControlDescriptor;
   }
@@ -111,7 +119,8 @@ export class Descriptors {
       ...(!number.width && { width: 6 }),
       ...number,
       controlType: ControlTypes.Number,
-      formControl: new FormControl(null, number.validators),
+      //@ts-ignore
+      formControl: null,
       propertyKey: propertyKey,
       type: 'number',
     };

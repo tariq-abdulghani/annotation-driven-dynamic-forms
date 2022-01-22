@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { FormModelSmartSetter } from 'projects/decorator-driven-dynamic-form/src/lib/models/decorators/form-setter-getter';
 import { LoginForm } from './demo-models/login-form';
 import { PersonForm } from './demo-models/person-dto';
 

@@ -1,6 +1,6 @@
-import { Descriptors } from '../types/descriptors';
-import { CheckboxMeta } from '../types/controls-meta';
-import { setMetaData } from './common-controls';
+import { CheckboxMeta } from '../../types/controls-meta/controls-meta';
+import { Descriptors } from '../../types/descriptors';
+import { setMetaData } from './setMetaData';
 
 /**
  * Declares that  field is viewed as check box and makes the proper bindings

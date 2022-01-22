@@ -1,7 +1,7 @@
 import { FormControl, FormGroup } from '@angular/forms';
 import { ControlTypes } from '../models/types/control-types.enum';
 import { FormLayout } from '../models/types/form-layout-enum';
-import { FormDescriptor } from '../models/types/descriptors';
+import { Descriptors, FormDescriptor } from '../models/types/descriptors';
 
 export class FormEntityProcessor {
   /**
@@ -16,12 +16,9 @@ export class FormEntityProcessor {
     // no need for recursion to generate all descriptors in child controls
     // the way decorators work works on all of them
 
-    // console.warn(
-    //   'only two levels are supported in this functions if more levels are needed please implement that'
-    // );
-
     const formDescriptor = new FormDescriptor();
-    const formGroupInitializer = {} as { [x: string]: any }; // form group initializer key string control name value FormControl
+    // form group initializer key string control name value FormControl
+    const formGroupInitializer = {} as { [x: string]: any };
 
     // getting fields and set them in the descriptor
     Object.entries(formEntity).forEach((keyValue) => {
@@ -32,31 +29,18 @@ export class FormEntityProcessor {
     // scans all enumerated fields including property setters and getters
     for (const key in formEntity) {
       const metaData = Reflect.getMetadata(key, formEntity, key);
-      // console.log('no meta data');
       if (metaData && metaData.controlType != ControlTypes.Composite) {
-        const descriptor = { ...metaData };
-
         const formControl = new FormControl(
           formEntity[key],
-          descriptor.validators
+          metaData.validators
         );
-
-        formGroupInitializer[descriptor.name] = formControl;
-        descriptor.formControl = formControl;
-        formDescriptor.controlsDescriptor.push(descriptor);
-        const setter = function (val?: any) {
-          formControl?.setValue(val);
-        };
-
-        const getter = function () {
-          return formControl?.value;
-        };
-
-        Object.defineProperty(formEntity, key, {
-          set: setter,
-          get: getter,
-          enumerable: true,
-        });
+        const boundDescriptor = bindDescriptorToFormControl(
+          metaData,
+          formControl
+        );
+        formDescriptor.controlsDescriptor.push(boundDescriptor);
+        formGroupInitializer[metaData.name] = formControl;
+        bindFieldToFormControl(formEntity, key, formControl);
       }
 
       if (metaData && metaData.controlType == ControlTypes.Composite) {
@@ -64,10 +48,46 @@ export class FormEntityProcessor {
         formGroupInitializer[metaData.name] = metaData.formGroup;
       }
     }
-    // updates form group on submit
     formDescriptor.formGroup = new FormGroup(formGroupInitializer);
     return formDescriptor;
   }
+}
+
+/**
+ * Sets formControl field in the descriptor with a form control
+ * specific for entity
+ *
+ * @param descriptor ControlDescriptor
+ * @param formControl FormControl
+ * @returns ControlDescriptor with form control initialized
+ */
+function bindDescriptorToFormControl(
+  descriptor: any,
+  formControl: FormControl
+): any {
+  const clonedObj = { ...descriptor };
+  clonedObj.formControl = formControl;
+  return clonedObj;
+}
+
+function bindFieldToFormControl(
+  target: any,
+  propertyKey: string,
+  formControl: FormControl
+) {
+  const setter = function (val?: any) {
+    formControl.setValue(val);
+  };
+
+  const getter = function () {
+    return formControl.value;
+  };
+
+  Object.defineProperty(target, propertyKey, {
+    set: setter,
+    get: getter,
+    enumerable: true,
+  });
 }
 
 export function bindObjectToForm(
