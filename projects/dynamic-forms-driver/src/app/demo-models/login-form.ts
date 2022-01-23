@@ -6,8 +6,14 @@ import {
   Pattern,
   Reset,
   Submit,
+  SelectControl,
+  RadioButtons,
 } from 'decorator-driven-dynamic-form';
-import { NumberControl } from 'projects/decorator-driven-dynamic-form/src/public-api';
+import { DateControl } from 'projects/decorator-driven-dynamic-form/src/lib/models/decorators/controls/date-control';
+import {
+  CheckboxControl,
+  NumberControl,
+} from 'projects/decorator-driven-dynamic-form/src/public-api';
 
 @Reset({ label: 'clear', class: 'btn btn-danger' })
 @Submit({ label: 'save', class: 'btn btn-primary' })
@@ -49,4 +55,45 @@ export class LoginForm {
     label: 'age',
   })
   age!: number;
+
+  @DateControl({
+    id: 'expiryDate',
+    name: 'expiryDate',
+    label: 'Expiry Date',
+  })
+  expiryDate!: string;
+
+  @SelectControl({
+    id: 'gender',
+    name: 'gender',
+    label: 'gender',
+    dataSource: [
+      { label: 'male', id: 'm' },
+      { label: 'female', id: 'f' },
+    ],
+    bindLabel: 'label',
+    bindValue: null,
+    compareWith: (a, b) => (a && b ? a.id == b.id : false),
+  })
+  gender!: any;
+
+  @CheckboxControl({
+    name: 'employee',
+    id: 'employee',
+    label: 'Employee',
+  })
+  employee = false;
+
+  @RadioButtons({
+    id: 'payment',
+    name: 'payment',
+    legend: 'Payment',
+    dataSource: [
+      { key: 'visa', id: 'v' },
+      { key: 'cash', id: 'c' },
+    ],
+    bindLabel: 'key',
+    bindValue: null,
+  })
+  payment!: any;
 }

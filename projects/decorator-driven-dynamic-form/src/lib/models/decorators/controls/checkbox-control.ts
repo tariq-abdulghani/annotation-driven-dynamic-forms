@@ -1,5 +1,7 @@
 import { CheckboxMeta } from '../../types/controls-meta/controls-meta';
+import { ControlsDescription } from '../../types/controls-meta/descriptions';
 import { Descriptions_dep } from '../../types/controls-meta/Descriptions_dep';
+import { addMetaData, convenientSetterAndGetter } from './addMetaData';
 import { setMetaData } from './setMetaData';
 
 /**
@@ -10,10 +12,11 @@ import { setMetaData } from './setMetaData';
  */
 export function CheckboxControl(controlMeta: CheckboxMeta) {
   return function (target: any, propertyKey: string) {
-    setMetaData(
+    convenientSetterAndGetter(target, propertyKey);
+    addMetaData(
       target,
       propertyKey,
-      Descriptions_dep.checkbox(controlMeta, propertyKey)
+      ControlsDescription.checkbox(controlMeta, propertyKey)
     );
   };
 }

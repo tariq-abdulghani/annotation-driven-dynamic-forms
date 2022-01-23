@@ -106,10 +106,28 @@ export class ControlsDescription {
     };
   }
 
+  /**
+   * Used to clone metadata stored in `UnboundControlDescription` structure
+   * and also reset some meta data that cant be unique per class example
+   * radio button names are constant per group np per class of forms so it must be
+   * corrected
+   *
+   * @param unbound `UnboundControlDescription`
+   * @param formControl `FormControl`
+   * @returns `ControlDescription`
+   */
   public static cloneAndBind(
     unbound: UnboundControlDescription,
     formControl: FormControl
   ): ControlDescription {
-    return { ...unbound, formControl: formControl };
+    if (unbound.controlType == ControlTypes.RadioButtons) {
+      return {
+        ...unbound,
+        formControl: formControl,
+        name: (10000 * Math.random()).toString(36),
+      };
+    } else {
+      return { ...unbound, formControl: formControl };
+    }
   }
 }

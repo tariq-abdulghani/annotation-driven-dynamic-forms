@@ -1,15 +1,14 @@
-import { setMetaData } from './setMetaData';
-import { ControlTypes } from '../../types/control-types.enum';
 import { SelectControlMeta } from '../../types/controls-meta/controls-meta';
-import { SelectControlDescription } from '../../types/controls-meta/select-control-description';
-import { Descriptions_dep } from '../../types/controls-meta/Descriptions_dep';
+import { ControlsDescription } from '../../types/controls-meta/descriptions';
+import { convenientSetterAndGetter, addMetaData } from './addMetaData';
 
 export function SelectControl(metaData: SelectControlMeta) {
   return function (target: any, propertyKey: string) {
-    setMetaData(
+    convenientSetterAndGetter(target, propertyKey);
+    addMetaData(
       target,
       propertyKey,
-      Descriptions_dep.select(metaData, propertyKey)
+      ControlsDescription.select(metaData, propertyKey)
     );
   };
 }

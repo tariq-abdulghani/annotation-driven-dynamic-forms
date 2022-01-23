@@ -1,13 +1,14 @@
 import { RadioButtonsMeta } from '../../types/controls-meta/controls-meta';
-import { Descriptions_dep } from '../../types/controls-meta/Descriptions_dep';
-import { setMetaData } from './setMetaData';
+import { ControlsDescription } from '../../types/controls-meta/descriptions';
+import { addMetaData, convenientSetterAndGetter } from './addMetaData';
 
 export function RadioButtons(radiosMeta: RadioButtonsMeta) {
   return function (target: any, propertyKey: string) {
-    setMetaData(
+    convenientSetterAndGetter(target, propertyKey);
+    addMetaData(
       target,
       propertyKey,
-      Descriptions_dep.radioButtons(radiosMeta, propertyKey)
+      ControlsDescription.radioButtons(radiosMeta, propertyKey)
     );
   };
 }

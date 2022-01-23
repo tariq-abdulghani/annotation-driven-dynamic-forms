@@ -167,6 +167,7 @@
           type="radio"
           [formControl]="controlMeta.formControl"
           [value]="opt"
+          [name]="controlMeta.name"
         />
         <label class="form-check-label" [attr.for]="controlMeta.id + i">
           {{ opt[$any(controlMeta).bindLabel] }}

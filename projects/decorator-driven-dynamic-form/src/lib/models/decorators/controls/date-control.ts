@@ -1,15 +1,16 @@
 import { DateControlMeta } from '../../types/controls-meta/controls-meta';
+import { ControlsDescription } from '../../types/controls-meta/descriptions';
 import { Descriptions_dep } from '../../types/controls-meta/Descriptions_dep';
+import { addMetaData, convenientSetterAndGetter } from './addMetaData';
 import { setMetaData } from './setMetaData';
 
 export function DateControl(dateControlMeta: DateControlMeta) {
   return function (target: any, propertyKey: string) {
-    dateControlMeta.type = 'date';
-    // setMetaData(target, propertyKey, dateControlMeta, ControlTypes.Date);
-    setMetaData(
+    convenientSetterAndGetter(target, propertyKey);
+    addMetaData(
       target,
       propertyKey,
-      Descriptions_dep.date(dateControlMeta, propertyKey)
+      ControlsDescription.date(dateControlMeta, propertyKey)
     );
   };
 }
