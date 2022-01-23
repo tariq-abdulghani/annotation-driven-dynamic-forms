@@ -1,5 +1,5 @@
 import { RadioButtonsMeta } from '../../types/controls-meta/controls-meta';
-import { Descriptors } from '../../types/descriptors';
+import { Descriptions_dep } from '../../types/controls-meta/Descriptions_dep';
 import { setMetaData } from './setMetaData';
 
 export function RadioButtons(radiosMeta: RadioButtonsMeta) {
@@ -7,7 +7,7 @@ export function RadioButtons(radiosMeta: RadioButtonsMeta) {
     setMetaData(
       target,
       propertyKey,
-      Descriptors.radioButtons(radiosMeta, propertyKey)
+      Descriptions_dep.radioButtons(radiosMeta, propertyKey)
     );
   };
 }

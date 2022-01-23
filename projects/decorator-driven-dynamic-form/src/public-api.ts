@@ -32,6 +32,6 @@ export * from './lib/models/decorators/validation/email';
 
 export * from './lib/models/types/actions-api';
 export * from './lib/models/types/control-types.enum';
-export * from './lib/models/types/descriptors';
+
 export * from './lib/models/types/controls-meta/controls-meta';
 export * from './lib/models/types/form-layout-enum';

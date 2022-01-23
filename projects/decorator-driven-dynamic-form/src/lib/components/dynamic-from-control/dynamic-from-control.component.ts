@@ -3,7 +3,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { ControlTypes } from '../../models/types/control-types.enum';
 import { FormLayout } from '../../models/types/form-layout-enum';
-import { FormDescriptor } from '../../models/types/descriptors';
+import { FormDescription } from '../../models/types/forms-meta/FormDescription';
 
 @Component({
   selector: '[dd-dynamic-from-control]',
@@ -11,7 +11,7 @@ import { FormDescriptor } from '../../models/types/descriptors';
   styleUrls: ['./dynamic-from-control.component.css'],
 })
 export class DynamicFromControlComponent implements OnInit {
-  @Input() formDescriptor!: FormDescriptor;
+  @Input() formDescriptor!: FormDescription;
   readonly CONTROL_TYPES = ControlTypes;
   readonly FORM_LAYOUT_OPTS = FormLayout;
   private dataSources = new Map<string, Observable<any[]>>(); //used to return the same observable to stop async pipe from sending multiple http requests

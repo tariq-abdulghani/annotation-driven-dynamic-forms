@@ -1,5 +1,5 @@
 import { DateControlMeta } from '../../types/controls-meta/controls-meta';
-import { Descriptors } from '../../types/descriptors';
+import { Descriptions_dep } from '../../types/controls-meta/Descriptions_dep';
 import { setMetaData } from './setMetaData';
 
 export function DateControl(dateControlMeta: DateControlMeta) {
@@ -9,7 +9,7 @@ export function DateControl(dateControlMeta: DateControlMeta) {
     setMetaData(
       target,
       propertyKey,
-      Descriptors.date(dateControlMeta, propertyKey)
+      Descriptions_dep.date(dateControlMeta, propertyKey)
     );
   };
 }

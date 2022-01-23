@@ -1,5 +1,5 @@
 import { CheckboxMeta } from '../../types/controls-meta/controls-meta';
-import { Descriptors } from '../../types/descriptors';
+import { Descriptions_dep } from '../../types/controls-meta/Descriptions_dep';
 import { setMetaData } from './setMetaData';
 
 /**
@@ -13,7 +13,7 @@ export function CheckboxControl(controlMeta: CheckboxMeta) {
     setMetaData(
       target,
       propertyKey,
-      Descriptors.checkbox(controlMeta, propertyKey)
+      Descriptions_dep.checkbox(controlMeta, propertyKey)
     );
   };
 }

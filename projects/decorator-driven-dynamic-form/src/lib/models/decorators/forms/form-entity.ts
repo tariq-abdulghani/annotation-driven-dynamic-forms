@@ -1,4 +1,4 @@
-import { FormMeta } from '../../types/controls-meta/controls-meta';
+import { FormMeta } from "../../types/forms-meta/FormMeta";
 import { FormLayout } from '../../types/form-layout-enum';
 
 export function FormEntity(formMeta?: FormMeta) {

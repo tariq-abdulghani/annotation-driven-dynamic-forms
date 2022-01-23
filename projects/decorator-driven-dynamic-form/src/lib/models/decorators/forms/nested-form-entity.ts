@@ -1,17 +1,17 @@
 import { FormEntityProcessor } from '../../../utils/form-entity-processor';
-import { NestedFormDescriptor } from '../../types/descriptors';
-import { NestedFormMeta } from '../../types/controls-meta/controls-meta';
+import { NestedFormDescription } from '../../types/forms-meta/NestedFormDescription';
+import { NestedFormMeta } from '../../types/forms-meta/NestedFormMeta';
 
 export function NestedFormEntity(metaData: NestedFormMeta) {
   return function (target: any, propertyKey: string) {
     const instance = new metaData.classDeclaration();
-    const nestedFormDescriptor = new NestedFormDescriptor();
-    const descriptor = FormEntityProcessor.generateFormDescriptor(instance);
+    const nestedFormDescriptor = new NestedFormDescription();
+    const descriptor = FormEntityProcessor.generateFormDescription(instance);
     nestedFormDescriptor.instance = instance;
     nestedFormDescriptor.name = metaData.name;
     nestedFormDescriptor.propertyKey = propertyKey;
     nestedFormDescriptor.formGroup = descriptor.formGroup;
-    nestedFormDescriptor.controlsDescriptor = descriptor.controlsDescriptor;
+    nestedFormDescriptor.controlsDescriptions = descriptor.controlsDescriptions;
     nestedFormDescriptor.formLayout = descriptor.formLayout;
     setNestedMetaData(target, propertyKey, nestedFormDescriptor);
   };
@@ -20,7 +20,7 @@ export function NestedFormEntity(metaData: NestedFormMeta) {
 export function setNestedMetaData(
   target: any,
   propertyKey: string,
-  metaData: NestedFormDescriptor
+  metaData: NestedFormDescription
 ) {
   const setter = function (val?: any) {
     metaData.instance.smartSetter(val);

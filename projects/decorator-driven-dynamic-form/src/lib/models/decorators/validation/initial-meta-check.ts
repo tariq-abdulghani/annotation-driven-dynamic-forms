@@ -1,13 +1,11 @@
-import {
-  ControlDescriptor,
-  InitializedControlDescriptor,
-} from '../../types/descriptors';
+import { InitializedControlDescription } from '../../types/controls-meta/initialized-control-description';
+import { ControlDescription } from '../../types/controls-meta/control-description';
 
 export function initialMetaCheck(
   target: any,
   propertyKey: string
-): InitializedControlDescriptor {
-  const metaData: ControlDescriptor = Reflect.getMetadata(
+): InitializedControlDescription {
+  const metaData: ControlDescription = Reflect.getMetadata(
     propertyKey,
     target,
     propertyKey
@@ -24,5 +22,5 @@ export function initialMetaCheck(
   if (!metaData.validators) {
     metaData.validators = [];
   }
-  return metaData as InitializedControlDescriptor;
+  return metaData as InitializedControlDescription;
 }

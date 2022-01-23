@@ -1,9 +1,9 @@
-import { ControlDescriptor } from '../../types/descriptors';
+import { ControlDescription } from '../../types/controls-meta/control-description';
 
 export function setMetaData(
   target: any,
   propertyKey: string,
-  metaData: ControlDescriptor
+  metaData: ControlDescription
 ) {
   const setter = function (val?: any) {
     metaData.formControl?.setValue(val);

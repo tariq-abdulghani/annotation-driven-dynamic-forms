@@ -1,7 +1,9 @@
 import { FormControl, FormGroup } from '@angular/forms';
 import { ControlTypes } from '../models/types/control-types.enum';
 import { FormLayout } from '../models/types/form-layout-enum';
-import { Descriptors, FormDescriptor } from '../models/types/descriptors';
+import { Descriptions_dep } from '../models/types/controls-meta/Descriptions_dep';
+import { FormDescription } from '../models/types/forms-meta/FormDescription';
+import { ControlsDescription } from '../models/types/controls-meta/descriptions';
 
 export class FormEntityProcessor {
   /**
@@ -10,20 +12,20 @@ export class FormEntityProcessor {
    * @param formEntity instance of Class annotated with '@FormModel'
    * @returns
    */
-  public static generateFormDescriptor(formEntity: {
+  public static generateFormDescription(formEntity: {
     [x: string]: any;
-  }): FormDescriptor {
+  }): FormDescription {
     // no need for recursion to generate all descriptors in child controls
     // the way decorators work works on all of them
 
-    const formDescriptor = new FormDescriptor();
+    const formDescription = new FormDescription();
     // form group initializer key string control name value FormControl
     const formGroupInitializer = {} as { [x: string]: any };
 
     // getting fields and set them in the descriptor
     Object.entries(formEntity).forEach((keyValue) => {
       //@ts-ignore
-      formDescriptor[keyValue[0]] = keyValue[1];
+      formDescription[keyValue[0]] = keyValue[1];
     });
 
     // scans all enumerated fields including property setters and getters
@@ -34,22 +36,24 @@ export class FormEntityProcessor {
           formEntity[key],
           metaData.validators
         );
-        const boundDescriptor = bindDescriptorToFormControl(
+
+        const boundDescription = ControlsDescription.cloneAndBind(
           metaData,
           formControl
         );
-        formDescriptor.controlsDescriptor.push(boundDescriptor);
+        //@ts-ignore
+        formDescription.controlsDescriptions.push(boundDescription);
         formGroupInitializer[metaData.name] = formControl;
         bindFieldToFormControl(formEntity, key, formControl);
       }
 
       if (metaData && metaData.controlType == ControlTypes.Composite) {
-        formDescriptor.controlsDescriptor.push(metaData);
+        formDescription.controlsDescriptions.push(metaData);
         formGroupInitializer[metaData.name] = metaData.formGroup;
       }
     }
-    formDescriptor.formGroup = new FormGroup(formGroupInitializer);
-    return formDescriptor;
+    formDescription.formGroup = new FormGroup(formGroupInitializer);
+    return formDescription;
   }
 }
 

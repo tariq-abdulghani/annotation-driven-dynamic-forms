@@ -4,7 +4,7 @@
 >
   {{ $any(formDescriptor).label || $any(formDescriptor).name }}
 </legend>
-<ng-container *ngFor="let controlMeta of formDescriptor.controlsDescriptor">
+<ng-container *ngFor="let controlMeta of formDescriptor.controlsDescriptions">
   <div
     *ngIf="
       controlMeta.controlType == CONTROL_TYPES.Text ||

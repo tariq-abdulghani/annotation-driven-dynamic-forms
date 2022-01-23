@@ -1,4 +1,4 @@
-import { FormDescriptor } from '../../types/descriptors';
+import { FormDescription } from '../../types/forms-meta/FormDescription';
 
 /**
  * Enables using objects to update form so no need to create new form model
@@ -7,7 +7,7 @@ import { FormDescriptor } from '../../types/descriptors';
  *
  */
 export function FormModelSmartSetter(target: any, propertyKey: string) {
-  let value: FormDescriptor | null = null;
+  let value: FormDescription | null = null;
 
   const setter = function (val?: any) {
     console.log(val);

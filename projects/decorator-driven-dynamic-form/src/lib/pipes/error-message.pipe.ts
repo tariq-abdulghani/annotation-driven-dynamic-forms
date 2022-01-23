@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { ControlDescriptor } from '../models/types/descriptors';
+import { ControlDescription } from '../models/types/controls-meta/control-description';
 import { MessageStringInterpolation } from '../utils/message-string-interpolation';
 
 @Pipe({
@@ -7,7 +7,7 @@ import { MessageStringInterpolation } from '../utils/message-string-interpolatio
   pure: false,
 })
 export class ErrorMessagePipe implements PipeTransform {
-  transform(value: ControlDescriptor): string | null {
+  transform(value: ControlDescription): string | null {
     if (value?.formControl?.errors) {
       let errorString: string | null = null;
       const key = Object.keys(value.formControl.errors)[0];

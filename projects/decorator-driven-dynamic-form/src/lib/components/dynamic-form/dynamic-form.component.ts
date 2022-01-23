@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { ControlTypes } from '../../models/types/control-types.enum';
 import { FormLayout } from '../../models/types/form-layout-enum';
-import { FormDescriptor } from '../../models/types/descriptors';
+import { FormDescription } from '../../models/types/forms-meta/FormDescription';
 import { FormEntityProcessor } from '../../utils/form-entity-processor';
 
 @Component({
@@ -20,7 +20,7 @@ import { FormEntityProcessor } from '../../utils/form-entity-processor';
 export class DynamicFormComponent implements OnInit, OnChanges {
   readonly CONTROL_TYPES = ControlTypes;
   readonly FORM_LAYOUT_OPTS = FormLayout;
-  formDescriptor!: FormDescriptor;
+  formDescriptor!: FormDescription;
   @Input('formModel') formModel!: any;
   @Output('submitEvent') submitEvent: EventEmitter<any> =
     new EventEmitter<any>();
@@ -31,7 +31,7 @@ export class DynamicFormComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.formModel) {
       this.formModel = changes.formModel.currentValue;
-      this.formDescriptor = FormEntityProcessor.generateFormDescriptor(
+      this.formDescriptor = FormEntityProcessor.generateFormDescription(
         this.formModel
       );
       console.log(this.formDescriptor);

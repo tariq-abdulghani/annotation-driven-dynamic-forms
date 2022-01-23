@@ -1,5 +1,5 @@
 import { NumberControlMeta } from '../../types/controls-meta/controls-meta';
-import { Descriptors } from '../../types/descriptors';
+import { ControlsDescription } from '../../types/controls-meta/descriptions';
 import { convenientSetterAndGetter, addMetaData } from './addMetaData';
 
 export function NumberControl(numberControlMeta: NumberControlMeta) {
@@ -8,7 +8,7 @@ export function NumberControl(numberControlMeta: NumberControlMeta) {
     addMetaData(
       target,
       propertyKey,
-      Descriptors.number(numberControlMeta, propertyKey)
+      ControlsDescription.number(numberControlMeta, propertyKey)
     );
   };
 }
