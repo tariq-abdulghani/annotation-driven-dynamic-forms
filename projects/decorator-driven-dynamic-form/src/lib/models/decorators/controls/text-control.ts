@@ -1,7 +1,7 @@
 import { TextControlMeta } from '../../types/controls-meta/controls-meta';
 import 'reflect-metadata';
 import { convenientSetterAndGetter, addMetaData } from './addMetaData';
-import { ControlsDescription } from '../../types/controls-meta/descriptions';
+import { ControlsDescription } from '../../types/controls-meta/controls-description';
 
 export function TextControl(textControlMeta: TextControlMeta) {
   return function (target: any, propertyKey: string) {

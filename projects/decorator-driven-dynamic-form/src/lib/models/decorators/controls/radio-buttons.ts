@@ -1,5 +1,5 @@
 import { RadioButtonsMeta } from '../../types/controls-meta/controls-meta';
-import { ControlsDescription } from '../../types/controls-meta/descriptions';
+import { ControlsDescription } from '../../types/controls-meta/controls-description';
 import { addMetaData, convenientSetterAndGetter } from './addMetaData';
 
 export function RadioButtons(radiosMeta: RadioButtonsMeta) {

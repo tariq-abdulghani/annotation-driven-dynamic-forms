@@ -1,5 +1,5 @@
 import { NumberControlMeta } from '../../types/controls-meta/controls-meta';
-import { ControlsDescription } from '../../types/controls-meta/descriptions';
+import { ControlsDescription } from '../../types/controls-meta/controls-description';
 import { convenientSetterAndGetter, addMetaData } from './addMetaData';
 
 export function NumberControl(numberControlMeta: NumberControlMeta) {

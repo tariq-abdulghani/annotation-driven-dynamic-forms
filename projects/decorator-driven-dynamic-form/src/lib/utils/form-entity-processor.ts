@@ -3,7 +3,7 @@ import { ControlTypes } from '../models/types/control-types.enum';
 import { FormLayout } from '../models/types/form-layout-enum';
 import { Descriptions_dep } from '../models/types/controls-meta/Descriptions_dep';
 import { FormDescription } from '../models/types/forms-meta/FormDescription';
-import { ControlsDescription } from '../models/types/controls-meta/descriptions';
+import { ControlsDescription } from '../models/types/controls-meta/controls-description';
 
 export class FormEntityProcessor {
   /**
