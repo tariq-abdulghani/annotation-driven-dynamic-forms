@@ -1,7 +1,5 @@
 import { FormControl, FormGroup } from '@angular/forms';
 import { ControlTypes } from '../models/types/control-types.enum';
-import { FormLayout } from '../models/types/form-layout-enum';
-import { Descriptions_dep } from '../models/types/controls-meta/Descriptions_dep';
 import { FormDescription } from '../models/types/forms-meta/FormDescription';
 import { ControlsDescription } from '../models/types/controls-meta/controls-description';
 
@@ -15,22 +13,22 @@ export class FormEntityProcessor {
   public static generateFormDescription(formEntity: {
     [x: string]: any;
   }): FormDescription {
-    // no need for recursion to generate all descriptors in child controls
-    // the way decorators work works on all of them
-
     const formDescription = new FormDescription();
     // form group initializer key string control name value FormControl
     const formGroupInitializer = {} as { [x: string]: any };
 
     // getting fields and set them in the descriptor
     Object.entries(formEntity).forEach((keyValue) => {
-      //@ts-ignore
-      formDescription[keyValue[0]] = keyValue[1];
+      if (!Reflect.hasMetadata(keyValue[0], formEntity, keyValue[0])) {
+        //@ts-ignore
+        formDescription[keyValue[0]] = keyValue[1];
+      }
     });
 
     // scans all enumerated fields including property setters and getters
     for (const key in formEntity) {
       const metaData = Reflect.getMetadata(key, formEntity, key);
+
       if (metaData && metaData.controlType != ControlTypes.Composite) {
         const formControl = new FormControl(
           formEntity[key],
@@ -48,30 +46,22 @@ export class FormEntityProcessor {
       }
 
       if (metaData && metaData.controlType == ControlTypes.Composite) {
-        formDescription.controlsDescriptions.push(metaData);
-        formGroupInitializer[metaData.name] = metaData.formGroup;
+        const nestedFormEntity = new metaData.classDeclaration();
+        let nestedFormDescription =
+          this.generateFormDescription(nestedFormEntity);
+        nestedFormEntity.smartSetter(formEntity[key]);
+        bindCompositeFieldToFormGroup(formEntity, key, nestedFormEntity);
+
+        //@ts-ignore
+        nestedFormDescription.controlType = ControlTypes.Composite;
+        //@ts-ignore
+        formDescription.controlsDescriptions.push(nestedFormDescription);
+        formGroupInitializer[metaData.name] = nestedFormDescription.formGroup;
       }
     }
     formDescription.formGroup = new FormGroup(formGroupInitializer);
     return formDescription;
   }
-}
-
-/**
- * Sets formControl field in the descriptor with a form control
- * specific for entity
- *
- * @param descriptor ControlDescriptor
- * @param formControl FormControl
- * @returns ControlDescriptor with form control initialized
- */
-function bindDescriptorToFormControl(
-  descriptor: any,
-  formControl: FormControl
-): any {
-  const clonedObj = { ...descriptor };
-  clonedObj.formControl = formControl;
-  return clonedObj;
 }
 
 function bindFieldToFormControl(
@@ -85,6 +75,26 @@ function bindFieldToFormControl(
 
   const getter = function () {
     return formControl.value;
+  };
+
+  Object.defineProperty(target, propertyKey, {
+    set: setter,
+    get: getter,
+    enumerable: true,
+  });
+}
+
+export function bindCompositeFieldToFormGroup(
+  target: any,
+  propertyKey: string,
+  formEntity: any
+) {
+  const setter = function (val?: any) {
+    formEntity.smartSetter(val);
+  };
+
+  const getter = function () {
+    return formEntity.formGroup?.value;
   };
 
   Object.defineProperty(target, propertyKey, {

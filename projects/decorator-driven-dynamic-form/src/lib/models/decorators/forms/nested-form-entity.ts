@@ -1,19 +1,25 @@
 import { FormEntityProcessor } from '../../../utils/form-entity-processor';
+import { ControlTypes } from '../../types/control-types.enum';
 import { NestedFormDescription } from '../../types/forms-meta/NestedFormDescription';
 import { NestedFormMeta } from '../../types/forms-meta/NestedFormMeta';
+import { addMetaData } from '../controls/addMetaData';
 
 export function NestedFormEntity(metaData: NestedFormMeta) {
   return function (target: any, propertyKey: string) {
-    const instance = new metaData.classDeclaration();
-    const nestedFormDescriptor = new NestedFormDescription();
-    const descriptor = FormEntityProcessor.generateFormDescription(instance);
-    nestedFormDescriptor.instance = instance;
-    nestedFormDescriptor.name = metaData.name;
-    nestedFormDescriptor.propertyKey = propertyKey;
-    nestedFormDescriptor.formGroup = descriptor.formGroup;
-    nestedFormDescriptor.controlsDescriptions = descriptor.controlsDescriptions;
-    nestedFormDescriptor.formLayout = descriptor.formLayout;
-    setNestedMetaData(target, propertyKey, nestedFormDescriptor);
+    addMetaData(target, propertyKey, {
+      ...metaData,
+      controlType: ControlTypes.Composite,
+    });
+    // const instance = new metaData.classDeclaration();
+    // const nestedFormDescriptor = new NestedFormDescription();
+    // const descriptor = FormEntityProcessor.generateFormDescription(instance);
+    // nestedFormDescriptor.instance = instance;
+    // nestedFormDescriptor.name = metaData.name;
+    // nestedFormDescriptor.propertyKey = propertyKey;
+    // nestedFormDescriptor.formGroup = descriptor.formGroup;
+    // nestedFormDescriptor.controlsDescriptions = descriptor.controlsDescriptions;
+    // nestedFormDescriptor.formLayout = descriptor.formLayout;
+    // setNestedMetaData(target, propertyKey, nestedFormDescriptor);
   };
 }
 

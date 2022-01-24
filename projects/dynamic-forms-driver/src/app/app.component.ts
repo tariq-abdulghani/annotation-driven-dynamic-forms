@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { LoginForm } from './demo-models/login-form';
 import { PersonForm } from './demo-models/person-dto';
 
@@ -7,7 +7,7 @@ import { PersonForm } from './demo-models/person-dto';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterViewInit {
   title = 'dynamic-forms-driver';
 
   // @FormModelSmartSetter
@@ -22,6 +22,18 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log(new LoginForm());
     // throw new Error('Method not implemented.');
+    this.loginForm2.age = 50;
+    this.loginForm2.address = {
+      city: 'z',
+      state: 'sr',
+      zipCode: '78',
+    };
+  }
+
+  ngAfterViewInit(): void {
+    // this.loginForm2.name = 'Yas';
+    // this.loginForm2.age = 50;
   }
 }
