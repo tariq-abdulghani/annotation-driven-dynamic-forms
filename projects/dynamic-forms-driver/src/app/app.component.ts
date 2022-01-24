@@ -24,6 +24,8 @@ export class AppComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     console.log(new LoginForm());
     // throw new Error('Method not implemented.');
+    //@ts-ignore
+    this.loginForm2.gender = { label: 'male', id: 'm' };
     this.loginForm2.age = 50;
     this.loginForm2.address = {
       city: 'z',

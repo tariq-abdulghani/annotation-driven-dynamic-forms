@@ -10,6 +10,9 @@ import {
   RadioButtons,
   NestedFormEntity,
   FormEntity,
+  RequiredTrue,
+  Max,
+  Min,
 } from 'decorator-driven-dynamic-form';
 import { DateControl } from 'projects/decorator-driven-dynamic-form/src/lib/models/decorators/controls/date-control';
 import {
@@ -23,6 +26,8 @@ import { PaymentMethodsList } from './payment-methods';
 @Submit({ label: 'save', class: 'btn btn-primary' })
 @FormEntity()
 export class LoginForm {
+  @MaxLength({ maxlength: 20, message: 'max length 20' })
+  @MinLength({ minlength: 3, message: 'min length 3' })
   @NotNull({ message: 'user name is required!' })
   @TextControl({
     name: 'fullName',
@@ -33,6 +38,12 @@ export class LoginForm {
   })
   name: string | null = null;
 
+  @NotNull({ message: 'password is required!' })
+  @Pattern({
+    pattern: /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/,
+    message:
+      'password must be 8 letters at least, and contains uppercase and special character and alphanumeric',
+  })
   @TextControl({
     name: 'password',
     type: 'password',
@@ -40,6 +51,9 @@ export class LoginForm {
   })
   password: string | null = null;
 
+  @Max({ maxValue: 100, message: 'age cant be more than ${max} years' })
+  @Min({ minValue: 7, message: 'age cant be lass than ${min}' })
+  @NotNull({ message: 'age is required' })
   @NumberControl({
     id: 'age1',
     name: 'age',
@@ -68,6 +82,7 @@ export class LoginForm {
   })
   gender = null;
 
+  @RequiredTrue({ message: 'must be true' })
   @CheckboxControl({
     name: 'employee',
     id: 'employee',
