@@ -166,7 +166,9 @@
           [id]="controlMeta.id + i"
           type="radio"
           [formControl]="controlMeta.formControl"
-          [value]="opt"
+          [value]="
+            $any(controlMeta).bindValue ? $any(controlMeta).bindValue : opt
+          "
           [name]="controlMeta.name"
         />
         <label class="form-check-label" [attr.for]="controlMeta.id + i">

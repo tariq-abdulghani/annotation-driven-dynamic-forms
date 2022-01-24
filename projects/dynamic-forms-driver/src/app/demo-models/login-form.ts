@@ -9,6 +9,7 @@ import {
   SelectControl,
   RadioButtons,
   NestedFormEntity,
+  FormEntity,
 } from 'decorator-driven-dynamic-form';
 import { DateControl } from 'projects/decorator-driven-dynamic-form/src/lib/models/decorators/controls/date-control';
 import {
@@ -16,9 +17,11 @@ import {
   NumberControl,
 } from 'projects/decorator-driven-dynamic-form/src/public-api';
 import { Address } from './address-dto';
+import { PaymentMethodsList } from './payment-methods';
 
 @Reset({ label: 'clear', class: 'btn btn-danger' })
 @Submit({ label: 'save', class: 'btn btn-primary' })
+@FormEntity()
 export class LoginForm {
   @NotNull({ message: 'user name is required!' })
   @TextControl({
@@ -51,46 +54,37 @@ export class LoginForm {
   })
   expiryDate: string | null = null;
 
-  // @SelectControl({
-  //   id: 'gender',
-  //   name: 'gender',
-  //   label: 'gender',
-  //   dataSource: [
-  //     { label: 'male', id: 'm' },
-  //     { label: 'female', id: 'f' },
-  //   ],
-  //   bindLabel: 'label',
-  //   bindValue: null,
-  //   compareWith: (a, b) => (a && b ? a.id == b.id : false),
-  // })
-  // gender!: any;
+  @SelectControl({
+    id: 'gender',
+    name: 'gender',
+    label: 'gender',
+    dataSource: [
+      { label: 'male', id: 'm' },
+      { label: 'female', id: 'f' },
+    ],
+    bindLabel: 'label',
+    bindValue: null,
+    compareWith: (a, b) => (a && b ? a.id == b.id : false),
+  })
+  gender = null;
 
-  // @CheckboxControl({
-  //   name: 'employee',
-  //   id: 'employee',
-  //   label: 'Employee',
-  // })
-  // employee = false;
+  @CheckboxControl({
+    name: 'employee',
+    id: 'employee',
+    label: 'Employee',
+  })
+  employee = true;
 
-  // @RadioButtons({
-  //   id: 'payment',
-  //   name: 'payment',
-  //   legend: 'Payment',
-  //   dataSource: [
-  //     { key: 'visa', id: 'v' },
-  //     { key: 'cash', id: 'c' },
-  //   ],
-  //   bindLabel: 'key',
-  //   bindValue: null,
-  // })
-  // payment!: any;
+  @RadioButtons({
+    id: 'payment',
+    name: 'payment',
+    legend: 'Payment',
+    dataSource: PaymentMethodsList,
+    bindLabel: 'key',
+    bindValue: null,
+  })
+  payment = { key: 'visa', id: 'v' };
 
   @NestedFormEntity({ name: 'address', classDeclaration: Address })
   address: Address | null = null;
-
-  // = {
-  //   city: 'AAA',
-  //   state: 'asd',
-  //   zipCode: '0154',
-  // };
 }
