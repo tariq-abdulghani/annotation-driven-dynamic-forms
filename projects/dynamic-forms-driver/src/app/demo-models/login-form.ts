@@ -13,14 +13,12 @@ import {
   RequiredTrue,
   Max,
   Min,
-} from 'decorator-driven-dynamic-form';
-import { DateControl } from 'projects/decorator-driven-dynamic-form/src/lib/models/decorators/controls/date-control';
-import {
-  CheckboxControl,
+  DateControl,
   NumberControl,
-} from 'projects/decorator-driven-dynamic-form/src/public-api';
+  CheckboxControl,
+} from 'decorator-driven-dynamic-form';
+
 import { Address } from './address-dto';
-import { PaymentMethodsList } from './payment-methods';
 
 @Reset({ label: 'clear', class: 'btn btn-danger' })
 @Submit({ label: 'save', class: 'btn btn-primary' })
@@ -94,7 +92,10 @@ export class LoginForm {
     id: 'payment',
     name: 'payment',
     legend: 'Payment',
-    dataSource: PaymentMethodsList,
+    dataSource: [
+      { key: 'visa', id: 'v' },
+      { key: 'cash', id: 'c' },
+    ],
     bindLabel: 'key',
     bindValue: null,
   })

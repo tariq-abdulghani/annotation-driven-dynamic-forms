@@ -16,10 +16,12 @@ export * from './lib/models/decorators/actions/reset';
 export * from './lib/models/decorators/actions/submit';
 // controls
 export * from './lib/models/decorators/controls/text-control';
+export * from './lib/models/decorators/controls/number-control';
+export * from './lib/models/decorators/controls/date-control';
 export * from './lib/models/decorators/controls/select-control';
 export * from './lib/models/decorators/controls/checkbox-control';
 export * from './lib/models/decorators/controls/radio-buttons';
-export * from './lib/models/decorators/controls/number-control';
+
 // validation
 export * from './lib/models/decorators/validation/not-null';
 export * from './lib/models/decorators/validation/required-true';

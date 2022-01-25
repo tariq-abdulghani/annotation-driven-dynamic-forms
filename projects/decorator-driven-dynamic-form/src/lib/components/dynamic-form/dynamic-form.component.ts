@@ -21,7 +21,7 @@ export class DynamicFormComponent implements OnInit, OnChanges {
   readonly CONTROL_TYPES = ControlTypes;
   readonly FORM_LAYOUT_OPTS = FormLayout;
   formDescriptor!: FormDescription;
-  @Input('formModel') formModel!: any;
+  @Input('formEntity') formModel!: any;
   @Output('submitEvent') submitEvent: EventEmitter<any> =
     new EventEmitter<any>();
   constructor() {}

@@ -1,7 +1,14 @@
-# Decorator Driven Dynamic Forms
+# Decorator Driven Dynamic Forms version 2.0.0-a.1
 
 > Opinionated way to create dynamic forms with **no json** , **no inheritance**
 > just use **decorators**
+
+## What is new in version 2.0.0-a.1
+
+1. fixed issues associated with creating multiple instances of the same form entity this can be done now.
+2. cleaning code base to be more reliable
+3. removed `@SplittedDateRange`
+4. changed some other APIs so use the docs per version
 
 ## Project Goals
 
@@ -63,7 +70,8 @@
 ## Install
 
 > Note that:
-> library is under active development so some API may change in the future
+> library is under active development so some API may change.
+> please use each version documentation to test the library your opinions are appreciated
 
 install boot strap if you don't have it`npm i bootstrap` and add it in styles
 `npm i ddd-form`
@@ -91,11 +99,14 @@ export class AppModule {}
 address class which is a form that will be nested in another form
 
 ```typescript
-import { TextControl } from "decorator-driven-dynamic-forms/models/decorators/common-controls";
-import { FormModel } from "decorator-driven-dynamic-forms/models/decorators/form-model";
-import { NotNull } from "decorator-driven-dynamic-forms/models/decorators/validation/common-validators";
+import {
+  FormEntity,
+  FormLayout,
+  NotNull,
+  TextControl,
+} from "decorator-driven-dynamic-form";
 
-@FormModel()
+@FormEntity({ formLayout: FormLayout.GRID })
 export class Address {
   @NotNull({ message: "city is required " })
   @TextControl({
@@ -114,10 +125,6 @@ export class Address {
   })
   state!: string;
 
-  @MinLength({
-    minlength: 3,
-    message: "zipCode be less than ${requiredLength} characters ",
-  })
   @NotNull({ message: "zipCode is required " })
   @TextControl({
     name: "zipCode",
@@ -135,34 +142,118 @@ export class Address {
 }
 ```
 
-contact info our root form
+LoginForm our root form
 
 ```typescript
-import { FormModel } from "DecoratorDrivenDynamicFormsModule/models/decorators/form-model";
-import { NestedFormModel } from "DecoratorDrivenDynamicFormsModule/models/decorators/nested-form-model";
+import {
+  MaxLength,
+  MinLength,
+  NotNull,
+  TextControl,
+  Pattern,
+  Reset,
+  Submit,
+  SelectControl,
+  RadioButtons,
+  NestedFormEntity,
+  FormEntity,
+  RequiredTrue,
+  Max,
+  Min,
+  DateControl,
+  NumberControl,
+  CheckboxControl,
+} from "decorator-driven-dynamic-form";
+
+import { Address } from "./address-dto";
 
 @Reset({ label: "clear", class: "btn btn-danger" })
 @Submit({ label: "save", class: "btn btn-primary" })
-@FormModel()
-export class ContactInfo {
+@FormEntity()
+export class LoginForm {
+  @MaxLength({ maxlength: 20, message: "max length 20" })
+  @MinLength({ minlength: 3, message: "min length 3" })
+  @NotNull({ message: "user name is required!" })
   @TextControl({
-    id: "tel",
-    name: "tel",
-    type: "tel",
-    label: "tel 1",
+    name: "fullName",
+    type: "text",
+    id: "full-name",
+    label: "user name",
+    placeHolder: "example ...",
   })
-  telA!: string;
+  name: string | null = null;
 
+  @NotNull({ message: "password is required!" })
+  @Pattern({
+    pattern: /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/,
+    message:
+      "password must be 8 letters at least, and contains uppercase and special character and alphanumeric",
+  })
   @TextControl({
-    id: "tel2",
-    name: "tel2",
-    type: "tel",
-    label: "tel 2",
+    name: "password",
+    type: "password",
+    id: "password",
   })
-  telB!: string;
+  password: string | null = null;
 
-  @NestedFormModel({ name: "address", classDeclaration: Address })
-  address!: Address;
+  @Max({ maxValue: 100, message: "age cant be more than ${max} years" })
+  @Min({ minValue: 7, message: "age cant be lass than ${min}" })
+  @NotNull({ message: "age is required" })
+  @NumberControl({
+    id: "age1",
+    name: "age",
+    label: "age",
+  })
+  age = 30;
+
+  @DateControl({
+    id: "expiryDate",
+    name: "expiryDate",
+    label: "Expiry Date",
+  })
+  expiryDate: string | null = null;
+
+  @SelectControl({
+    id: "gender",
+    name: "gender",
+    label: "gender",
+    dataSource: [
+      { label: "male", id: "m" },
+      { label: "female", id: "f" },
+    ],
+    bindLabel: "label",
+    bindValue: null,
+    compareWith: (a, b) => (a && b ? a.id == b.id : false),
+  })
+  gender = null;
+
+  @RequiredTrue({ message: "must be true" })
+  @CheckboxControl({
+    name: "employee",
+    id: "employee",
+    label: "Employee",
+  })
+  employee = true;
+
+  @RadioButtons({
+    id: "payment",
+    name: "payment",
+    legend: "Payment",
+    dataSource: [
+      { key: "visa", id: "v" },
+      { key: "cash", id: "c" },
+    ],
+    bindLabel: "key",
+    bindValue: null,
+  })
+  payment = { key: "visa", id: "v" };
+
+  @NestedFormEntity({
+    name: "address",
+    classDeclaration: Address,
+    legend: "Address",
+  })
+  address: Address | null = null;
 }
 ```
 
@@ -174,14 +265,24 @@ export class ContactInfo {
   templateUrl: "./app.component.html",
   styleUrls: ["./app.component.css"],
 })
-export class AppComponent {
-  title = "decorator-driven-forms";
+export class AppComponent implements OnInit {
+  title = "dynamic-forms-driver";
 
-  contactInfoForm: ContactInfo = new ContactInfo();
+  loginForm = new LoginForm();
 
-  constructor() {}
   onSubmit($event: any) {
     console.log($event);
+  }
+
+  ngOnInit(): void {
+    //@ts-ignore
+    this.loginForm.gender = { label: "male", id: "m" };
+    this.loginForm.age = 50;
+    this.loginForm.address = {
+      city: "z",
+      state: "sr",
+      zipCode: "78",
+    };
   }
 }
 ```
@@ -189,18 +290,24 @@ export class AppComponent {
 4. pass it to the dynamic-form-component
 
 ```angular2html
-      <ddd-form [formModel]="personDto" (submitEvent)="onSubmit($event)"></ddd-form>
+<div class="container">
+  <ddd-form
+    [formEntity]="loginForm"
+    (submitEvent)="onSubmit($event)"
+  ></ddd-form>
+</div>
+
 ```
 
-Run `ng run start` and see the result your self.
+Run `ng s` and see the result your self.
 
 ## API summary
 
 ### Component API
 
-| Input         |   type   |                                                                           description |
-| ------------- | :------: | ------------------------------------------------------------------------------------: |
-| `[formModel]` | `Object` | any instance of class annotated with `@FormModel()`, the input form model to the view |
+| Input          |   type   |                                                                            description |
+| -------------- | :------: | -------------------------------------------------------------------------------------: |
+| `[formEntity]` | `Object` | any instance of class annotated with `@FormEntity()`, the input form model to the view |
 
 | Output          |   type   |                            description |
 | --------------- | :------: | -------------------------------------: |
@@ -208,7 +315,7 @@ Run `ng run start` and see the result your self.
 
 ### Decorators
 
-#### `@FormModel(param?:FormMeta)`
+#### `@FormEntity(param?:FormMeta)`
 
 to declare class as form model that can be used in dynamic from component
 param of type
@@ -228,22 +335,24 @@ enum FormLayout {
 }
 ```
 
-#### `@NestedFormModel(param: NestedFormMeta)`
+#### `@NestedFormEntity(param: NestedFormMeta)`
 
-to include formModel as field in another model
+to include FormEntity as field in another model
 param of type
 
 ```typescript
 interface NestedFormMeta {
   name: string;
   classDeclaration: any;
+  legend?: string;
 }
 ```
 
 **name** : is the form group name you give to these form
 **classDeclaration**: in the class it self that you want to make it as field `constructor`
+**legend** if specified shows as legend of field set
 
-#### `@Reset({ label: string, class: any })`
+#### `@Reset({ label: string, class: string })`
 
 to set reset button meta data like label or even it class
 default is null it has no configuration but
@@ -282,61 +391,6 @@ export interface NumberControlMeta extends ControlMetaData {}
 
 ```typescript
 export interface DateControlMeta extends ControlMetaData {}
-```
-
-#### `@SplittedDateRangeControl(sdrMeta: SplittedDateRangeMeta)`
-
-declares a date range but rendered in ui as two controls
-
-```typescript
-interface SplittedDateRangeMeta {
-  startDate: {
-    name: string;
-    id: string;
-    placeHolder?: string;
-    label?: string;
-    notNull?: { message: string };
-  };
-  endDate: {
-    name: string;
-    id: string;
-    placeHolder?: string;
-    label?: string;
-  };
-  from: Date; // range start
-  to: Date; // range end
-  optional?: boolean; // default false
-  width?: number;
-  style?: string;
-  class?: string;
-  [x: string]: any;
-}
-```
-
-**optional** used to make the two dates nullable or not
-it must be used with a field of type `[Date, Date]`
-
-ex:
-
-```typescript
-@SplittedDateRangeControl({
-    from: new Date(),
-    to: new Date(2030, 10, 10),
-    startDate: {
-      id: 'date-of-birth',
-      name: 'dateOfBirth',
-      placeHolder: 'yyyy/mm/dd',
-      label: 'birth date',
-    },
-    endDate: {
-      id: 'date-of-death',
-      name: 'dateOfDeath',
-      placeHolder: 'yyyy/mm/dd',
-      label: 'quietus date',
-    },
-    optional: true,
-  })
-  dates!: [Date | null | string, Date | null | string];
 ```
 
 #### `@SelectControl(selectMeta: SelectControlMeta)`
