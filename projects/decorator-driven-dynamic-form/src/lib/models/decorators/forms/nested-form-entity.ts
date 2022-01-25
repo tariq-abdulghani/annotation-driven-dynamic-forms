@@ -7,6 +7,11 @@ export function NestedFormEntity(metaData: NestedFormMeta) {
     addMetaData(target, propertyKey, {
       ...metaData,
       controlType: ControlTypes.Composite,
+      classDeclaration: class extends metaData.classDeclaration {
+        name = metaData.name;
+        legend = metaData.legend;
+        controlType = ControlTypes.Composite;
+      },
     });
   };
 }

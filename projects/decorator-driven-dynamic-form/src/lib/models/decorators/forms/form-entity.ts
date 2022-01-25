@@ -5,7 +5,6 @@ import { ControlTypes } from '../../types/control-types.enum';
 export function FormEntity(formMeta?: FormMeta) {
   return function <T extends { new (...args: any[]): {} }>(constructor: T) {
     return class extends constructor {
-      controlType = ControlTypes.Composite;
       formLayout =
         formMeta && formMeta.formLayout ? formMeta.formLayout : FormLayout.GRID;
       submit = { label: 'submit', class: 'btn btn-primary' };

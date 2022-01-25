@@ -1,8 +1,8 @@
 <legend
-  *ngIf="$any(formDescriptor).controlType"
+  *ngIf="$any(formDescriptor).legend"
   [class]="formDescriptor?.isGrid() ? 'col-12' : 'col-form-label col-sm-2 pt-0'"
 >
-  {{ $any(formDescriptor).label || $any(formDescriptor).name }}
+  {{ $any(formDescriptor).legend }}
 </legend>
 <ng-container *ngFor="let controlMeta of formDescriptor.controlsDescriptions">
   <div

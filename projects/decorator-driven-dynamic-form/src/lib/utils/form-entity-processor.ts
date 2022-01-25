@@ -2,6 +2,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { ControlTypes } from '../models/types/control-types.enum';
 import { FormDescription } from '../models/types/forms-meta/FormDescription';
 import { ControlsDescription } from '../models/types/controls-meta/controls-description';
+import { NestedFormMeta } from '../models/types/forms-meta/NestedFormMeta';
 
 type StringIndexed = {
   [x: string]: any;
@@ -48,14 +49,17 @@ export class FormEntityProcessor {
       }
 
       if (metaData && metaData.controlType == ControlTypes.Composite) {
-        const nestedFormEntity = new metaData.classDeclaration();
+        const nestedFrmMeta = metaData as NestedFormMeta;
+
+        const nestedFormEntity = new nestedFrmMeta.classDeclaration();
         // form description is always bound to form group
         let nestedFormDescription =
           this.generateFormDescription(nestedFormEntity);
         nestedFormEntity.smartSetter(formEntity[key]);
 
         formDescription.controlsDescriptions.push(nestedFormDescription as any);
-        formGroupInitializer[metaData.name] = nestedFormDescription.formGroup;
+        formGroupInitializer[nestedFrmMeta.name] =
+          nestedFormDescription.formGroup;
         bindCompositeFieldToFormGroup(formEntity, key, nestedFormEntity);
       }
     }

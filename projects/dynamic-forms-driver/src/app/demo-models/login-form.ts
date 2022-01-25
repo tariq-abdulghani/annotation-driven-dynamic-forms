@@ -100,6 +100,10 @@ export class LoginForm {
   })
   payment = { key: 'visa', id: 'v' };
 
-  @NestedFormEntity({ name: 'address', classDeclaration: Address })
+  @NestedFormEntity({
+    name: 'address',
+    classDeclaration: Address,
+    legend: 'Address',
+  })
   address: Address | null = null;
 }
