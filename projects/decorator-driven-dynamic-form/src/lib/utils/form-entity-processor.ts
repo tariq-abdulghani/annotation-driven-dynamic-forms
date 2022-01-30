@@ -14,57 +14,25 @@ export class FormEntityProcessor {
    * @param formEntity instance of Class annotated with `@FormEntity`
    * @returns `formDescription`
    */
-  public static generateFormDescription(
-    formEntity: StringIndexed
-  ): FormDescription {
-    const formDescription = new FormDescription();
-    // form group initializer key string control name value FormControl
-    const formGroupInitializer = {} as { [x: string]: any };
+  public static process(formEntity: StringIndexed): FormDescription {
+    const description = describeFormEntity(formEntity);
+    // subscribe to enable or disable controls
+    description.formGroup.valueChanges.subscribe((formValue) => {
+      description.controlsDescriptions.forEach((d) => {
+        if (d.enableFn) {
+          switch (d.enableFn(formValue)) {
+            case true:
+              d.formControl.enable({ emitEvent: false });
+              break;
 
-    // getting fields  with no meta data and set them in the description
-    Object.entries(formEntity).forEach((keyValue) => {
-      if (!Reflect.hasMetadata(keyValue[0], formEntity, keyValue[0])) {
-        (formDescription as { [x: string]: any })[keyValue[0]] = keyValue[1];
-      }
+            case false:
+              d.formControl.disable({ emitEvent: false });
+              break;
+          }
+        }
+      });
     });
-
-    // scans all enumerated fields including property setters and getters
-    for (const key in formEntity) {
-      const metaData = Reflect.getMetadata(key, formEntity, key);
-
-      if (metaData && metaData.controlType != ControlTypes.Composite) {
-        const formControl = new FormControl(
-          formEntity[key],
-          metaData.validators
-        );
-        // bind control to description
-        const boundDescription = ControlsDescription.cloneAndBind(
-          metaData,
-          formControl
-        );
-
-        formDescription.controlsDescriptions.push(boundDescription as any);
-        formGroupInitializer[metaData.name] = formControl;
-        bindFieldToFormControl(formEntity, key, formControl);
-      }
-
-      if (metaData && metaData.controlType == ControlTypes.Composite) {
-        const nestedFrmMeta = metaData as NestedFormMeta;
-
-        const nestedFormEntity = new nestedFrmMeta.classDeclaration();
-        // form description is always bound to form group
-        let nestedFormDescription =
-          this.generateFormDescription(nestedFormEntity);
-        nestedFormEntity.smartSetter(formEntity[key]);
-
-        formDescription.controlsDescriptions.push(nestedFormDescription as any);
-        formGroupInitializer[nestedFrmMeta.name] =
-          nestedFormDescription.formGroup;
-        bindCompositeFieldToFormGroup(formEntity, key, nestedFormEntity);
-      }
-    }
-    formDescription.formGroup = new FormGroup(formGroupInitializer);
-    return formDescription;
+    return description;
   }
 }
 
@@ -144,3 +112,50 @@ export function bindCompositeFieldToFormGroup(
 //   });
 //   return new FormGroup(objGroup);
 // }
+
+function describeFormEntity(formEntity: StringIndexed): FormDescription {
+  const formDescription = new FormDescription();
+  // form group initializer key string control name value FormControl
+  const formGroupInitializer = {} as { [x: string]: any };
+
+  // getting fields  with no meta data and set them in the description
+  Object.entries(formEntity).forEach((keyValue) => {
+    if (!Reflect.hasMetadata(keyValue[0], formEntity, keyValue[0])) {
+      (formDescription as { [x: string]: any })[keyValue[0]] = keyValue[1];
+    }
+  });
+
+  // scans all enumerated fields including property setters and getters
+  for (const key in formEntity) {
+    const metaData = Reflect.getMetadata(key, formEntity, key);
+
+    if (metaData && metaData.controlType != ControlTypes.Composite) {
+      const formControl = new FormControl(formEntity[key], metaData.validators);
+      // bind control to description
+      const boundDescription = ControlsDescription.cloneAndBind(
+        metaData,
+        formControl
+      );
+
+      formDescription.controlsDescriptions.push(boundDescription as any);
+      formGroupInitializer[metaData.name] = formControl;
+      bindFieldToFormControl(formEntity, key, formControl);
+    }
+
+    if (metaData && metaData.controlType == ControlTypes.Composite) {
+      const nestedFrmMeta = metaData as NestedFormMeta;
+
+      const nestedFormEntity = new nestedFrmMeta.classDeclaration();
+      // form description is always bound to form group
+      let nestedFormDescription = describeFormEntity(nestedFormEntity);
+      nestedFormEntity.smartSetter(formEntity[key]);
+
+      formDescription.controlsDescriptions.push(nestedFormDescription as any);
+      formGroupInitializer[nestedFrmMeta.name] =
+        nestedFormDescription.formGroup;
+      bindCompositeFieldToFormGroup(formEntity, key, nestedFormEntity);
+    }
+  }
+  formDescription.formGroup = new FormGroup(formGroupInitializer);
+  return formDescription;
+}

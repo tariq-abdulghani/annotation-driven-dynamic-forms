@@ -56,6 +56,7 @@ export class LoginForm {
     id: 'age1',
     name: 'age',
     label: 'age',
+    enableFn: (f: any) => f.payment.id == 'v',
   })
   age = 30;
 
@@ -63,6 +64,7 @@ export class LoginForm {
     id: 'expiryDate',
     name: 'expiryDate',
     label: 'Expiry Date',
+    // readonly: true,
   })
   expiryDate: string | null = null;
 
@@ -85,6 +87,7 @@ export class LoginForm {
     name: 'employee',
     id: 'employee',
     label: 'Employee',
+    enableFn: (f: any) => f.payment.id == 'v',
   })
   employee = true;
 

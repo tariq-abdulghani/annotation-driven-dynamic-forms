@@ -13,6 +13,8 @@ export interface ControlMetaData {
   width?: number;
   style?: string;
   class?: string;
+  enableFn?: (formValue: any) => boolean;
+  readonly?: boolean;
   [x: string]: any;
 }
 

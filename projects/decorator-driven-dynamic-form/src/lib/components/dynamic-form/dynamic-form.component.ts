@@ -31,11 +31,8 @@ export class DynamicFormComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.formModel) {
       this.formModel = changes.formModel.currentValue;
-      this.formDescriptor = FormEntityProcessor.generateFormDescription(
-        this.formModel
-      );
+      this.formDescriptor = FormEntityProcessor.process(this.formModel);
       console.log(this.formDescriptor);
-      // console.log(this.formModel);
     }
   }
 
