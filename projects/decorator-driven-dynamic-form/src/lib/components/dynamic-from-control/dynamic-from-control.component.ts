@@ -1,41 +1,28 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable} from 'rxjs';
 import { ControlTypes } from '../../models/types/control-types.enum';
 import { FormLayout } from '../../models/types/form-layout-enum';
 import { FormDescription } from '../../models/types/forms-meta/FormDescription';
+import {DataLoaderService} from "../../services/data-loader/data-loader.service";
 
 @Component({
   selector: '[dd-dynamic-from-control]',
   templateUrl: './dynamic-from-control.component.html',
   styleUrls: ['./dynamic-from-control.component.css'],
+  providers: [DataLoaderService]
 })
 export class DynamicFromControlComponent implements OnInit {
   @Input() formDescriptor!: FormDescription;
   readonly CONTROL_TYPES = ControlTypes;
   readonly FORM_LAYOUT_OPTS = FormLayout;
-  private dataSources = new Map<string, Observable<any[]>>(); //used to return the same observable to stop async pipe from sending multiple http requests
-  constructor(private httpClient: HttpClient) {}
+  constructor(private dataLoader: DataLoaderService) {}
 
-  ngOnInit(): void {
-    // console.log(this.formDescriptor);
-  }
+  ngOnInit(): void {}
 
   loadData(
     dataSource: URL | any[] | Observable<any[]>
   ): Observable<any[]> | Promise<any[]> {
-    if (dataSource instanceof URL) {
-      if (!this.dataSources.get(dataSource.href)) {
-        this.dataSources.set(
-          dataSource.href,
-          this.httpClient.get<any[]>(dataSource.href)
-        );
-      }
-      return this.dataSources.get(dataSource.href) || of([]);
-    } else if (Array.isArray(dataSource)) {
-      return of(dataSource);
-    } else {
-      return dataSource;
-    }
+    return this.dataLoader.load(dataSource);
   }
+
 }

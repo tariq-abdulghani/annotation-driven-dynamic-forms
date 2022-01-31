@@ -10,7 +10,7 @@ import {
 import { ControlTypes } from '../../models/types/control-types.enum';
 import { FormLayout } from '../../models/types/form-layout-enum';
 import { FormDescription } from '../../models/types/forms-meta/FormDescription';
-import { FormEntityProcessor } from '../../utils/form-entity-processor';
+import {FormEntityProcessorService} from "../../services/form-entity-processor/form-entity-processor.service";
 
 @Component({
   selector: 'ddd-form',
@@ -24,14 +24,14 @@ export class DynamicFormComponent implements OnInit, OnChanges {
   @Input('formEntity') formModel!: any;
   @Output('submitEvent') submitEvent: EventEmitter<any> =
     new EventEmitter<any>();
-  constructor() {}
+  constructor(private formEntityProcessorService: FormEntityProcessorService) {}
 
   ngOnInit(): void {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.formModel) {
       this.formModel = changes.formModel.currentValue;
-      this.formDescriptor = FormEntityProcessor.process(this.formModel);
+      this.formDescriptor = this.formEntityProcessorService.process(this.formModel);
       console.log(this.formDescriptor);
     }
   }

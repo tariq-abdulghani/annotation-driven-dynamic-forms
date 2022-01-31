@@ -4,6 +4,7 @@ import { DynamicFormComponent } from './components/dynamic-form/dynamic-form.com
 import { DynamicFromControlComponent } from './components/dynamic-from-control/dynamic-from-control.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ErrorMessagePipe } from './pipes/error-message.pipe';
+import {FormEntityProcessorService} from "./services/form-entity-processor/form-entity-processor.service";
 
 @NgModule({
   declarations: [
@@ -13,5 +14,6 @@ import { ErrorMessagePipe } from './pipes/error-message.pipe';
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule],
   exports: [DynamicFormComponent],
+  providers:[FormEntityProcessorService]
 })
 export class DecoratorDrivenDynamicFormsModule {}
