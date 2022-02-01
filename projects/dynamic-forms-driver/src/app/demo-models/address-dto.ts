@@ -5,7 +5,7 @@ import {
   TextControl,
 } from 'decorator-driven-dynamic-form';
 
-@FormEntity({ formLayout: FormLayout.GRID })
+@FormEntity()
 export class Address {
   @NotNull({ message: 'city is required ' })
   @TextControl({

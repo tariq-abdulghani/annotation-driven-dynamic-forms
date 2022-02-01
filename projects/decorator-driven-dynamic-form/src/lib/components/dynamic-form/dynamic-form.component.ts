@@ -38,7 +38,7 @@ export class DynamicFormComponent implements OnInit, OnChanges {
 
   onSubmit(v: any) {
     this.formDescriptor.formGroup.markAllAsTouched();
-    // console.log(this.formDescriptor.formGroup);
+    console.log(this.formDescriptor.formGroup);
     if (this.formDescriptor.formGroup.valid) {
       this.submitEvent.emit(this.formDescriptor.formGroup.value);
     }

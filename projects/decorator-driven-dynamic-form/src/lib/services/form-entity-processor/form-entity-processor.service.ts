@@ -16,6 +16,7 @@ export class FormEntityProcessorService {
     const description = this.describe(formEntity);
     // subscribe to enable or disable controls
     description.formGroup.valueChanges.subscribe((formValue) => {
+      console.log("form value change", formValue);
       description.controlsDescriptions.forEach((d) => {
         if (d.enableFn) {
           switch (d.enableFn(formValue)) {
@@ -38,9 +39,9 @@ export class FormEntityProcessorService {
     const formGroupInitializer = {} as { [x: string]: any };
 
     // getting fields  with no meta data and set them in the description
-    Object.entries(formEntity).forEach((keyValue) => {
-      if (!Reflect.hasMetadata(keyValue[0], formEntity, keyValue[0])) {
-        (formDescription as { [x: string]: any })[keyValue[0]] = keyValue[1];
+    Object.entries(formEntity).forEach(([propertyKey, propertyValue]) => {
+      if (!Reflect.hasMetadata(propertyKey, formEntity, propertyKey)) {
+        (formDescription as { [x: string]: any })[propertyKey] = propertyValue;
       }
     });
 

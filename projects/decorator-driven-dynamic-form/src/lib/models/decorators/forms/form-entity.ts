@@ -6,7 +6,7 @@ export function FormEntity(formMeta?: FormMeta) {
   return function <T extends { new (...args: any[]): {} }>(constructor: T) {
     return class extends constructor {
       formLayout =
-        formMeta && formMeta.formLayout ? formMeta.formLayout : FormLayout.GRID;
+        formMeta && formMeta.layout ? formMeta.layout : FormLayout.GRID;
       submit = { label: 'submit', class: 'btn btn-primary' };
       smartSetter = (value: any) => {
         console.warn('implement smart setter for null value');
