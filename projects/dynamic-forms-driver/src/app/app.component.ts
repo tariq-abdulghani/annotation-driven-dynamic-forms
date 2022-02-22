@@ -12,6 +12,7 @@ export class AppComponent implements OnInit {
   loginForm = new LoginForm();
 
   onSubmit($event: any) {
+    console.log(this.loginForm);
     console.log($event);
   }
 
@@ -20,7 +21,7 @@ export class AppComponent implements OnInit {
     this.loginForm.gender = { label: 'male', id: 'm' };
     this.loginForm.age = 50;
     this.loginForm.address = {
-      city: 'z',
+      city: 'zxxxx4545',
       state: 'sr',
       zipCode: '78',
     };

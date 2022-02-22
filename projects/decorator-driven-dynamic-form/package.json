@@ -1,6 +1,6 @@
 {
   "name": "ddd-form",
-  "version": "2.0.0-a.1",
+  "version": "3.0.0-a",
   "peerDependencies": {
     "@angular/common": "^12.2.0",
     "@angular/core": "^12.2.0",

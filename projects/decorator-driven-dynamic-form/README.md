@@ -1,14 +1,13 @@
-# Decorator Driven Dynamic Forms version 2.0.0-a.1
+# Decorator Driven Dynamic Forms version 3.0.0-a
 
 > Opinionated way to create dynamic forms with **no json** , **no inheritance**
 > just use **decorators**
 
-## What is new in version 2.0.0-a.1
+## What is new in this version
 
-1. fixed issues associated with creating multiple instances of the same form entity this can be done now.
-2. cleaning code base to be more reliable
-3. removed `@SplittedDateRange`
-4. changed some other APIs so use the docs per version
+1- added readonly to meta data of control to enable fields to be readonly
+2- added enableFn to controls meta to make them enabled or disabled based on form state some useful scenarios is to choose from radio to enable part of the form
+3- added form update strategy to form meta data so now we can choose form update strategy eager or lazy.
 
 ## Project Goals
 
@@ -106,7 +105,7 @@ import {
   TextControl,
 } from "decorator-driven-dynamic-form";
 
-@FormEntity({ formLayout: FormLayout.GRID })
+@FormEntity()
 export class Address {
   @NotNull({ message: "city is required " })
   @TextControl({
@@ -232,6 +231,7 @@ export class LoginForm {
     name: "employee",
     id: "employee",
     label: "Employee",
+    enableFn: (f: any) => f.payment.id == "v",
   })
   employee = true;
 
@@ -321,8 +321,18 @@ to declare class as form model that can be used in dynamic from component
 param of type
 
 ```typescript
-interface FormMeta {
-  formLayout?: FormLayout; // defaults to `FormLayout.GRID`
+export interface FormMeta {
+  updateStrategy: FormUpdateStrategy;
+  layout: FormLayout; // defaults to `FormLayout.GRID`
+}
+```
+
+update strategy of type
+
+```typescript
+export enum FormUpdateStrategy {
+  EAGER = 0, // update  on change
+  LAZY = 1, // update on blur
 }
 ```
 
@@ -374,6 +384,9 @@ interface ControlMetaData {
   width?: number; // control width in bootstrap grid its value from 1 to 12
   style?: string; // inline style no supported yet
   class?: string; // you can provide your custom css class (not supported yet)
+
+  enableFn?: (formValue: any) => boolean; // used to enable or disabled field based on form value called if defined to make the field enabled or disabled
+  readonly?: boolean; // used to mark fields as read only works with text and number and dates only
   [x: string]: any;
 }
 interface TextControlMeta extends ControlMetaData {

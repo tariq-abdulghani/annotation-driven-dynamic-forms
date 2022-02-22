@@ -93,12 +93,11 @@ address class which is a form that will be nested in another form
 ```typescript
 import {
   FormEntity,
-  FormLayout,
   NotNull,
   TextControl,
 } from "decorator-driven-dynamic-form";
 
-@FormEntity({ formLayout: FormLayout.GRID })
+@FormEntity()
 export class Address {
   @NotNull({ message: "city is required " })
   @TextControl({
@@ -224,6 +223,7 @@ export class LoginForm {
     name: "employee",
     id: "employee",
     label: "Employee",
+    enableFn: (f: any) => f.payment.id == "v",
   })
   employee = true;
 
@@ -313,8 +313,18 @@ to declare class as form model that can be used in dynamic from component
 param of type
 
 ```typescript
-interface FormMeta {
-  formLayout?: FormLayout; // defaults to `FormLayout.GRID`
+export interface FormMeta {
+  updateStrategy: FormUpdateStrategy;
+  layout: FormLayout; // defaults to `FormLayout.GRID`
+}
+```
+
+update strategy of type
+
+```typescript
+export enum FormUpdateStrategy {
+  EAGER = 0, // update  on change
+  LAZY = 1, // update on blur
 }
 ```
 
@@ -366,6 +376,9 @@ interface ControlMetaData {
   width?: number; // control width in bootstrap grid its value from 1 to 12
   style?: string; // inline style no supported yet
   class?: string; // you can provide your custom css class (not supported yet)
+
+  enableFn?: (formValue: any) => boolean; // used to enable or disabled field based on form value called if defined to make the field enabled or disabled
+  readonly?: boolean; // used to mark fields as read only works with text and number and dates only
   [x: string]: any;
 }
 interface TextControlMeta extends ControlMetaData {

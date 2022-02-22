@@ -1,22 +1,19 @@
 import { Injectable } from '@angular/core';
-import {FormDescription} from "../../models/types/forms-meta/FormDescription";
-import {ControlTypes} from "../../models/types/control-types.enum";
-import {FormControl, FormGroup} from "@angular/forms";
-import {ControlsDescription} from "../../models/types/controls-meta/controls-description";
-import {NestedFormMeta} from "../../models/types/forms-meta/NestedFormMeta";
-import {StringIndexed} from "../../models/types/stirng-indexed";
-
-
+import { FormDescription } from '../../models/types/forms-meta/FormDescription';
+import { ControlTypes } from '../../models/types/control-types.enum';
+import { FormControl, FormGroup } from '@angular/forms';
+import { ControlsDescription } from '../../models/types/controls-meta/controls-description';
+import { NestedFormMeta } from '../../models/types/forms-meta/NestedFormMeta';
+import { StringIndexed } from '../../models/types/stirng-indexed';
 
 @Injectable()
 export class FormEntityProcessorService {
-
-  constructor() { }
-  public  process(formEntity: StringIndexed): FormDescription {
+  constructor() {}
+  public process(formEntity: StringIndexed): FormDescription {
     const description = this.describe(formEntity);
     // subscribe to enable or disable controls
     description.formGroup.valueChanges.subscribe((formValue) => {
-      console.log("form value change", formValue);
+      console.log('form value change', formValue);
       description.controlsDescriptions.forEach((d) => {
         if (d.enableFn) {
           switch (d.enableFn(formValue)) {
@@ -33,7 +30,8 @@ export class FormEntityProcessorService {
     });
     return description;
   }
-  private   describe(formEntity: StringIndexed): FormDescription {
+
+  private describe(formEntity: StringIndexed): FormDescription {
     const formDescription = new FormDescription();
     // form group initializer key string control name value FormControl
     const formGroupInitializer = {} as { [x: string]: any };
@@ -50,7 +48,10 @@ export class FormEntityProcessorService {
       const metaData = Reflect.getMetadata(key, formEntity, key);
 
       if (metaData && metaData.controlType != ControlTypes.Composite) {
-        const formControl = new FormControl(formEntity[key], metaData.validators);
+        const formControl = new FormControl(
+          formEntity[key],
+          metaData.validators
+        );
         // bind control to description
         const boundDescription = ControlsDescription.cloneAndBind(
           metaData,
@@ -64,15 +65,17 @@ export class FormEntityProcessorService {
 
       if (metaData && metaData.controlType == ControlTypes.Composite) {
         const nestedFrmMeta = metaData as NestedFormMeta;
-
         const nestedFormEntity = new nestedFrmMeta.classDeclaration();
-        // form description is always bound to form group
-        let nestedFormDescription = this.describe(nestedFormEntity);
+        const nestedFormDescription = this.describe(nestedFormEntity);
+        // bind formDescription to nested form entity
+        nestedFormEntity.formGroup = nestedFormDescription.formGroup;
+        // initialize
         nestedFormEntity.smartSetter(formEntity[key]);
 
         formDescription.controlsDescriptions.push(nestedFormDescription as any);
         formGroupInitializer[nestedFrmMeta.name] =
           nestedFormDescription.formGroup;
+
         this.bindCompositeFieldToFormGroup(formEntity, key, nestedFormEntity);
       }
     }
