@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import { LoginForm } from './demo-models/login-form';
 
 @Component({
@@ -6,7 +6,7 @@ import { LoginForm } from './demo-models/login-form';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterViewInit {
   title = 'dynamic-forms-driver';
 
   loginForm = new LoginForm();
@@ -17,13 +17,22 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
     //@ts-ignore
     this.loginForm.gender = { label: 'male', id: 'm' };
     this.loginForm.age = 50;
-    this.loginForm.address = {
-      city: 'zxxxx4545',
-      state: 'sr',
-      zipCode: '78',
-    };
+    console.log("address ", this.loginForm.address);
+    // this.loginForm.address = {
+    //   city: 'wow',
+    //   state: 'sr',
+    //   zipCode: '78',
+    // };
+
+  }
+
+  ngAfterViewInit(): void {
+    console.log("address ", this.loginForm.address);
+    //@ts-ignore
+    this.loginForm.address.zipCode = "xxyl";
   }
 }

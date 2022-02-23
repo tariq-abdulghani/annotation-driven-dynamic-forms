@@ -13,7 +13,7 @@ export class FormEntityProcessorService {
     const description = this.describe(formEntity);
     // subscribe to enable or disable controls
     description.formGroup.valueChanges.subscribe((formValue) => {
-      console.log('form value change', formValue);
+      // console.log('form value change', formValue);
       description.controlsDescriptions.forEach((d) => {
         if (d.enableFn) {
           switch (d.enableFn(formValue)) {
@@ -98,12 +98,14 @@ export class FormEntityProcessorService {
     propertyKey: string,
     formControl: FormControl
   ) {
+
+    const fc = formControl;
     const setter = function (val?: any) {
-      formControl.setValue(val);
+      fc.setValue(val);
     };
 
     const getter = function () {
-      return formControl.value;
+      return fc.value;
     };
 
     Object.defineProperty(target, propertyKey, {
@@ -132,7 +134,8 @@ export class FormEntityProcessorService {
     };
 
     const getter = function () {
-      return formEntity.formGroup?.value;
+      // return formEntity.formGroup?.value || formEntity;
+      return formEntity;
     };
 
     Object.defineProperty(target, propertyKey, {

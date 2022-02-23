@@ -8,7 +8,7 @@ import {
 } from 'decorator-driven-dynamic-form';
 import { Address } from './address-dto';
 
-@FormEntity({ formLayout: FormLayout.GRID })
+@FormEntity()
 export class ContactInfo {
   @TextControl({
     id: 'tel',
