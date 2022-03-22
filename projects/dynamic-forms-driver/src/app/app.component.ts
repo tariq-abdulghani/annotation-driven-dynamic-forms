@@ -16,6 +16,10 @@ export class AppComponent implements OnInit {
     console.log($event);
   }
 
+  onChange($event: any) {
+    console.log('new value', $event);
+  }
+
   ngOnInit(): void {
     //@ts-ignore
     this.loginForm.gender = { label: 'male', id: 'm' };
