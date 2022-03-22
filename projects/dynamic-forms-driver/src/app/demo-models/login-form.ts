@@ -100,7 +100,7 @@ export class LoginForm {
       { key: 'cash', id: 'c' },
     ],
     bindLabel: 'key',
-    bindValue: null,
+    bindValue: 'id',
   })
   payment = { key: 'visa', id: 'v' };
 

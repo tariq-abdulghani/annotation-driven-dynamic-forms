@@ -168,7 +168,7 @@
           type="radio"
           [formControl]="controlMeta.formControl"
           [value]="
-            $any(controlMeta).bindValue ? $any(controlMeta).bindValue : opt
+            $any(controlMeta).bindValue ? opt[$any(controlMeta).bindValue] : opt
           "
           [name]="controlMeta.name"
         />
