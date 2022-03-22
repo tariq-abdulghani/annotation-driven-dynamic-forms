@@ -1,13 +1,12 @@
-# Decorator Driven Dynamic Forms version 3.0.0-a
+# Decorator Driven Dynamic Forms version 3.0.0-a.1
 
 > Opinionated way to create dynamic forms with **no json** , **no inheritance**
 > just use **decorators**
 
 ## What is new in this version
-
-1- added readonly to meta data of control to enable fields to be readonly
-2- added enableFn to controls meta to make them enabled or disabled based on form state some useful scenarios is to choose from radio to enable part of the form
-3- added form update strategy to form meta data so now we can choose form update strategy eager or lazy.
+ 
+fixed issues
+  setting nested form elements issue is fixed.
 
 ## Project Goals
 

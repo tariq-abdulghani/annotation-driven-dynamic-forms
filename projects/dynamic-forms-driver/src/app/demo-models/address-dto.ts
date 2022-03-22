@@ -13,7 +13,7 @@ export class Address {
     id: 'city',
     width: 4,
   })
-  city!: string;
+  city: string;
 
   @TextControl({
     name: 'state',
@@ -21,7 +21,7 @@ export class Address {
     id: 'state',
     width: 4,
   })
-  state!: string;
+  state :string;
 
   @NotNull({ message: 'zipCode is required ' })
   @TextControl({
@@ -30,7 +30,7 @@ export class Address {
     id: 'zipCode',
     width: 4,
   })
-  zipCode!: string;
+  zipCode :string;
 
   constructor(city: string, sate: string, zipCode: string) {
     this.city = city;
