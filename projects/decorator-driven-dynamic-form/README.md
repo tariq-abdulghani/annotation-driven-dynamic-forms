@@ -1,7 +1,12 @@
-# Decorator Driven Dynamic Forms
+# Decorator Driven Dynamic Forms version 3.0.0-a.1
 
 > Opinionated way to create dynamic forms with **no json** , **no inheritance**
 > just use **decorators**
+
+## What is new in this version
+ 
+fixed issues
+  setting nested form elements issue is fixed.
 
 ## Project Goals
 
@@ -63,7 +68,8 @@
 ## Install
 
 > Note that:
-> library is under active development so some API may change in the future
+> library is under active development so some API may change.
+> please use each version documentation to test the library your opinions are appreciated
 
 install boot strap if you don't have it`npm i bootstrap` and add it in styles
 `npm i ddd-form`
@@ -93,6 +99,7 @@ address class which is a form that will be nested in another form
 ```typescript
 import {
   FormEntity,
+  FormLayout,
   NotNull,
   TextControl,
 } from "decorator-driven-dynamic-form";

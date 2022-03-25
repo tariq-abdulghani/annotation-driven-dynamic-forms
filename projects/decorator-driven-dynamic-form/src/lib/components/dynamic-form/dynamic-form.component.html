@@ -1,0 +1,40 @@
+<div class="mt-3 mb-3" *ngIf="formDescription">
+  <form
+    class="row g-3"
+    [formGroup]="$any(formDescription!.control)"
+    (ngSubmit)="onSubmit($event)"
+  >
+    <!-- <dd-dynamic-from-control
+      [formDescriptor]="formDescriptor"
+    ></dd-dynamic-from-control> -->
+
+    <div
+      class="row g-3"
+      dd-dynamic-from-control
+      [formDescription]="formDescription"
+    ></div>
+
+    <div class="col-12 mb-3">
+      <div class="gap-10 d-flex flex-row">
+        <div *ngFor="let action of formDescription.meta.actions">
+          <button
+            [type]="action.type"
+            [class]="action.class || 'btn btn-primary'"
+          >
+            {{ action?.label }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<!--
+  <div class="col-auto">
+      <button type="submit" class="btn btn-primary">Sign in</button>
+    </div>
+
+    <div class="col-auto">
+      <button type="submit" class="btn btn-primary">Sign in</button>
+    </div>
+-->

@@ -3,37 +3,34 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "decorator-driven-forms": {
+    "dynamic-forms-driver": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:application": {
           "strict": true
         }
       },
-      "root": "",
-      "sourceRoot": "src",
+      "root": "projects/dynamic-forms-driver",
+      "sourceRoot": "projects/dynamic-forms-driver/src",
       "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/decorator-driven-forms",
-            "index": "src/index.html",
-            "main": "src/main.ts",
-            "polyfills": "src/polyfills.ts",
-            "tsConfig": "tsconfig.app.json",
+            "outputPath": "dist/dynamic-forms-driver",
+            "index": "projects/dynamic-forms-driver/src/index.html",
+            "main": "projects/dynamic-forms-driver/src/main.ts",
+            "polyfills": "projects/dynamic-forms-driver/src/polyfills.ts",
+            "tsConfig": "projects/dynamic-forms-driver/tsconfig.app.json",
             "assets": [
-              "src/favicon.ico",
-              "src/assets"
+              "projects/dynamic-forms-driver/src/favicon.ico",
+              "projects/dynamic-forms-driver/src/assets"
             ],
             "styles": [
-              "src/styles.css",
-              "node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "node_modules/@fortawesome/fontawesome-free/css/all.css"
+              "projects/dynamic-forms-driver/src/styles.css",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css"
             ],
-            "scripts": [
-            
-            ]
+            "scripts": []
           },
           "configurations": {
             "production": {
@@ -51,8 +48,8 @@
               ],
               "fileReplacements": [
                 {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
+                  "replace": "projects/dynamic-forms-driver/src/environments/environment.ts",
+                  "with": "projects/dynamic-forms-driver/src/environments/environment.prod.ts"
                 }
               ],
               "outputHashing": "all"
@@ -72,10 +69,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "decorator-driven-forms:build:production"
+              "browserTarget": "dynamic-forms-driver:build:production"
             },
             "development": {
-              "browserTarget": "decorator-driven-forms:build:development"
+              "browserTarget": "dynamic-forms-driver:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -83,28 +80,57 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "decorator-driven-forms:build"
+            "browserTarget": "dynamic-forms-driver:build"
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "src/test.ts",
-            "polyfills": "src/polyfills.ts",
-            "tsConfig": "tsconfig.spec.json",
-            "karmaConfig": "karma.conf.js",
+            "main": "projects/dynamic-forms-driver/src/test.ts",
+            "polyfills": "projects/dynamic-forms-driver/src/polyfills.ts",
+            "tsConfig": "projects/dynamic-forms-driver/tsconfig.spec.json",
+            "karmaConfig": "projects/dynamic-forms-driver/karma.conf.js",
             "assets": [
-              "src/favicon.ico",
-              "src/assets"
+              "projects/dynamic-forms-driver/src/favicon.ico",
+              "projects/dynamic-forms-driver/src/assets"
             ],
-            "styles": [
-              "src/styles.css"
-            ],
+            "styles": ["projects/dynamic-forms-driver/src/styles.css"],
             "scripts": []
+          }
+        }
+      }
+    },
+    "decorator-driven-dynamic-form": {
+      "projectType": "library",
+      "root": "projects/decorator-driven-dynamic-form",
+      "sourceRoot": "projects/decorator-driven-dynamic-form/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/decorator-driven-dynamic-form/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/decorator-driven-dynamic-form/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/decorator-driven-dynamic-form/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/decorator-driven-dynamic-form/src/test.ts",
+            "tsConfig": "projects/decorator-driven-dynamic-form/tsconfig.spec.json",
+            "karmaConfig": "projects/decorator-driven-dynamic-form/karma.conf.js"
           }
         }
       }
     }
   },
-  "defaultProject": "decorator-driven-forms"
+  "defaultProject": "dynamic-forms-driver"
 }
