@@ -1,5 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { ControlDescription } from '../models/types/controls-meta/control-description';
+import { InputDescription } from '../models/types/inputs-meta/input-description';
+import { InputSpec } from '../models/types/inputs-meta/input-specs';
 import { MessageStringInterpolation } from '../utils/message-string-interpolation';
 
 @Pipe({
@@ -7,15 +8,15 @@ import { MessageStringInterpolation } from '../utils/message-string-interpolatio
   pure: false,
 })
 export class ErrorMessagePipe implements PipeTransform {
-  transform(value: ControlDescription): string | null {
-    if (value?.formControl?.errors) {
+  transform(value: InputDescription<InputSpec>): string | null {
+    if (value?.control?.errors) {
       let errorString: string | null = null;
-      const key = Object.keys(value.formControl.errors)[0];
+      const key = Object.keys(value.control.errors)[0];
       errorString = value.errorMap?.get(key) || '';
       // console.log(errorString, key, value.formControl.errors, value.formControl.errors[key]);
       return MessageStringInterpolation.interpolate(
-        errorString,
-        value.formControl.errors[key]
+        errorString || '',
+        value.control.errors[key]
       );
     } else {
       return null;

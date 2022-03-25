@@ -1,9 +1,13 @@
-import { BasicActionMeta } from '../../types/actions-api';
+import {
+  BasicAction,
+  BasicActionMeta,
+  NativeActionSpec,
+} from '../../types/actions/actions-api';
 
-export function Reset(meta: BasicActionMeta) {
+export function Reset(meta: NativeActionSpec) {
   return function <T extends { new (...args: any[]): {} }>(constructor: T) {
     return class extends constructor {
-      reset = meta;
+      reset = new BasicAction({ ...meta, type: 'reset' });
     };
   };
 }

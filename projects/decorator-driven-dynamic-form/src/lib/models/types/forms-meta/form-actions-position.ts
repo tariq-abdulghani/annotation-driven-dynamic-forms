@@ -1,0 +1,6 @@
+export enum ActionsPosition {
+  GRID_FLOW = 'GRID_FLOW',
+  NEW_LINE_START = 'NEW_LINE_START',
+  NEW_LINE_END = 'NEW_LINE_END',
+  NEW_LINE_CENTER = 'NEW_LINE_CENTER',
+}

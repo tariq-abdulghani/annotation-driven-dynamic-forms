@@ -1,0 +1,9 @@
+export enum InputTypes {
+  COMPOSITE = 'COMPOSITE',
+  TEXT = 'TEXT',
+  NUMBER = 'NUMBER',
+  DATE = 'DATE',
+  SELECT = 'SELECT',
+  CHECKBOX = 'CHECKBOX',
+  RADIO_BUTTONS = 'RADIO_BUTTONS',
+}

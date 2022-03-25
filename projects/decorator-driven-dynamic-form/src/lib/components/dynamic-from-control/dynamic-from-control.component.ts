@@ -1,20 +1,21 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Observable} from 'rxjs';
-import { ControlTypes } from '../../models/types/control-types.enum';
-import { FormLayout } from '../../models/types/form-layout-enum';
-import { FormDescription } from '../../models/types/forms-meta/FormDescription';
-import {DataLoaderService} from "../../services/data-loader/data-loader.service";
+import { Observable } from 'rxjs';
+import { InputTypes } from '../../models/types/inputs-meta/input-types.enum';
+import { Layout } from '../../models/types/forms-meta/form-layout-enum';
+import { DataLoaderService } from '../../services/data-loader/data-loader.service';
+import { InputDescription } from '../../models/types/inputs-meta/input-description';
+import { FormMeta } from '../../models/types/forms-meta/form-meta';
 
 @Component({
   selector: '[dd-dynamic-from-control]',
   templateUrl: './dynamic-from-control.component.html',
   styleUrls: ['./dynamic-from-control.component.css'],
-  providers: [DataLoaderService]
+  providers: [DataLoaderService],
 })
 export class DynamicFromControlComponent implements OnInit {
-  @Input() formDescriptor!: FormDescription;
-  readonly CONTROL_TYPES = ControlTypes;
-  readonly FORM_LAYOUT_OPTS = FormLayout;
+  @Input() formDescription!: InputDescription<FormMeta>;
+  readonly CONTROL_TYPES = InputTypes;
+  readonly FORM_LAYOUT_OPTS = Layout;
   constructor(private dataLoader: DataLoaderService) {}
 
   ngOnInit(): void {}
@@ -24,5 +25,4 @@ export class DynamicFromControlComponent implements OnInit {
   ): Observable<any[]> | Promise<any[]> {
     return this.dataLoader.load(dataSource);
   }
-
 }

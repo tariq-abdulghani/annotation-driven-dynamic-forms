@@ -1,112 +1,120 @@
 <legend
-  *ngIf="$any(formDescriptor).legend"
-  [class]="formDescriptor?.isGrid() ? 'col-12' : 'col-form-label col-sm-2 pt-0'"
+  *ngIf="$any(formDescription.meta).legend"
+  [class]="
+    formDescription.meta?.isGrid() ? 'col-12' : 'col-form-label col-sm-2 pt-0'
+  "
 >
-  {{ $any(formDescriptor).legend }}
+  {{ $any(formDescription).meta?.legend }}
 </legend>
-<ng-container *ngFor="let controlMeta of formDescriptor.controlsDescriptions">
+<ng-container *ngFor="let inputDescription of formDescription.childInputs">
   <div
     *ngIf="
-      controlMeta.controlType == CONTROL_TYPES.Text ||
-      controlMeta.controlType == CONTROL_TYPES.Number ||
-      controlMeta.controlType == CONTROL_TYPES.Date
+      inputDescription.inputType == CONTROL_TYPES.TEXT ||
+      inputDescription.inputType == CONTROL_TYPES.NUMBER ||
+      inputDescription.inputType == CONTROL_TYPES.DATE
     "
     [class]="
-      formDescriptor?.isGrid() ? 'col-md-' + controlMeta.width : 'row mb-3'
+      formDescription.meta?.isGrid()
+        ? 'col-md-' + inputDescription.meta.width
+        : 'row mb-3'
     "
   >
     <label
-      [attr.for]="controlMeta.id"
-      [class]="formDescriptor?.isGrid() ? 'form-label' : 'col-md-2'"
+      [attr.for]="inputDescription.meta.id"
+      [class]="formDescription.meta?.isGrid() ? 'form-label' : 'col-md-2'"
       [ngClass]="{
-        'required-control-label': controlMeta.required,
+        'required-control-label': inputDescription.meta.required,
         'invalid-label':
-          controlMeta.formControl?.touched && controlMeta.formControl.invalid
+          inputDescription.control?.touched && inputDescription.control?.invalid
       }"
-      >{{ controlMeta.label || controlMeta.name }}</label
+      >{{ inputDescription.meta.label || inputDescription.meta }}</label
     >
-    <div [class]="formDescriptor?.isGrid() ? 'col-12' : 'col-md-10'">
+    <div [class]="formDescription.meta?.isGrid() ? 'col-12' : 'col-md-10'">
       <input
         class="form-control"
         [ngClass]="{
           'is-invalid':
-            controlMeta.formControl?.touched && controlMeta.formControl.invalid
+            inputDescription.control?.touched &&
+            inputDescription.control?.invalid
         }"
-        [placeholder]="controlMeta.placeHolder || ''"
-        [id]="controlMeta.id"
-        [type]="controlMeta.type"
-        [formControl]="controlMeta.formControl"
-        [name]="controlMeta.name"
-        [attr.readonly]="controlMeta.readonly"
+        [placeholder]="inputDescription.meta.placeHolder || ''"
+        [id]="inputDescription.meta.id"
+        [type]="inputDescription.meta.type"
+        [formControl]="$any(inputDescription.control)"
+        [name]="inputDescription.meta.name"
+        [attr.readonly]="inputDescription.meta.readonly"
       />
 
       <div
         class="invalid-feedback"
         *ngIf="
-          controlMeta.formControl?.touched && controlMeta.formControl?.invalid
+          inputDescription.control?.touched && inputDescription.control?.invalid
         "
       >
-        {{ controlMeta | errorMessage }}
+        {{ inputDescription | errorMessage }}
       </div>
     </div>
   </div>
 
   <div
-    *ngIf="controlMeta.controlType == CONTROL_TYPES.Select"
+    *ngIf="inputDescription.inputType == CONTROL_TYPES.SELECT"
     [class]="
-      formDescriptor?.isGrid() ? 'col-md-' + controlMeta.width : 'row mb-3'
+      formDescription.meta?.isGrid()
+        ? 'col-md-' + inputDescription.meta.width
+        : 'row mb-3'
     "
   >
     <label
-      [attr.for]="controlMeta.id"
-      [class]="formDescriptor?.isGrid() ? 'form-label' : 'col-md-2'"
+      [attr.for]="inputDescription.meta.id"
+      [class]="formDescription.meta?.isGrid() ? 'form-label' : 'col-md-2'"
       [ngClass]="{
-        'required-control-label': controlMeta.required,
+        'required-control-label': inputDescription.meta.required,
         'invalid-label':
-          controlMeta.formControl?.touched && controlMeta.formControl.invalid
+          inputDescription.control?.touched && inputDescription.control?.invalid
       }"
-      >{{ controlMeta.label || controlMeta.name }}</label
+      >{{ inputDescription.meta.label || inputDescription.meta.name }}</label
     >
-    <div [class]="formDescriptor?.isGrid() ? 'col-12' : 'col-md-10'">
+    <div [class]="formDescription.meta?.isGrid() ? 'col-12' : 'col-md-10'">
       <select
         class="form-select"
         [ngClass]="{
           'is-invalid':
-            controlMeta.formControl?.touched && controlMeta.formControl.invalid
+            inputDescription.control?.touched &&
+            inputDescription.control?.invalid
         }"
-        [id]="controlMeta.id"
-        [formControl]="controlMeta.formControl"
-        [name]="controlMeta.name"
-        [compareWith]="$any(controlMeta).compareWith"
+        [id]="inputDescription.meta.id"
+        [formControl]="$any(inputDescription.control)"
+        [name]="inputDescription.meta.name"
+        [compareWith]="inputDescription.meta.compareWith"
       >
         <option
-          *ngFor="let opt of loadData($any(controlMeta).dataSource) | async"
+          *ngFor="let opt of loadData(inputDescription.meta.dataSource) | async"
           [ngValue]="
-            opt[$any(controlMeta).bindValue]
-              ? opt[$any(controlMeta).bindValue]
+            opt[inputDescription.meta.bindValue]
+              ? opt[inputDescription.meta.bindValue]
               : opt
           "
         >
-          {{ opt[$any(controlMeta).bindLabel] }}
+          {{ opt[inputDescription.meta.bindLabel] }}
         </option>
       </select>
 
       <div
         class="invalid-feedback"
         *ngIf="
-          controlMeta.formControl?.touched && controlMeta.formControl?.invalid
+          inputDescription.control?.touched && inputDescription.control?.invalid
         "
       >
-        {{ controlMeta | errorMessage }}
+        {{ inputDescription | errorMessage }}
       </div>
     </div>
   </div>
 
   <div
-    *ngIf="controlMeta.controlType == CONTROL_TYPES.Checkbox"
+    *ngIf="inputDescription.inputType == CONTROL_TYPES.CHECKBOX"
     [class]="
-      formDescriptor?.isGrid()
-        ? 'col-sm-' + controlMeta.width
+      formDescription.meta?.isGrid()
+        ? 'col-sm-' + inputDescription.meta.width
         : 'col-sm-10 offset-sm-2'
     "
   >
@@ -115,65 +123,78 @@
         class="form-check-input"
         [ngClass]="{
           'is-invalid':
-            controlMeta.formControl?.touched && controlMeta.formControl.invalid
+            inputDescription.control?.touched &&
+            inputDescription.control?.invalid
         }"
-        [id]="controlMeta.id"
+        [id]="inputDescription.meta.id"
         type="checkbox"
-        [formControl]="controlMeta.formControl"
-        [name]="controlMeta.name"
+        [formControl]="$any(inputDescription.control)"
+        [name]="inputDescription.meta.name"
       />
       <label
-        [attr.for]="controlMeta.id"
-        [class]="formDescriptor?.isGrid() ? 'form-label' : 'col-md-2'"
+        [attr.for]="inputDescription.meta.id"
+        [class]="formDescription.meta?.isGrid() ? 'form-label' : 'col-md-2'"
         [ngClass]="{
-          'required-control-label': controlMeta.required,
+          'required-control-label': inputDescription.meta.required,
           'invalid-label':
-            controlMeta.formControl?.touched && controlMeta.formControl.invalid
+            inputDescription.control?.touched &&
+            inputDescription.control?.invalid
         }"
-        >{{ controlMeta.label || controlMeta.name }}</label
+        >{{ inputDescription.meta.label || inputDescription.meta.name }}</label
       >
       <div
         class="invalid-feedback"
         *ngIf="
-          controlMeta.formControl?.touched && controlMeta.formControl?.invalid
+          inputDescription.control?.touched && inputDescription.control?.invalid
         "
       >
-        {{ controlMeta | errorMessage }}
+        {{ inputDescription | errorMessage }}
       </div>
     </div>
   </div>
 
   <fieldset
     class="row mt-3 mb-3"
-    *ngIf="controlMeta.controlType == CONTROL_TYPES.RadioButtons"
+    *ngIf="inputDescription.inputType == CONTROL_TYPES.RADIO_BUTTONS"
   >
     <legend
       [class]="
-        formDescriptor?.isGrid() ? 'col-12' : 'col-form-label col-sm-2 pt-0'
+        formDescription.meta?.isGrid()
+          ? 'col-12'
+          : 'col-form-label col-sm-2 pt-0'
       "
     >
-      {{ controlMeta.legend }}
+      {{ inputDescription.meta.legend }}
     </legend>
-    <div [class]="formDescriptor?.isGrid() ? 'row' : 'col-sm-10'">
+    <div [class]="formDescription.meta?.isGrid() ? 'row' : 'col-sm-10'">
       <div
-        [class]="formDescriptor?.isGrid() ? 'col-sm-' + controlMeta.width : ''"
+        [class]="
+          formDescription.meta?.isGrid()
+            ? 'col-sm-' + inputDescription.meta.width
+            : ''
+        "
         *ngFor="
-          let opt of loadData($any(controlMeta).dataSource) | async;
+          let opt of loadData(inputDescription.meta.dataSource) | async;
           let i = index
         "
       >
         <input
           class="form-check-input mr-50"
-          [id]="controlMeta.id + i"
+          [id]="inputDescription.meta.id + i"
           type="radio"
-          [formControl]="controlMeta.formControl"
+          [formControl]="$any(inputDescription.control)"
           [value]="
-            $any(controlMeta).bindValue ? opt[$any(controlMeta).bindValue] : opt
+            inputDescription.meta.bindValue
+              ? opt[inputDescription.meta.bindValue]
+              : opt
           "
-          [name]="controlMeta.name"
+          [name]="inputDescription.meta.name"
         />
-        <label class="form-check-label" [attr.for]="controlMeta.id + i">
-          {{ opt[$any(controlMeta).bindLabel] }}
+        <label
+          class="form-check-label"
+          [attr.for]="inputDescription.meta.id + i"
+        >
+          {{ opt[inputDescription.meta.bindLabel] }}
         </label>
       </div>
     </div>
@@ -182,15 +203,17 @@
   <fieldset
     class="row mt-3 mb-3"
     dd-dynamic-from-control
-    [formDescriptor]="$any(controlMeta)"
-    *ngIf="controlMeta.controlType == CONTROL_TYPES.Composite"
+    [formDescription]="$any(inputDescription)"
+    *ngIf="inputDescription.inputType == CONTROL_TYPES.COMPOSITE"
   ></fieldset>
 
   <div
     class="invalid-feedback"
-    *ngIf="controlMeta.formControl?.touched && controlMeta.formControl?.invalid"
+    *ngIf="
+      inputDescription.control?.touched && inputDescription.control?.invalid
+    "
   >
-    {{ controlMeta | errorMessage }}
+    {{ inputDescription | errorMessage }}
   </div>
 </ng-container>
 

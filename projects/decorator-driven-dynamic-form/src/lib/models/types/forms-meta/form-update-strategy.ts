@@ -1,4 +1,5 @@
-export enum FormUpdateStrategy {
-  EAGER = 0,
-  LAZY = 1,
+export enum UpdateStrategy {
+  EAGER = 'EAGER',
+  LAZY = 'LAZY',
+  ACTION = 'ACTION',
 }
