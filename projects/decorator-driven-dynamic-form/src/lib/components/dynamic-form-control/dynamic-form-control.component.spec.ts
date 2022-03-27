@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DynamicFromControlComponent } from './dynamic-from-control.component';
+import { DynamicFromControlComponent } from './dynamic-form-control.component';
 
 describe('DynamicFromControlComponent', () => {
   let component: DynamicFromControlComponent;
@@ -8,9 +8,8 @@ describe('DynamicFromControlComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DynamicFromControlComponent ]
-    })
-    .compileComponents();
+      declarations: [DynamicFromControlComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

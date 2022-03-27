@@ -8,8 +8,8 @@ import { FormMeta } from '../../models/types/forms-meta/form-meta';
 
 @Component({
   selector: '[dd-dynamic-from-control]',
-  templateUrl: './dynamic-from-control.component.html',
-  styleUrls: ['./dynamic-from-control.component.css'],
+  templateUrl: './dynamic-form-control.component.html',
+  styleUrls: ['./dynamic-form-control.component.css'],
   providers: [DataLoaderService],
 })
 export class DynamicFromControlComponent implements OnInit {
