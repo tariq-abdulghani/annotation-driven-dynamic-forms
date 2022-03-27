@@ -12,6 +12,7 @@ import { Layout } from '../../models/types/forms-meta/form-layout-enum';
 import { FormEntityProcessorService } from '../../services/form-entity-processor/form-entity-processor.service';
 import { InputDescription } from '../../models/types/inputs-meta/input-description';
 import { FormMeta } from '../../models/types/forms-meta/form-meta';
+import { FormValueTransformer } from '../../models/types/forms-meta/form-value-transformer';
 
 @Component({
   selector: 'ddd-form',
@@ -23,6 +24,7 @@ export class DynamicFormComponent implements OnInit, OnChanges {
   readonly FORM_LAYOUT_OPTS = Layout;
   formDescription!: InputDescription<FormMeta>;
   @Input('formEntity') formModel!: any;
+  @Input('valueTransformer') valueTransformer?: FormValueTransformer<any, any> ;
   @Output('submitEvent') submitEvent: EventEmitter<any> =
     new EventEmitter<any>();
   @Output('changeEvent') changEvent: EventEmitter<any> =
@@ -46,9 +48,10 @@ export class DynamicFormComponent implements OnInit, OnChanges {
 
   onSubmit(v: any) {
     this.formDescription.control?.markAllAsTouched();
-    console.log(this.formDescription.control);
+    // console.log(this.formDescription.control);
     if (this.formDescription.control?.valid) {
-      this.submitEvent.emit(this.formDescription.control.value);
+      const formValue = this.valueTransformer? this.valueTransformer.transform(this.formDescription.control.value) : this.formDescription.control.value;
+      this.submitEvent.emit(formValue);
     }
   }
 }

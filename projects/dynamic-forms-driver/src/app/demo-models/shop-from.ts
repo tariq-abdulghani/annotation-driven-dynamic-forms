@@ -13,6 +13,7 @@ import {
   ActionsPosition,
   Layout,
   UpdateStrategy,
+  FormValueTransformer,
 } from 'decorator-driven-dynamic-form';
 import { UserData } from './user-data';
 
@@ -89,4 +90,14 @@ export class ShopForm {
     name: 'userData',
   })
   userData: any = null;
+}
+
+
+export class ShopFormTransformer implements FormValueTransformer<ShopForm, any>{
+  transform(formValue: ShopForm) {
+    console.log("tarnsformer is running");
+    const transformedVal = {userInfo: formValue.userData, shopInfo: {name: formValue.shopName}};
+   return transformedVal;
+  }
+
 }
