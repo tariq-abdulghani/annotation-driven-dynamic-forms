@@ -2,7 +2,7 @@ import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { MetaDataRegisterer } from 'decorator-driven-dynamic-form';
 import { FormEntityProcessorService } from 'decorator-driven-dynamic-form';
 
-import { ShopForm } from './demo-models/shop-from';
+import { ShopForm, ShopFormTransformer } from './demo-models/shop-from';
 
 @Component({
   selector: 'app-root',
@@ -15,6 +15,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   shopForm = new ShopForm();
   // loginForm = new LoginForm();
+  shopFormTransformer = new ShopFormTransformer();
 
   onSubmit($event: any) {
     console.log($event);
