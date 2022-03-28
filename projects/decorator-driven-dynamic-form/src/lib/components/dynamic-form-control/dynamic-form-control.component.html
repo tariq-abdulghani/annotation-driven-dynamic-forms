@@ -1,3 +1,6 @@
+
+
+
 <ng-container *ngFor="let inputDescription of formDescription.childInputs">
   <div
     *ngIf="
@@ -19,13 +22,53 @@
     [class]="'col-md-' + inputDescription.meta.width"
   ></div>
 
-  <!-- <div
+  <div
     *ngIf="inputDescription.inputType == CONTROL_TYPES.CHECKBOX"
     lib-checkbox-input
     [inputDescription]="inputDescription"
     [labelStyling]="formDescription.meta.labelStyling"
     [class]="'col-md-' + inputDescription.meta.width"
-  ></div> -->
+  ></div>
+
+  <!-- 'col-md-' + inputDescription.meta.width -->
+  <div
+    *ngIf="inputDescription.inputType == CONTROL_TYPES.RADIO_BUTTONS"
+    lib-radio-input
+    [inputDescription]="inputDescription"
+    [labelStyling]="formDescription.meta.labelStyling"
+    [class]="'col-md-' + inputDescription.meta.width"
+  ></div>
+
+  <!--class="row mt-3 mb-3"-->
+  <div [class]="'col-md-' + inputDescription.meta.width"  *ngIf="inputDescription.inputType == CONTROL_TYPES.COMPOSITE">
+
+    <div class="row ">
+      <legend [ngClass]="legendClasses" class="col-form-label">
+        {{ inputDescription.meta.legend }}
+      </legend>
+      <div [ngClass]="inputContainerClasses">
+
+        <fieldset
+    
+        class="row g-3"
+        dd-dynamic-from-control
+        [formDescription]="$any(inputDescription)"
+       
+      ></fieldset>
+      </div>
+    </div>
+
+  </div>
+  
+
+  <div
+    class="invalid-feedback"
+    *ngIf="
+      inputDescription.control?.touched && inputDescription.control?.invalid
+    "
+  >
+    {{ inputDescription | errorMessage }}
+  </div>
 
   <!-- <div
     *ngIf="

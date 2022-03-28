@@ -13,6 +13,7 @@ import { FormEntityProcessorService } from '../../services/form-entity-processor
 import { InputDescription } from '../../models/types/inputs-meta/input-description';
 import { FormMeta } from '../../models/types/forms-meta/form-meta';
 import { FormValueTransformer } from '../../models/types/forms-meta/form-value-transformer';
+import { ActionsPosition } from '../../models/types/forms-meta/form-actions-position';
 
 @Component({
   selector: 'ddd-form',
@@ -53,5 +54,17 @@ export class DynamicFormComponent implements OnInit, OnChanges {
       const formValue = this.valueTransformer? this.valueTransformer.transform(this.formDescription.control.value) : this.formDescription.control.value;
       this.submitEvent.emit(formValue);
     }
+  }
+
+  get actionsPositionClasses(){
+    return {
+      'justify-content-start': this.formDescription.meta.actionPositions == ActionsPosition.NEW_LINE_START,
+      'justify-content-end': this.formDescription.meta.actionPositions == ActionsPosition.NEW_LINE_END,
+      'justify-content-center':this.formDescription.meta.actionPositions == ActionsPosition.NEW_LINE_CENTER
+    }
+  }
+
+  get actionsWithGridFlow(){
+    return this.formDescription.meta.actionPositions == ActionsPosition.GRID_FLOW;
   }
 }

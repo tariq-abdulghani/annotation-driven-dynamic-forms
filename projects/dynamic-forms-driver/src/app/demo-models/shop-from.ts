@@ -24,7 +24,7 @@ import { UserData } from './user-data';
   actionPositions: ActionsPosition.GRID_FLOW,
   layout: Layout.GRID,
   updateStrategy: UpdateStrategy.ACTION,
-  labelStyling: LabelStyling.START,
+  labelStyling: LabelStyling.TOP,
 })
 export class ShopForm {
   @NotNull({ message: 'shopName cant be null ?' })
@@ -58,14 +58,14 @@ export class ShopForm {
     id: 'rememberMe',
     name: 'rememberMe',
     label: 'remember Me',
-    width: 6,
+    width: 7,
   })
   rememberMe: boolean | null = false;
   @CheckboxControl({
     id: 'callMe',
     name: 'callMe',
     label: 'call Me',
-    width: 6,
+    width: 7,
   })
   callMe: boolean | null = false;
 
@@ -90,11 +90,13 @@ export class ShopForm {
     label: 'paymentMethod',
     bindLabel: 'description',
     bindValue: null,
+    width: 6,
+    inputWidth:12,
     dataSource: [
       { id: 1, description: 'visa' },
       { id: 2, description: 'cash' },
     ],
-    legend: 'paymentMethod',
+    legend: 'Payment Method',
   })
   paymentMethod: any = null;
 
@@ -102,6 +104,7 @@ export class ShopForm {
     declaredClass: UserData,
     legend: 'userData',
     name: 'userData',
+    width: 12
   })
   userData: any = null;
 }

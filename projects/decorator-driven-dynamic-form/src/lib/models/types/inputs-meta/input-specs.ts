@@ -40,6 +40,7 @@ export interface RadioButtonsSpec extends InputSpec {
   bindLabel: string;
   bindValue: string | null;
   dataSource: URL | any[] | Observable<any[]>;
+  inputWidth?: number;
 }
 
 export class TextInputDescription extends InputDescription<InputSpec> {

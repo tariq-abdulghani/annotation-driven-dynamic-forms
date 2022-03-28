@@ -4,18 +4,27 @@
     [formGroup]="$any(formDescription!.control)"
     (ngSubmit)="onSubmit($event)"
   >
-    <!-- <dd-dynamic-from-control
-      [formDescriptor]="formDescriptor"
-    ></dd-dynamic-from-control> -->
-
+   
     <div
-      class="row g-3"
+      class="col-12"
       dd-dynamic-from-control
       [formDescription]="formDescription"
     ></div>
 
-    <div class="col-12 mb-3">
-      <div class="gap-10 d-flex flex-row">
+    <ng-container *ngIf="actionsWithGridFlow">
+      <div *ngFor="let action of formDescription.meta.actions" class="col-sm-3">
+        <button
+          [type]="action.type"
+          [class]="action.class || 'btn btn-primary'"
+        >
+          {{ action?.label }}
+        </button>
+      </div>
+    </ng-container>
+    
+
+    <div class="col-12 mb-3" *ngIf="!actionsWithGridFlow">
+      <div class="gap-10 d-flex flex-row" [ngClass]="actionsPositionClasses">
         <div *ngFor="let action of formDescription.meta.actions">
           <button
             [type]="action.type"
@@ -26,15 +35,6 @@
         </div>
       </div>
     </div>
+
   </form>
 </div>
-
-<!--
-  <div class="col-auto">
-      <button type="submit" class="btn btn-primary">Sign in</button>
-    </div>
-
-    <div class="col-auto">
-      <button type="submit" class="btn btn-primary">Sign in</button>
-    </div>
--->

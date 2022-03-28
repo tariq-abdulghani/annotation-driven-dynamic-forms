@@ -28,20 +28,4 @@ export class CheckboxInputComponent implements OnInit {
     };
   }
 
-  get inputDivClass() {
-    return this.labelStyling == LabelStyling.START ? 'col' : 'col-12';
-  }
-
-  get inputDivClasses() {
-    return {
-      col: this.labelStyling == LabelStyling.START,
-      'col-12': this.labelStyling == LabelStyling.TOP,
-      'form-floating': this.labelStyling == LabelStyling.FLOAT,
-    };
-    return this.labelStyling == LabelStyling.START ? 'col' : 'col-12';
-  }
-
-  isFloatingLabel() {
-    return this.labelStyling == LabelStyling.FLOAT;
-  }
 }

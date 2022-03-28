@@ -8,6 +8,8 @@ import { FormEntityProcessorService } from './services/form-entity-processor/for
 import { InputComponent } from './components/input/input.component';
 import { SelectInputComponent } from './components/select-input/select-input.component';
 import { CheckboxInputComponent } from './components/checkbox-input/checkbox-input.component';
+import { RadioInputComponent } from './components/radio-input/radio-input.component';
+import { CompositeInputComponent } from './components/composite-input/composite-input.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +19,8 @@ import { CheckboxInputComponent } from './components/checkbox-input/checkbox-inp
     InputComponent,
     SelectInputComponent,
     CheckboxInputComponent,
+    RadioInputComponent,
+    CompositeInputComponent,
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule],
   exports: [DynamicFormComponent],

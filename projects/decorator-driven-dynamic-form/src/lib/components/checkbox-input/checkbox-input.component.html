@@ -1,5 +1,5 @@
+
 <div [class]="inputContainerClasses">
-  <div [class]="inputDivClasses">
     <div class="form-check">
       <input
         class="form-check-input"
@@ -15,7 +15,7 @@
       />
       <label
         [attr.for]="inputDescription.meta.id"
-        [ngClass]="labelClasses"
+        class="form-check-label"
         [ngClass]="{
           'required-control-label': inputDescription.meta.required,
           'invalid-label':
@@ -34,4 +34,3 @@
       </div>
     </div>
   </div>
-</div>

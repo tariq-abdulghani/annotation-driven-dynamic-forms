@@ -15,6 +15,7 @@ export type NestedFormSpec = {
   legend: string;
   name: string;
   declaredClass: any;
+  width?: number; 
 };
 
 abstract class BaseFormMeta {
@@ -50,11 +51,13 @@ export class NestedFormMeta extends BaseFormMeta {
   legend: string;
   name: string;
   declaredClass: any;
+  width?: number;
 
   constructor(formSpec: NestedFormSpec) {
     super();
     this.legend = formSpec.legend;
     this.name = formSpec.name;
     this.declaredClass = formSpec.declaredClass;
+    this.width = formSpec.width;
   }
 }

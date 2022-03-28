@@ -1,0 +1,43 @@
+<fieldset class="row mt-3 mb-3">
+<legend
+  [ngClass]="legendClasses" class="col-form-label"
+>
+  {{ inputDescription.meta.legend }}
+</legend>
+
+<!-- <label [ngClass]="legendClasses" class="col-form-label">
+  {{ inputDescription.meta.legend }}
+</label> -->
+<!--  -->
+<div [ngClass]="inputContainerClasses">
+  <div class="row mt-1 mb-1" >
+    <div
+      [class]="'col-sm-' + inputDescription.meta.inputWidth"
+      *ngFor="
+        let opt of dataLoader.load(inputDescription.meta.dataSource) | async;
+        let i = index
+      "
+    >
+      <input
+        class="form-check-input mr-50"
+        [id]="inputDescription.meta.id + i"
+        type="radio"
+        [formControl]="$any(inputDescription.control)"
+        [value]="
+          inputDescription.meta.bindValue
+            ? opt[inputDescription.meta.bindValue]
+            : opt
+        "
+        [name]="inputDescription.meta.name"
+      />
+      <label
+        class="form-check-label"
+        [attr.for]="inputDescription.meta.id + i"
+      >
+        {{ opt[inputDescription.meta.bindLabel] }}
+      </label>
+    </div>
+  </div>
+</div>
+
+</fieldset>
