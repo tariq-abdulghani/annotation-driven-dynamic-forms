@@ -15,6 +15,7 @@ import {
   UpdateStrategy,
   FormValueTransformer,
 } from 'decorator-driven-dynamic-form';
+import { LabelStyling } from 'projects/decorator-driven-dynamic-form/src/public-api';
 import { UserData } from './user-data';
 
 @Submit({ label: 'ok' })
@@ -23,6 +24,7 @@ import { UserData } from './user-data';
   actionPositions: ActionsPosition.GRID_FLOW,
   layout: Layout.GRID,
   updateStrategy: UpdateStrategy.ACTION,
+  labelStyling: LabelStyling.START,
 })
 export class ShopForm {
   @NotNull({ message: 'shopName cant be null ?' })
@@ -31,13 +33,16 @@ export class ShopForm {
     name: 'shopName',
     type: 'text',
     label: 'shop name',
+    width: 6,
+    placeHolder: 'asssss',
   })
-  shopName: string | null = null;
+  shopName: string | null | undefined = undefined;
 
   @NumberControl({
     id: 'capacity',
     name: 'capacity',
     label: 'capacity',
+    width: 6,
   })
   capacity: number | null = 200;
 
@@ -53,8 +58,16 @@ export class ShopForm {
     id: 'rememberMe',
     name: 'rememberMe',
     label: 'remember Me',
+    width: 6,
   })
   rememberMe: boolean | null = false;
+  @CheckboxControl({
+    id: 'callMe',
+    name: 'callMe',
+    label: 'call Me',
+    width: 6,
+  })
+  callMe: boolean | null = false;
 
   @SelectControl({
     id: 'style',
@@ -62,6 +75,7 @@ export class ShopForm {
     label: 'style',
     bindLabel: 'description',
     bindValue: null,
+    placeHolder: 'wow',
     compareWith: (a, b) => false,
     dataSource: [
       { id: 1, description: 'visa' },
@@ -92,12 +106,15 @@ export class ShopForm {
   userData: any = null;
 }
 
-
-export class ShopFormTransformer implements FormValueTransformer<ShopForm, any>{
+export class ShopFormTransformer
+  implements FormValueTransformer<ShopForm, any>
+{
   transform(formValue: ShopForm) {
-    console.log("tarnsformer is running");
-    const transformedVal = {userInfo: formValue.userData, shopInfo: {name: formValue.shopName}};
-   return transformedVal;
+    console.log('tarnsformer is running');
+    const transformedVal = {
+      userInfo: formValue.userData,
+      shopInfo: { name: formValue.shopName },
+    };
+    return transformedVal;
   }
-
 }

@@ -1,0 +1,37 @@
+<div [class]="inputContainerClasses">
+  <div [class]="inputDivClasses">
+    <div class="form-check">
+      <input
+        class="form-check-input"
+        [ngClass]="{
+          'is-invalid':
+            inputDescription.control?.touched &&
+            inputDescription.control?.invalid
+        }"
+        [id]="inputDescription.meta.id"
+        type="checkbox"
+        [formControl]="$any(inputDescription.control)"
+        [name]="inputDescription.meta.name"
+      />
+      <label
+        [attr.for]="inputDescription.meta.id"
+        [ngClass]="labelClasses"
+        [ngClass]="{
+          'required-control-label': inputDescription.meta.required,
+          'invalid-label':
+            inputDescription.control?.touched &&
+            inputDescription.control?.invalid
+        }"
+        >{{ inputDescription.meta.label || inputDescription.meta.name }}</label
+      >
+      <div
+        class="invalid-feedback"
+        *ngIf="
+          inputDescription.control?.touched && inputDescription.control?.invalid
+        "
+      >
+        {{ inputDescription | errorMessage }}
+      </div>
+    </div>
+  </div>
+</div>

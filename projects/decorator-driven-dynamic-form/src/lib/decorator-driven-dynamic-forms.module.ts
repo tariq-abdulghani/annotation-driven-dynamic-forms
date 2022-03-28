@@ -5,12 +5,18 @@ import { DynamicFromControlComponent } from './components/dynamic-form-control/d
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ErrorMessagePipe } from './pipes/error-message.pipe';
 import { FormEntityProcessorService } from './services/form-entity-processor/form-entity-processor.service';
+import { InputComponent } from './components/input/input.component';
+import { SelectInputComponent } from './components/select-input/select-input.component';
+import { CheckboxInputComponent } from './components/checkbox-input/checkbox-input.component';
 
 @NgModule({
   declarations: [
     DynamicFormComponent,
     DynamicFromControlComponent,
     ErrorMessagePipe,
+    InputComponent,
+    SelectInputComponent,
+    CheckboxInputComponent,
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule],
   exports: [DynamicFormComponent],
