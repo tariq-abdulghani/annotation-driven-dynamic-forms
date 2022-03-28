@@ -13,10 +13,7 @@ export class InputComponent implements OnInit {
   @Input() inputDescription!: InputDescription<InputSpec>;
   constructor() {}
 
-  ngOnInit(): void {
-    console.log('input label layout', this.labelStyling);
-    console.log('is floating label ', this.isFloatingLabel);
-  }
+  ngOnInit(): void {}
 
   get inputContainerClasses() {
     // return `col-md-${this.inputDescription.meta.width || 12}`;
@@ -43,7 +40,6 @@ export class InputComponent implements OnInit {
       'col-12': this.labelStyling == LabelStyling.TOP,
       'form-floating': this.labelStyling == LabelStyling.FLOAT,
     };
-    return this.labelStyling == LabelStyling.START ? 'col' : 'col-12';
   }
 
   get isFloatingLabel() {

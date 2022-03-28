@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DynamicFormComponent } from './components/dynamic-form/dynamic-form.component';
-import { DynamicFromControlComponent } from './components/dynamic-form-control/dynamic-form-control.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ErrorMessagePipe } from './pipes/error-message.pipe';
 import { FormEntityProcessorService } from './services/form-entity-processor/form-entity-processor.service';
@@ -14,7 +13,6 @@ import { CompositeInputComponent } from './components/composite-input/composite-
 @NgModule({
   declarations: [
     DynamicFormComponent,
-    DynamicFromControlComponent,
     ErrorMessagePipe,
     InputComponent,
     SelectInputComponent,

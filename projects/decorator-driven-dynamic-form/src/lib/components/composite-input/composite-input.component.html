@@ -1,63 +1,66 @@
-<div class="row ">
-    <legend [ngClass]="legendClasses" class="col-form-label">
-      {{ $any(formDescription.meta).legend }}
-    </legend>
-    <div [ngClass]="inputContainerClasses">
+<div class="row">
+  <legend [ngClass]="legendClasses" class="col-form-label">
+    {{ $any(formDescription.meta).legend }}
+  </legend>
+  <div [ngClass]="inputContainerClasses">
+    <fieldset class="row g-3">
+      <ng-container
+        *ngFor="let inputDescription of formDescription.childInputs"
+      >
+        <div
+          *ngIf="
+            inputDescription.inputType == CONTROL_TYPES.TEXT ||
+            inputDescription.inputType == CONTROL_TYPES.NUMBER ||
+            inputDescription.inputType == CONTROL_TYPES.DATE
+          "
+          lib-input
+          [inputDescription]="inputDescription"
+          [labelStyling]="formDescription.meta.labelStyling"
+          [class]="'col-md-' + inputDescription.meta.width"
+        ></div>
 
-      <fieldset class="row g-3">
-        
-        <ng-container *ngFor="let inputDescription of formDescription.childInputs">
-            <div
-            *ngIf="
-                inputDescription.inputType == CONTROL_TYPES.TEXT ||
-                inputDescription.inputType == CONTROL_TYPES.NUMBER ||
-                inputDescription.inputType == CONTROL_TYPES.DATE
-            "
-            lib-input
-            [inputDescription]="inputDescription"
-            [labelStyling]="formDescription.meta.labelStyling"
-            [class]="'col-md-' + inputDescription.meta.width"
-            ></div>
-        
-            <div
-            *ngIf="inputDescription.inputType == CONTROL_TYPES.SELECT"
-            lib-select-input
-            [inputDescription]="inputDescription"
-            [labelStyling]="formDescription.meta.labelStyling"
-            [class]="'col-md-' + inputDescription.meta.width"
-            ></div>
-        
-            <div
-            *ngIf="inputDescription.inputType == CONTROL_TYPES.CHECKBOX"
-            lib-checkbox-input
-            [inputDescription]="inputDescription"
-            [labelStyling]="formDescription.meta.labelStyling"
-            [class]="'col-md-' + inputDescription.meta.width"
-            ></div>
-        
-            <div
-            *ngIf="inputDescription.inputType == CONTROL_TYPES.RADIO_BUTTONS"
-            lib-radio-input
-            [inputDescription]="inputDescription"
-            [labelStyling]="formDescription.meta.labelStyling"
-            [class]="'col-md-' + inputDescription.meta.width"
-            ></div>
-        
-            <!--class="row mt-3 mb-3"-->
-            <div [class]="'col-md-' + inputDescription.meta.width"  *ngIf="inputDescription.inputType == CONTROL_TYPES.COMPOSITE">
-            </div>
-            
-        
-            <div
-            class="invalid-feedback"
-            *ngIf="
-                inputDescription.control?.touched && inputDescription.control?.invalid
-            "
-            >
-            {{ inputDescription | errorMessage }}
-            </div>
+        <div
+          *ngIf="inputDescription.inputType == CONTROL_TYPES.SELECT"
+          lib-select-input
+          [inputDescription]="inputDescription"
+          [labelStyling]="formDescription.meta.labelStyling"
+          [class]="'col-md-' + inputDescription.meta.width"
+        ></div>
 
-        </ng-container>
-      </fieldset>
-    </div>
+        <div
+          *ngIf="inputDescription.inputType == CONTROL_TYPES.CHECKBOX"
+          lib-checkbox-input
+          [inputDescription]="inputDescription"
+          [labelStyling]="formDescription.meta.labelStyling"
+          [class]="'col-md-' + inputDescription.meta.width"
+        ></div>
+
+        <div
+          *ngIf="inputDescription.inputType == CONTROL_TYPES.RADIO_BUTTONS"
+          lib-radio-input
+          [inputDescription]="inputDescription"
+          [labelStyling]="formDescription.meta.labelStyling"
+          [class]="'col-md-' + inputDescription.meta.width"
+        ></div>
+
+        <!--class="row mt-3 mb-3"-->
+        <div
+          [class]="'col-md-' + inputDescription.meta.width"
+          lib-composite-input
+          *ngIf="inputDescription.inputType == CONTROL_TYPES.COMPOSITE"
+          [formDescription]="inputDescription"
+        ></div>
+
+        <div
+          class="invalid-feedback"
+          *ngIf="
+            inputDescription.control?.touched &&
+            inputDescription.control?.invalid
+          "
+        >
+          {{ inputDescription | errorMessage }}
+        </div>
+      </ng-container>
+    </fieldset>
+  </div>
 </div>

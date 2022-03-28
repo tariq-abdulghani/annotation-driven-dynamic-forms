@@ -7,28 +7,30 @@ import { DataLoaderService } from '../../services/data-loader/data-loader.servic
 @Component({
   selector: '[lib-radio-input]',
   templateUrl: './radio-input.component.html',
-  styleUrls: ['./radio-input.component.css']
+  styleUrls: ['./radio-input.component.css'],
+  providers: [DataLoaderService],
 })
 export class RadioInputComponent implements OnInit {
   @Input() labelStyling!: LabelStyling;
   @Input() inputDescription!: InputDescription<InputSpec>;
   constructor(public dataLoader: DataLoaderService) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   get labelClasses() {
     return {
-      'col-form-label': this.labelStyling == LabelStyling.TOP || this.labelStyling == LabelStyling.FLOAT,
+      'col-form-label':
+        this.labelStyling == LabelStyling.TOP ||
+        this.labelStyling == LabelStyling.FLOAT,
       'col-sm-2 col-form-label': this.labelStyling == LabelStyling.START,
     };
   }
 
-  get legendClasses(){
+  get legendClasses() {
     return {
       // 'col-form-label': this.labelStyling != LabelStyling.START,
       'col-sm-2': this.labelStyling == LabelStyling.START,
-    }
+    };
   }
 
   get inputContainerClasses() {
@@ -38,5 +40,4 @@ export class RadioInputComponent implements OnInit {
       row: this.labelStyling != LabelStyling.START,
     };
   }
-
 }

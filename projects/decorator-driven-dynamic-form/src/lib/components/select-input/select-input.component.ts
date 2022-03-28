@@ -8,6 +8,7 @@ import { DataLoaderService } from '../../services/data-loader/data-loader.servic
   selector: '[lib-select-input]',
   templateUrl: './select-input.component.html',
   styleUrls: ['./select-input.component.css'],
+  providers: [DataLoaderService],
 })
 export class SelectInputComponent implements OnInit {
   @Input() labelStyling!: LabelStyling;
@@ -28,10 +29,6 @@ export class SelectInputComponent implements OnInit {
       'form-label': this.labelStyling == LabelStyling.TOP,
       'col-sm-2 col-form-label': this.labelStyling == LabelStyling.START,
     };
-  }
-
-  get inputDivClass() {
-    return this.labelStyling == LabelStyling.START ? 'col' : 'col-12';
   }
 
   get inputDivClasses() {

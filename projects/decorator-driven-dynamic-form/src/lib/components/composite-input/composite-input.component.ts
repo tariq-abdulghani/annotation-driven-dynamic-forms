@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Layout } from '../../models/types/forms-meta/form-layout-enum';
 import { FormMeta } from '../../models/types/forms-meta/form-meta';
 import { LabelStyling } from '../../models/types/forms-meta/label-styling';
 import { InputDescription } from '../../models/types/inputs-meta/input-description';
@@ -9,23 +8,20 @@ import { DataLoaderService } from '../../services/data-loader/data-loader.servic
 @Component({
   selector: '[lib-composite-input]',
   templateUrl: './composite-input.component.html',
-  styleUrls: ['./composite-input.component.css']
+  styleUrls: ['./composite-input.component.css'],
 })
 export class CompositeInputComponent implements OnInit {
-
   @Input() formDescription!: InputDescription<FormMeta>;
   readonly CONTROL_TYPES = InputTypes;
-  readonly FORM_LAYOUT_OPTS = Layout;
-  constructor(private dataLoader: DataLoaderService) {}
+  constructor() {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
-  get legendClasses(){
+  get legendClasses() {
     return {
       // 'col-form-label': this.labelStyling != LabelStyling.START,
       'col-sm-2': this.formDescription.meta.labelStyling == LabelStyling.START,
-    }
+    };
   }
 
   get inputContainerClasses() {

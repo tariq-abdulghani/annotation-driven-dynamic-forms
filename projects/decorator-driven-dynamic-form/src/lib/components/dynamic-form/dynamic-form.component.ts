@@ -8,7 +8,6 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { InputTypes } from '../../models/types/inputs-meta/input-types.enum';
-import { Layout } from '../../models/types/forms-meta/form-layout-enum';
 import { FormEntityProcessorService } from '../../services/form-entity-processor/form-entity-processor.service';
 import { InputDescription } from '../../models/types/inputs-meta/input-description';
 import { FormMeta } from '../../models/types/forms-meta/form-meta';
@@ -22,10 +21,9 @@ import { ActionsPosition } from '../../models/types/forms-meta/form-actions-posi
 })
 export class DynamicFormComponent implements OnInit, OnChanges {
   readonly CONTROL_TYPES = InputTypes;
-  readonly FORM_LAYOUT_OPTS = Layout;
   formDescription!: InputDescription<FormMeta>;
   @Input('formEntity') formModel!: any;
-  @Input('valueTransformer') valueTransformer?: FormValueTransformer<any, any> ;
+  @Input('valueTransformer') valueTransformer?: FormValueTransformer<any, any>;
   @Output('submitEvent') submitEvent: EventEmitter<any> =
     new EventEmitter<any>();
   @Output('changeEvent') changEvent: EventEmitter<any> =
@@ -51,20 +49,30 @@ export class DynamicFormComponent implements OnInit, OnChanges {
     this.formDescription.control?.markAllAsTouched();
     // console.log(this.formDescription.control);
     if (this.formDescription.control?.valid) {
-      const formValue = this.valueTransformer? this.valueTransformer.transform(this.formDescription.control.value) : this.formDescription.control.value;
+      const formValue = this.valueTransformer
+        ? this.valueTransformer.transform(this.formDescription.control.value)
+        : this.formDescription.control.value;
       this.submitEvent.emit(formValue);
     }
   }
 
-  get actionsPositionClasses(){
+  get actionsPositionClasses() {
     return {
-      'justify-content-start': this.formDescription.meta.actionPositions == ActionsPosition.NEW_LINE_START,
-      'justify-content-end': this.formDescription.meta.actionPositions == ActionsPosition.NEW_LINE_END,
-      'justify-content-center':this.formDescription.meta.actionPositions == ActionsPosition.NEW_LINE_CENTER
-    }
+      'justify-content-start':
+        this.formDescription.meta.actionPositions ==
+        ActionsPosition.NEW_LINE_START,
+      'justify-content-end':
+        this.formDescription.meta.actionPositions ==
+        ActionsPosition.NEW_LINE_END,
+      'justify-content-center':
+        this.formDescription.meta.actionPositions ==
+        ActionsPosition.NEW_LINE_CENTER,
+    };
   }
 
-  get actionsWithGridFlow(){
-    return this.formDescription.meta.actionPositions == ActionsPosition.GRID_FLOW;
+  get actionsWithGridFlow() {
+    return (
+      this.formDescription.meta.actionPositions == ActionsPosition.GRID_FLOW
+    );
   }
 }

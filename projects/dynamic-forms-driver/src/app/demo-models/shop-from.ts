@@ -11,7 +11,6 @@ import {
   Reset,
   NotNull,
   ActionsPosition,
-  Layout,
   UpdateStrategy,
   FormValueTransformer,
 } from 'decorator-driven-dynamic-form';
@@ -21,10 +20,9 @@ import { UserData } from './user-data';
 @Submit({ label: 'ok' })
 @Reset({ label: 'clear' })
 @FormEntity({
-  actionPositions: ActionsPosition.GRID_FLOW,
-  layout: Layout.GRID,
+  actionPositions: ActionsPosition.NEW_LINE_CENTER,
   updateStrategy: UpdateStrategy.ACTION,
-  labelStyling: LabelStyling.TOP,
+  labelStyling: LabelStyling.FLOAT,
 })
 export class ShopForm {
   @NotNull({ message: 'shopName cant be null ?' })
@@ -42,6 +40,7 @@ export class ShopForm {
     id: 'capacity',
     name: 'capacity',
     label: 'capacity',
+    placeHolder: '...',
     width: 6,
   })
   capacity: number | null = 200;
@@ -51,6 +50,7 @@ export class ShopForm {
     name: 'expiryDate',
     type: 'week',
     label: 'expiry date',
+    placeHolder: 'week 10, 2022',
   })
   expiryDate: string | null = '01-01-2023';
 
@@ -91,7 +91,7 @@ export class ShopForm {
     bindLabel: 'description',
     bindValue: null,
     width: 6,
-    inputWidth:12,
+    inputWidth: 12,
     dataSource: [
       { id: 1, description: 'visa' },
       { id: 2, description: 'cash' },
@@ -102,9 +102,9 @@ export class ShopForm {
 
   @NestedFormEntity({
     declaredClass: UserData,
-    legend: 'userData',
+    legend: 'User Data',
     name: 'userData',
-    width: 12
+    width: 12,
   })
   userData: any = null;
 }
