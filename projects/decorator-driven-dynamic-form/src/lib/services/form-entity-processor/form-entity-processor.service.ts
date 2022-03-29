@@ -10,6 +10,7 @@ import { InputDescription } from '../../models/types/inputs-meta/input-descripti
 import { MetaDataRegisterer } from '../../models/types/inputs-meta/meta-data-registerer';
 import { InputSpec } from '../../models/types/inputs-meta/input-specs';
 import { BasicAction } from '../../models/types/actions/actions-api';
+import { CrossValidationProcessor } from '../../models/decorators/validation/cross-validation';
 
 @Injectable()
 export class FormEntityProcessorService {
@@ -23,6 +24,15 @@ export class FormEntityProcessorService {
       formEntity.meta,
       InputTypes.COMPOSITE
     );
+
+    const crossValidators = CrossValidationProcessor.process(formEntity);
+    if (crossValidators.length > 0) {
+      crossValidators.forEach((cv) => {
+        formDescription.errorMap.set(cv.spec.id, cv.spec.message || '');
+        formDescription.validators.push(cv.spec.validatorFn);
+      });
+    }
+
     const formGroupInitializer = {} as { [x: string]: any };
 
     // find actions and put them in meta attribute
@@ -62,7 +72,7 @@ export class FormEntityProcessorService {
         formDescription.childInputs!.push(nestedFormDescription);
         nestedFormDescription.meta.legend = metaData.legend; // todo investigate
         nestedFormDescription.meta.width = metaData.width; // todo investigate
-        nestedFormDescription.meta.labelStyling =formEntity.meta?.labelStyling; // label styling must be inherited
+        nestedFormDescription.meta.labelStyling = formEntity.meta?.labelStyling; // label styling must be inherited
         formGroupInitializer[metaData.name] = nestedFormDescription.control;
 
         this.bindCompositeFieldToFormGroup(formEntity, key, nestedFormEntity);
@@ -88,6 +98,13 @@ export class FormEntityProcessorService {
         });
         break;
     }
+    // set error messages here ??
+    formDescription.control?.addValidators(formDescription.validators);
+    crossValidators.forEach((v) => {
+      // v.spec.inputs.forEach(input=>{
+      //   formDescription.childInputs?.find(i => i.errorMap.set())
+      // })
+    });
     return formDescription;
   }
 

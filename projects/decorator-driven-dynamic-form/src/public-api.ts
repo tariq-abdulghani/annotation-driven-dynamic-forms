@@ -35,3 +35,5 @@ export * from './lib/models/types/forms-meta/form-actions-position';
 export * from './lib/models/types/forms-meta/form-update-strategy';
 export * from './lib/models/types/forms-meta/form-value-transformer';
 export * from './lib/models/types/forms-meta/label-styling';
+
+export * from './lib/models/decorators/validation/cross-validation';

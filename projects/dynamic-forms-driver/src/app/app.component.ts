@@ -29,6 +29,13 @@ export class AppComponent implements OnInit, AfterViewInit {
   constructor(private formEntityProcessorService: FormEntityProcessorService) {}
 
   ngOnInit(): void {
+    console.log(this.shopForm);
+    console.log(
+      'meta data ',
+      Reflect.getMetadataKeys(ShopForm),
+      ShopForm.prototype.constructor,
+      Object.entries(ShopForm.prototype.constructor)
+    );
     // //@ts-ignore
     // this.loginForm.gender = { label: 'male', id: 'm' };
     // this.loginForm.age = 50;
