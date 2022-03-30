@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CompositeInputComponent } from './composite-input.component';
+import { DynamicFromControlComponent } from './dynamic-from-control.component';
 
-describe('CompositeInputComponent', () => {
-  let component: CompositeInputComponent;
-  let fixture: ComponentFixture<CompositeInputComponent>;
+describe('DynamicFromControlComponent', () => {
+  let component: DynamicFromControlComponent;
+  let fixture: ComponentFixture<DynamicFromControlComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CompositeInputComponent ]
+      declarations: [ DynamicFromControlComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CompositeInputComponent);
+    fixture = TestBed.createComponent(DynamicFromControlComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

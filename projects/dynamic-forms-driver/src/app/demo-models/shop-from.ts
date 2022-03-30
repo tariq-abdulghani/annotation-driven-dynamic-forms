@@ -1,4 +1,3 @@
-import { AbstractControl, Validators } from '@angular/forms';
 import {
   FormEntity,
   TextControl,
@@ -12,34 +11,18 @@ import {
   Reset,
   NotNull,
   ActionsPosition,
+  Layout,
   UpdateStrategy,
   FormValueTransformer,
-  LabelStyling,
 } from 'decorator-driven-dynamic-form';
-import { CrossValidation } from 'decorator-driven-dynamic-form';
 import { UserData } from './user-data';
 
-@CrossValidation({
-  id: 'shop',
-  message: 'capacity cant be less than 20 when name is andrew!!',
-  inputs: [
-    {
-      input: 'capacity',
-      errorConfig: { err: 'shop', message: 'capacity cant be less than .....' },
-    },
-  ],
-  validatorFn: (control: AbstractControl) => {
-    const cap = control.get('capacity');
-    cap?.setErrors({ shop: true });
-    return { shop: true };
-  },
-})
 @Submit({ label: 'ok' })
 @Reset({ label: 'clear' })
 @FormEntity({
-  actionPositions: ActionsPosition.NEW_LINE_CENTER,
+  actionPositions: ActionsPosition.GRID_FLOW,
+  layout: Layout.GRID,
   updateStrategy: UpdateStrategy.ACTION,
-  labelStyling: LabelStyling.FLOAT,
 })
 export class ShopForm {
   @NotNull({ message: 'shopName cant be null ?' })
@@ -48,17 +31,13 @@ export class ShopForm {
     name: 'shopName',
     type: 'text',
     label: 'shop name',
-    width: 6,
-    placeHolder: 'asssss',
   })
-  shopName: string | null | undefined = undefined;
+  shopName: string | null = null;
 
   @NumberControl({
     id: 'capacity',
     name: 'capacity',
     label: 'capacity',
-    placeHolder: '...',
-    width: 6,
   })
   capacity: number | null = 200;
 
@@ -67,7 +46,6 @@ export class ShopForm {
     name: 'expiryDate',
     type: 'week',
     label: 'expiry date',
-    placeHolder: 'week 10, 2022',
   })
   expiryDate: string | null = '01-01-2023';
 
@@ -75,16 +53,8 @@ export class ShopForm {
     id: 'rememberMe',
     name: 'rememberMe',
     label: 'remember Me',
-    width: 7,
   })
   rememberMe: boolean | null = false;
-  @CheckboxControl({
-    id: 'callMe',
-    name: 'callMe',
-    label: 'call Me',
-    width: 7,
-  })
-  callMe: boolean | null = false;
 
   @SelectControl({
     id: 'style',
@@ -92,7 +62,6 @@ export class ShopForm {
     label: 'style',
     bindLabel: 'description',
     bindValue: null,
-    placeHolder: 'wow',
     compareWith: (a, b) => false,
     dataSource: [
       { id: 1, description: 'visa' },
@@ -107,34 +76,28 @@ export class ShopForm {
     label: 'paymentMethod',
     bindLabel: 'description',
     bindValue: null,
-    width: 6,
-    inputWidth: 12,
     dataSource: [
       { id: 1, description: 'visa' },
       { id: 2, description: 'cash' },
     ],
-    legend: 'Payment Method',
+    legend: 'paymentMethod',
   })
   paymentMethod: any = null;
 
   @NestedFormEntity({
     declaredClass: UserData,
-    legend: 'User Data',
+    legend: 'userData',
     name: 'userData',
-    width: 12,
   })
   userData: any = null;
 }
 
-export class ShopFormTransformer
-  implements FormValueTransformer<ShopForm, any>
-{
+
+export class ShopFormTransformer implements FormValueTransformer<ShopForm, any>{
   transform(formValue: ShopForm) {
-    console.log('tarnsformer is running');
-    const transformedVal = {
-      userInfo: formValue.userData,
-      shopInfo: { name: formValue.shopName },
-    };
-    return transformedVal;
+    console.log("tarnsformer is running");
+    const transformedVal = {userInfo: formValue.userData, shopInfo: {name: formValue.shopName}};
+   return transformedVal;
   }
+
 }
