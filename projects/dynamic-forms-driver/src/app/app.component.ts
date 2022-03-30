@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { MetaDataRegisterer } from 'decorator-driven-dynamic-form';
 import { FormEntityProcessorService } from 'decorator-driven-dynamic-form';
+import { InlineSearchForm } from './demo-models/inline-search-form';
 
 import { ShopForm, ShopFormTransformer } from './demo-models/shop-from';
 
@@ -28,6 +29,13 @@ export class AppComponent implements OnInit, AfterViewInit {
   constructor(private formEntityProcessorService: FormEntityProcessorService) {}
 
   ngOnInit(): void {
+    // console.log(this.shopForm);
+    // console.log(
+    //   'meta data ',
+    //   Reflect.getMetadataKeys(ShopForm),
+    //   ShopForm.prototype.constructor,
+    //   Object.entries(ShopForm.prototype.constructor)
+    // );
     // //@ts-ignore
     // this.loginForm.gender = { label: 'male', id: 'm' };
     // this.loginForm.age = 50;
@@ -38,20 +46,10 @@ export class AppComponent implements OnInit, AfterViewInit {
     // //   zipCode: '78',
     // // };
 
-    console.log(this.formEntityProcessorService.process(this.shopForm));
+    // console.log(this.formEntityProcessorService.process(this.shopForm));
     this.shopForm.capacity = 1580;
     console.log(this.shopForm);
-    console.log(MetaDataRegisterer.get(this.shopForm, 'shopName')); //capacity
-    console.log(MetaDataRegisterer.get(this.shopForm, 'capacity')); //capacity//expiryDate
-    console.log(MetaDataRegisterer.get(this.shopForm, 'expiryDate')); //rememberMe
-    console.log(MetaDataRegisterer.get(this.shopForm, 'rememberMe')); //style
-    console.log(MetaDataRegisterer.get(this.shopForm, 'style')); //paymentMethod
-    console.log(MetaDataRegisterer.get(this.shopForm, 'paymentMethod')); //paymentMethod
   }
 
-  ngAfterViewInit(): void {
-    // console.log("address ", this.loginForm.address);
-    // //@ts-ignore
-    // this.loginForm.address.zipCode = "xxyl";
-  }
+  ngAfterViewInit(): void {}
 }

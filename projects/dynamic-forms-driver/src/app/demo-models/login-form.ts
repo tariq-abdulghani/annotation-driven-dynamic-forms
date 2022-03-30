@@ -7,7 +7,7 @@ import {
   Reset,
   Submit,
   SelectControl,
-  RadioButtons,
+  RadioButtonsControl,
   NestedFormEntity,
   FormEntity,
   RequiredTrue,
@@ -64,6 +64,7 @@ export class LoginForm {
     id: 'expiryDate',
     name: 'expiryDate',
     label: 'Expiry Date',
+    type: 'date',
     // readonly: true,
   })
   expiryDate: string | null = null;
@@ -91,7 +92,7 @@ export class LoginForm {
   })
   employee = true;
 
-  @RadioButtons({
+  @RadioButtonsControl({
     id: 'payment',
     name: 'payment',
     legend: 'Payment',
@@ -106,7 +107,7 @@ export class LoginForm {
 
   @NestedFormEntity({
     name: 'address',
-    classDeclaration: Address,
+    declaredClass: Address,
     legend: 'Address',
   })
   address: Address | null = null;

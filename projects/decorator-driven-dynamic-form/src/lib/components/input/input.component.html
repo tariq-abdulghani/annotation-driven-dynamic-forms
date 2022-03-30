@@ -1,0 +1,46 @@
+<div [class]="inputContainerClasses">
+  <label
+    *ngIf="!isFloatingLabel"
+    [attr.for]="inputDescription.metaData.get('id')"
+    [ngClass]="labelClasses"
+    [ngClass]="{
+      'required-control-label': inputDescription.metaData.get('required'),
+      'invalid-label':
+        inputDescription.control?.touched && inputDescription.control?.invalid
+    }"
+    >{{ inputDescription.metaData.get('label') }}</label
+  >
+  <div [class]="inputDivClasses">
+    <input
+      class="form-control"
+      [ngClass]="{
+        'is-invalid':
+          inputDescription.control?.touched && inputDescription.control?.invalid
+      }"
+      [placeholder]="inputDescription.metaData.get('placeHolder') || ''"
+      [id]="inputDescription.metaData.get('id')"
+      [type]="inputDescription.metaData.get('type')"
+      [formControl]="$any(inputDescription.control)"
+      [name]="inputDescription.metaData.get('name')"
+      [attr.readonly]="inputDescription.metaData.get('readonly')"
+    />
+    <label
+      *ngIf="isFloatingLabel"
+      [attr.for]="inputDescription.metaData.get('id')"
+      [ngClass]="{
+        'required-control-label': inputDescription.metaData.get('required'),
+        'invalid-label':
+          inputDescription.control?.touched && inputDescription.control?.invalid
+      }"
+      >{{ inputDescription.metaData.get('label') }}</label
+    >
+    <div
+      class="invalid-feedback"
+      *ngIf="
+        inputDescription.control?.touched && inputDescription.control?.invalid
+      "
+    >
+      {{ inputDescription | errorMessage }}
+    </div>
+  </div>
+</div>
