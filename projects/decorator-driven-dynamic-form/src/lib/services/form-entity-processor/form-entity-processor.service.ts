@@ -98,12 +98,23 @@ export class FormEntityProcessorService {
         });
         break;
     }
-    // set error messages here ??
+
     formDescription.control?.addValidators(formDescription.validators);
-    crossValidators.forEach((v) => {
-      // v.spec.inputs.forEach(input=>{
-      //   formDescription.childInputs?.find(i => i.errorMap.set())
-      // })
+
+    // set error messages here ??
+    // will not work with nested ones they have no name in meta data
+    crossValidators.forEach((validator) => {
+      validator.spec.inputs.forEach((input) => {
+        const relatedInput = formDescription.childInputs?.find(
+          (i) => i.meta.name == input.input
+        );
+        // console.log('related input ', relatedInput, input.errorConfig);
+        relatedInput?.errorMap.set(
+          input.errorConfig.err,
+          input.errorConfig.message
+        );
+        // console.log('related input ', relatedInput);
+      });
     });
     return formDescription;
   }

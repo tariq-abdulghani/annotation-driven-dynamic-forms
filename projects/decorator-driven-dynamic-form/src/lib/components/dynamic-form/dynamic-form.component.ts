@@ -47,7 +47,7 @@ export class DynamicFormComponent implements OnInit, OnChanges {
 
   onSubmit(v: any) {
     this.formDescription.control?.markAllAsTouched();
-    // console.log(this.formDescription.control);
+    console.log(this.formDescription.control);
     if (this.formDescription.control?.valid) {
       const formValue = this.valueTransformer
         ? this.valueTransformer.transform(this.formDescription.control.value)

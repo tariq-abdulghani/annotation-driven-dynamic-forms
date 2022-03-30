@@ -27,7 +27,7 @@ export function CrossValidation(spec: ValidationSpec) {
 
 export class CrossValidationProcessor {
   public static process(formEntity: any): CrossValidator[] {
-    console.log('formEntity', formEntity, formEntity.constructor);
+    // console.log('formEntity', formEntity, formEntity.constructor);
     const validators: CrossValidator[] = [];
     Object.keys(formEntity.constructor).forEach((key) => {
       if (formEntity.constructor[key] instanceof CrossValidator) {

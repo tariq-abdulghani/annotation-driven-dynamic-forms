@@ -7,7 +7,7 @@ import {
 
 @CrossValidation({
   id: 'userNameEmail',
-  message: 'email cant be the same as user name',
+  message: 'invalid user name and email combination!',
   inputs: [
     {
       input: 'userName',
@@ -19,7 +19,7 @@ import {
   ],
   validatorFn: (userDataForm: AbstractControl) => {
     const userName = userDataForm.get('userName');
-    userName?.setErrors([{ userNameEmail: true }]);
+    userName?.setErrors({ userNameEmail: true });
     return { userNameEmail: true };
   },
 })

@@ -29,6 +29,8 @@ import { UserData } from './user-data';
     },
   ],
   validatorFn: (control: AbstractControl) => {
+    const cap = control.get('capacity');
+    cap?.setErrors({ shop: true });
     return { shop: true };
   },
 })
@@ -37,7 +39,7 @@ import { UserData } from './user-data';
 @FormEntity({
   actionPositions: ActionsPosition.NEW_LINE_CENTER,
   updateStrategy: UpdateStrategy.ACTION,
-  labelStyling: LabelStyling.TOP,
+  labelStyling: LabelStyling.FLOAT,
 })
 export class ShopForm {
   @NotNull({ message: 'shopName cant be null ?' })
