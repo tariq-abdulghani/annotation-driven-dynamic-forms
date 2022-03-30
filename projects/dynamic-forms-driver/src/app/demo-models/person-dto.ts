@@ -14,14 +14,15 @@ import {
   NestedFormEntity,
   RequiredTrue,
   CheckboxControl,
-  RadioButtonsControl,
+  RadioButtons,
+  FormLayout,
 } from 'decorator-driven-dynamic-form';
 import { of } from 'rxjs';
 import { ContactInfo } from './contact-info';
 
 @Reset({ label: 'clear', class: 'btn btn-danger' })
 @Submit({ label: 'save', class: 'btn btn-primary' })
-@FormEntity()
+@FormEntity({ formLayout: FormLayout.GRID })
 export class PersonForm {
   @MaxLength({
     maxlength: 10,
@@ -95,13 +96,13 @@ export class PersonForm {
   // @NestedFormModel({ name: 'address', classDeclaration: Address })
   // address: Address = new Address('FGH', 'NBH', '4578'); //{ city: 'city wow', state: 'state wow', zipCode: '1234' };
 
-  // @NestedFormEntity({ name: 'contactInfo', classDeclaration: ContactInfo })
-  // contactInfo: ContactInfo = {
-  //   telA: '012-3458',
-  //   telB: '015-1425',
-  //   email: '',
-  //   address: { city: 'city wow', state: 'state wow', zipCode: '1234' },
-  // };
+  @NestedFormEntity({ name: 'contactInfo', classDeclaration: ContactInfo })
+  contactInfo: ContactInfo = {
+    telA: '012-3458',
+    telB: '015-1425',
+    email: '',
+    address: { city: 'city wow', state: 'state wow', zipCode: '1234' },
+  };
 
   @RequiredTrue({ message: 'is required! to be true' })
   @CheckboxControl({ id: 'married', name: 'married', label: 'married' })
@@ -110,7 +111,7 @@ export class PersonForm {
   @CheckboxControl({ id: 'employed', name: 'employed', label: 'employed' })
   employed!: boolean;
 
-  @RadioButtonsControl({
+  @RadioButtons({
     id: 'radios',
     name: 'paymentMethod',
     legend: 'payment method',

@@ -1,10 +1,10 @@
-import { MetaDataRegisterer } from '../../../utils/meta-data-registerer';
+import { MetaDataRegisterer } from '../../types/inputs-meta/meta-data-registerer';
 import {
   FormMeta,
   FormSpec,
   NestedFormMeta,
   NestedFormSpec,
-} from '../../types/forms/form-meta';
+} from '../../types/forms-meta/form-meta';
 
 export function FormEntity(formSpec?: FormSpec) {
   return function <T extends { new (...args: any[]): {} }>(constructor: T) {

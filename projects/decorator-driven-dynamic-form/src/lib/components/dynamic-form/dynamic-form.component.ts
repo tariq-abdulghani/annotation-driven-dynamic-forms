@@ -7,12 +7,12 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { InputTypes } from '../../models/types/inputs/input-types.enum';
+import { InputTypes } from '../../models/types/inputs-meta/input-types.enum';
+import { Layout } from '../../models/types/forms-meta/form-layout-enum';
 import { FormEntityProcessorService } from '../../services/form-entity-processor/form-entity-processor.service';
-import { InputDescription } from '../../models/types/inputs/input-description';
-import { FormMeta } from '../../models/types/forms/form-meta';
-import { FormValueTransformer } from '../../models/types/forms/form-value-transformer';
-import { ActionsPosition } from '../../models/types/forms/form-actions-position';
+import { InputDescription } from '../../models/types/inputs-meta/input-description';
+import { FormMeta } from '../../models/types/forms-meta/form-meta';
+import { FormValueTransformer } from '../../models/types/forms-meta/form-value-transformer';
 
 @Component({
   selector: 'ddd-form',
@@ -21,9 +21,10 @@ import { ActionsPosition } from '../../models/types/forms/form-actions-position'
 })
 export class DynamicFormComponent implements OnInit, OnChanges {
   readonly CONTROL_TYPES = InputTypes;
-  formDescription!: InputDescription;
+  readonly FORM_LAYOUT_OPTS = Layout;
+  formDescription!: InputDescription<FormMeta>;
   @Input('formEntity') formModel!: any;
-  @Input('valueTransformer') valueTransformer?: FormValueTransformer<any, any>;
+  @Input('valueTransformer') valueTransformer?: FormValueTransformer<any, any> ;
   @Output('submitEvent') submitEvent: EventEmitter<any> =
     new EventEmitter<any>();
   @Output('changeEvent') changEvent: EventEmitter<any> =
@@ -47,32 +48,10 @@ export class DynamicFormComponent implements OnInit, OnChanges {
 
   onSubmit(v: any) {
     this.formDescription.control?.markAllAsTouched();
-    console.log(this.formDescription.control);
+    // console.log(this.formDescription.control);
     if (this.formDescription.control?.valid) {
-      const formValue = this.valueTransformer
-        ? this.valueTransformer.transform(this.formDescription.control.value)
-        : this.formDescription.control.value;
+      const formValue = this.valueTransformer? this.valueTransformer.transform(this.formDescription.control.value) : this.formDescription.control.value;
       this.submitEvent.emit(formValue);
     }
-  }
-
-  get actionsPositionClasses() {
-    return {
-      'justify-content-start':
-        this.formDescription.metaData.get('actionPositions') ==
-        ActionsPosition.NEW_LINE_START,
-      'justify-content-end':
-        this.formDescription.metaData.get('actionPositions') ==
-        ActionsPosition.NEW_LINE_END,
-      'justify-content-center':
-        this.formDescription.metaData.get('actionPositions') ==
-        ActionsPosition.NEW_LINE_CENTER,
-    };
-  }
-
-  get actionsWithGridFlow() {
-    return (
-      this.formDescription.metaData.get('actionPositions') == ActionsPosition.GRID_FLOW
-    );
   }
 }
