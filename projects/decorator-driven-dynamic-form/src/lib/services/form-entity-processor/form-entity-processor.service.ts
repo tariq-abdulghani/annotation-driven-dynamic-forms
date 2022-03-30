@@ -72,6 +72,7 @@ export class FormEntityProcessorService {
         formDescription.childInputs!.push(nestedFormDescription);
         nestedFormDescription.meta.legend = metaData.legend; // todo investigate
         nestedFormDescription.meta.width = metaData.width; // todo investigate
+        nestedFormDescription.meta.name = metaData.name; // todo investigate
         nestedFormDescription.meta.labelStyling = formEntity.meta?.labelStyling; // label styling must be inherited
         formGroupInitializer[metaData.name] = nestedFormDescription.control;
 
