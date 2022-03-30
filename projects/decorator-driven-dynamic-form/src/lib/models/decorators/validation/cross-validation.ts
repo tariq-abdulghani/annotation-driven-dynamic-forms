@@ -1,23 +1,20 @@
 import { ValidatorFn } from '@angular/forms';
-import { MetaDataRegisterer } from '../../../utils/meta-data-registerer';
 
-type AssociatedInputs = {
+type Effect = {
   input: string;
-  errorConfig: {
-    err: string;
-    message: string;
-  };
+  message: string;
 };
-type ValidationSpec = {
-  id: string;
-  message?: string;
+type CrossValidationSpec = {
+  errorName: string;
+  effects: Effect[];
   validatorFn: ValidatorFn;
-  inputs: AssociatedInputs[];
+  
 };
+
 export class CrossValidator {
-  constructor(public spec: ValidationSpec) {}
+  constructor(public spec: CrossValidationSpec) {}
 }
-export function CrossValidation(spec: ValidationSpec) {
+export function CrossValidation(spec: CrossValidationSpec) {
   return function <T extends { new (...args: any[]): {} }>(constructor: T) {
     //@ts-ignore
     constructor[spec.id] = new CrossValidator(spec);

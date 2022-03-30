@@ -28,7 +28,7 @@ export class FormEntityProcessorService {
     const crossValidators = CrossValidationProcessor.process(formEntity);
     if (crossValidators.length > 0) {
       crossValidators.forEach((cv) => {
-        formDescription.errorMap.set(cv.spec.id, cv.spec.message || '');
+        // formDescription.errorMap.set(cv.spec.id, cv.spec.message || '');
         formDescription.validators.push(cv.spec.validatorFn);
       });
     }
@@ -105,14 +105,14 @@ export class FormEntityProcessorService {
     // set error messages here ??
     // will not work with nested ones they have no name in meta data
     crossValidators.forEach((validator) => {
-      validator.spec.inputs.forEach((input) => {
+      validator.spec.effects.forEach((effect) => {
         const relatedInput = formDescription.childInputs?.find(
-          (i) => i.metaData.get('name') == input.input
+          (i) => i.metaData.get('name') == effect.input
         );
         // console.log('related input ', relatedInput, input.errorConfig);
         relatedInput?.errorMap.set(
-          input.errorConfig.err,
-          input.errorConfig.message
+          validator.spec.errorName,
+          effect.message
         );
         // console.log('related input ', relatedInput);
       });

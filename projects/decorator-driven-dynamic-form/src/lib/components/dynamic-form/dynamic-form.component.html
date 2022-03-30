@@ -49,14 +49,6 @@
         [formDescription]="inputDescription"
       ></div>
 
-      <div
-        class="invalid-feedback"
-        *ngIf="
-          inputDescription.control?.touched && inputDescription.control?.invalid
-        "
-      >
-        {{ inputDescription | errorMessage }}
-      </div>
     </ng-container>
 
     <ng-container *ngIf="actionsWithGridFlow; else notWithTheFlow">

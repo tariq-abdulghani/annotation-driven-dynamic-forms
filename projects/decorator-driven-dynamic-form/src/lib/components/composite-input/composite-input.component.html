@@ -51,24 +51,8 @@
           [formDescription]="inputDescription"
         ></div>
 
-        <div
-          class="invalid-feedback"
-          *ngIf="
-            inputDescription.control?.touched &&
-            inputDescription.control?.invalid
-          "
-        >
-          {{ inputDescription | errorMessage }}
-        </div>
       </ng-container>
     </fieldset>
   </div>
 
-  <div
-    class="invalid-feedback col-12"
-    style="display: block"
-    *ngIf="formDescription.control?.touched && formDescription.control?.invalid"
-  >
-    {{ $any(formDescription) | errorMessage }}
-  </div>
 </div>

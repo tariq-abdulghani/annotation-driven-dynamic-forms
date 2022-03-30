@@ -1,4 +1,4 @@
-import { AbstractControl, Validators } from '@angular/forms';
+import { AbstractControl } from '@angular/forms';
 import {
   FormEntity,
   TextControl,
@@ -20,12 +20,11 @@ import { CrossValidation } from 'decorator-driven-dynamic-form';
 import { UserData } from './user-data';
 
 @CrossValidation({
-  id: 'shop',
-  message: 'capacity cant be less than 20 when name is andrew!!',
-  inputs: [
+  errorName: 'shop',
+  effects: [
     {
       input: 'capacity',
-      errorConfig: { err: 'shop', message: 'capacity cant be less than .....' },
+      message: 'capacity cant be less than .....'
     },
   ],
   validatorFn: (control: AbstractControl) => {

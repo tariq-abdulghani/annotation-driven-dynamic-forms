@@ -6,16 +6,12 @@ import {
 } from 'decorator-driven-dynamic-form';
 
 @CrossValidation({
-  id: 'userNameEmail',
-  message: 'invalid user name and email combination!',
-  inputs: [
+  errorName: 'userNameEmail',
+  effects: [
     {
       input: 'userName',
-      errorConfig: {
-        err: 'userNameEmail',
-        message: 'email cant be the same as user name',
+      message: 'email cant be the same as user name',
       },
-    },
   ],
   validatorFn: (userDataForm: AbstractControl) => {
     const userName = userDataForm.get('userName');
