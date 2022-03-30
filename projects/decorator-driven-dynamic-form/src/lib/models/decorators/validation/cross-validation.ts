@@ -1,5 +1,5 @@
 import { ValidatorFn } from '@angular/forms';
-import { MetaDataRegisterer } from '../../types/inputs-meta/meta-data-registerer';
+import { MetaDataRegisterer } from '../../../utils/meta-data-registerer';
 
 type AssociatedInputs = {
   input: string;

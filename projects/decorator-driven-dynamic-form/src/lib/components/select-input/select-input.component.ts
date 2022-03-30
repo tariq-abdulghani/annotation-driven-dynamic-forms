@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { LabelStyling } from '../../models/types/forms-meta/label-styling';
-import { InputDescription } from '../../models/types/inputs-meta/input-description';
-import { InputSpec } from '../../models/types/inputs-meta/input-specs';
+import { LabelStyling } from '../../models/types/forms/label-styling';
+import { InputDescription } from '../../models/types/inputs/input-description';
+import { InputSpec } from '../../models/types/inputs/input-specs';
 import { DataLoaderService } from '../../services/data-loader/data-loader.service';
 
 @Component({
@@ -12,7 +12,7 @@ import { DataLoaderService } from '../../services/data-loader/data-loader.servic
 })
 export class SelectInputComponent implements OnInit {
   @Input() labelStyling!: LabelStyling;
-  @Input() inputDescription!: InputDescription<InputSpec>;
+  @Input() inputDescription!: InputDescription;
   constructor(public dataLoader: DataLoaderService) {}
   ngOnInit(): void {}
 

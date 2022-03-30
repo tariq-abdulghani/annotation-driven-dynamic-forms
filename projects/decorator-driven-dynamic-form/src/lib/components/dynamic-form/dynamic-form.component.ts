@@ -7,12 +7,12 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { InputTypes } from '../../models/types/inputs-meta/input-types.enum';
+import { InputTypes } from '../../models/types/inputs/input-types.enum';
 import { FormEntityProcessorService } from '../../services/form-entity-processor/form-entity-processor.service';
-import { InputDescription } from '../../models/types/inputs-meta/input-description';
-import { FormMeta } from '../../models/types/forms-meta/form-meta';
-import { FormValueTransformer } from '../../models/types/forms-meta/form-value-transformer';
-import { ActionsPosition } from '../../models/types/forms-meta/form-actions-position';
+import { InputDescription } from '../../models/types/inputs/input-description';
+import { FormMeta } from '../../models/types/forms/form-meta';
+import { FormValueTransformer } from '../../models/types/forms/form-value-transformer';
+import { ActionsPosition } from '../../models/types/forms/form-actions-position';
 
 @Component({
   selector: 'ddd-form',
@@ -21,7 +21,7 @@ import { ActionsPosition } from '../../models/types/forms-meta/form-actions-posi
 })
 export class DynamicFormComponent implements OnInit, OnChanges {
   readonly CONTROL_TYPES = InputTypes;
-  formDescription!: InputDescription<FormMeta>;
+  formDescription!: InputDescription;
   @Input('formEntity') formModel!: any;
   @Input('valueTransformer') valueTransformer?: FormValueTransformer<any, any>;
   @Output('submitEvent') submitEvent: EventEmitter<any> =
@@ -59,20 +59,20 @@ export class DynamicFormComponent implements OnInit, OnChanges {
   get actionsPositionClasses() {
     return {
       'justify-content-start':
-        this.formDescription.meta.actionPositions ==
+        this.formDescription.metaData.get('actionPositions') ==
         ActionsPosition.NEW_LINE_START,
       'justify-content-end':
-        this.formDescription.meta.actionPositions ==
+        this.formDescription.metaData.get('actionPositions') ==
         ActionsPosition.NEW_LINE_END,
       'justify-content-center':
-        this.formDescription.meta.actionPositions ==
+        this.formDescription.metaData.get('actionPositions') ==
         ActionsPosition.NEW_LINE_CENTER,
     };
   }
 
   get actionsWithGridFlow() {
     return (
-      this.formDescription.meta.actionPositions == ActionsPosition.GRID_FLOW
+      this.formDescription.metaData.get('actionPositions') == ActionsPosition.GRID_FLOW
     );
   }
 }
