@@ -8,21 +8,21 @@
             inputDescription.control?.touched &&
             inputDescription.control?.invalid
         }"
-        [id]="inputDescription.meta.id"
+        [id]="inputDescription.metaData.get('id')"
         type="checkbox"
         [formControl]="$any(inputDescription.control)"
-        [name]="inputDescription.meta.name"
+        [name]="inputDescription.metaData.get('name')"
       />
       <label
-        [attr.for]="inputDescription.meta.id"
+        [attr.for]="inputDescription.metaData.get('id')"
         class="form-check-label"
         [ngClass]="{
-          'required-control-label': inputDescription.meta.required,
+          'required-control-label': inputDescription.metaData.get('required'),
           'invalid-label':
             inputDescription.control?.touched &&
             inputDescription.control?.invalid
         }"
-        >{{ inputDescription.meta.label || inputDescription.meta.name }}</label
+        >{{ inputDescription.metaData.get('label')  }}</label
       >
       <div
         class="invalid-feedback"

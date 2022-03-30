@@ -1,14 +1,14 @@
 <div [class]="inputContainerClasses">
   <label
     *ngIf="!isFloatingLabel"
-    [attr.for]="inputDescription.meta.id"
+    [attr.for]="inputDescription.metaData.get('id')"
     [ngClass]="labelClasses"
     [ngClass]="{
-      'required-control-label': inputDescription.meta.required,
+      'required-control-label': inputDescription.metaData.get('required'),
       'invalid-label':
         inputDescription.control?.touched && inputDescription.control?.invalid
     }"
-    >{{ inputDescription.meta.label }}</label
+    >{{ inputDescription.metaData.get('label') }}</label
   >
   <div [class]="inputDivClasses">
     <input
@@ -17,22 +17,22 @@
         'is-invalid':
           inputDescription.control?.touched && inputDescription.control?.invalid
       }"
-      [placeholder]="inputDescription.meta.placeHolder || ''"
-      [id]="inputDescription.meta.id"
-      [type]="inputDescription.meta.type"
+      [placeholder]="inputDescription.metaData.get('placeHolder') || ''"
+      [id]="inputDescription.metaData.get('id')"
+      [type]="inputDescription.metaData.get('type')"
       [formControl]="$any(inputDescription.control)"
-      [name]="inputDescription.meta.name"
-      [attr.readonly]="inputDescription.meta.readonly"
+      [name]="inputDescription.metaData.get('name')"
+      [attr.readonly]="inputDescription.metaData.get('readonly')"
     />
     <label
       *ngIf="isFloatingLabel"
-      [attr.for]="inputDescription.meta.id"
+      [attr.for]="inputDescription.metaData.get('id')"
       [ngClass]="{
-        'required-control-label': inputDescription.meta.required,
+        'required-control-label': inputDescription.metaData.get('required'),
         'invalid-label':
           inputDescription.control?.touched && inputDescription.control?.invalid
       }"
-      >{{ inputDescription.meta.label }}</label
+      >{{ inputDescription.metaData.get('label') }}</label
     >
     <div
       class="invalid-feedback"

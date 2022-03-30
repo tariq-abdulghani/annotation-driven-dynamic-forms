@@ -2,7 +2,7 @@
 <legend
   [ngClass]="legendClasses" class="col-form-label"
 >
-  {{ inputDescription.meta.legend }}
+  {{ inputDescription.metaData.get('legend') }}
 </legend>
 
 <!-- <label [ngClass]="legendClasses" class="col-form-label">
@@ -12,29 +12,29 @@
 <div [ngClass]="inputContainerClasses">
   <div class="row mt-1 mb-1" >
     <div
-      [class]="'col-sm-' + inputDescription.meta.inputWidth"
+      [class]="'col-sm-' + inputDescription.metaData.get('inputWidth')"
       *ngFor="
-        let opt of dataLoader.load(inputDescription.meta.dataSource) | async;
+        let opt of dataLoader.load(inputDescription.metaData.get('dataSource')) | async;
         let i = index
       "
     >
       <input
         class="form-check-input mr-50"
-        [id]="inputDescription.meta.id + i"
+        [id]="inputDescription.metaData.get('id') + i"
         type="radio"
         [formControl]="$any(inputDescription.control)"
         [value]="
-          inputDescription.meta.bindValue
-            ? opt[inputDescription.meta.bindValue]
+          inputDescription.metaData.get('bindValue')
+            ? opt[inputDescription.metaData.get('bindValue')]
             : opt
         "
-        [name]="inputDescription.meta.name"
+        [name]="inputDescription.metaData.get('name')"
       />
       <label
         class="form-check-label"
-        [attr.for]="inputDescription.meta.id + i"
+        [attr.for]="inputDescription.metaData.get('id') + i"
       >
-        {{ opt[inputDescription.meta.bindLabel] }}
+        {{ opt[inputDescription.metaData.get('bindLabel')] }}
       </label>
     </div>
   </div>

@@ -1,35 +1,32 @@
+import { InputDescription } from '../../types/inputs/input-description';
 import {
   TextInputSpec,
-  TextInputDescription,
   NumberInputSpec,
-  NumberInputDescription,
   DateInputSpec,
-  DateInputDescription,
   SelectInputSpec,
-  SelectInputDescription,
   CheckInputSpec,
-  CheckboxInputDescription,
   RadioButtonsSpec,
-  RadioButtonsInputDescription,
-} from '../../types/inputs-meta/input-specs';
-import { MetaDataRegisterer } from '../../types/inputs-meta/meta-data-registerer';
+} from '../../types/inputs/input-specs';
+import { InputTypes } from '../../types/inputs/input-types.enum';
+import { MetaDataRegisterer } from '../../../utils/meta-data-registerer';
 
 export function TextControl(specs: TextInputSpec) {
   return function (target: any, propertyKey: string) {
     MetaDataRegisterer.add(
       target,
       propertyKey,
-      new TextInputDescription(specs)
+      new InputDescription(specs, InputTypes.TEXT)
     );
   };
 }
 
 export function NumberControl(specs: NumberInputSpec) {
   return function (target: any, propertyKey: string) {
+    specs.type = 'number';
     MetaDataRegisterer.add(
       target,
       propertyKey,
-      new NumberInputDescription(specs)
+      new InputDescription(specs, InputTypes.NUMBER)
     );
   };
 }
@@ -39,7 +36,7 @@ export function DateControl(specs: DateInputSpec) {
     MetaDataRegisterer.add(
       target,
       propertyKey,
-      new DateInputDescription(specs)
+      new InputDescription(specs, InputTypes.DATE)
     );
   };
 }
@@ -49,7 +46,7 @@ export function SelectControl(specs: SelectInputSpec) {
     MetaDataRegisterer.add(
       target,
       propertyKey,
-      new SelectInputDescription(specs)
+      new InputDescription(specs, InputTypes.SELECT)
     );
   };
 }
@@ -59,7 +56,7 @@ export function CheckboxControl(specs: CheckInputSpec) {
     MetaDataRegisterer.add(
       target,
       propertyKey,
-      new CheckboxInputDescription(specs)
+      new InputDescription(specs, InputTypes.CHECKBOX)
     );
   };
 }
@@ -69,7 +66,7 @@ export function RadioButtonsControl(specs: RadioButtonsSpec) {
     MetaDataRegisterer.add(
       target,
       propertyKey,
-      new RadioButtonsInputDescription(specs)
+      new InputDescription(specs, InputTypes.RADIO_BUTTONS)
     );
   };
 }
