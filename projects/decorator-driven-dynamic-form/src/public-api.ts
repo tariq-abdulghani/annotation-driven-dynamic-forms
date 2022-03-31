@@ -4,7 +4,7 @@
 
 export * from './lib/decorator-driven-dynamic-forms.module';
 
-export * from './lib/components/dynamic-form/dynamic-form.component';
+export * from './lib/views/dynamic-form/dynamic-form.component';
 // models
 // forms
 export * from './lib/models/decorators/forms/forms';

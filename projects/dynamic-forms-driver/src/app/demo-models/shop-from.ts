@@ -24,7 +24,7 @@ import { UserData } from './user-data';
   effects: [
     {
       input: 'capacity',
-      message: 'capacity cant be less than .....'
+      message: 'capacity cant be less than .....',
     },
   ],
   validatorFn: (control: AbstractControl) => {
@@ -38,7 +38,7 @@ import { UserData } from './user-data';
 @FormEntity({
   actionPositions: ActionsPosition.NEW_LINE_CENTER,
   updateStrategy: UpdateStrategy.ACTION,
-  labelStyling: LabelStyling.FLOAT,
+  labelStyling: LabelStyling.START,
 })
 export class ShopForm {
   @NotNull({ message: 'shopName cant be null ?' })
@@ -107,7 +107,7 @@ export class ShopForm {
     bindLabel: 'description',
     bindValue: null,
     width: 6,
-    inputWidth: 12,
+    inputWidth: 6,
     dataSource: [
       { id: 1, description: 'visa' },
       { id: 2, description: 'cash' },

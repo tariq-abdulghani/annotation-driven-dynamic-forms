@@ -10,7 +10,6 @@ import {
 import { InputTypes } from '../../models/types/inputs/input-types.enum';
 import { FormEntityProcessorService } from '../../services/form-entity-processor/form-entity-processor.service';
 import { InputDescription } from '../../models/types/inputs/input-description';
-import { FormMeta } from '../../models/types/forms/form-meta';
 import { FormValueTransformer } from '../../models/types/forms/form-value-transformer';
 import { ActionsPosition } from '../../models/types/forms/form-actions-position';
 
@@ -72,7 +71,8 @@ export class DynamicFormComponent implements OnInit, OnChanges {
 
   get actionsWithGridFlow() {
     return (
-      this.formDescription.metaData.get('actionPositions') == ActionsPosition.GRID_FLOW
+      this.formDescription.metaData.get('actionPositions') ==
+      ActionsPosition.GRID_FLOW
     );
   }
 }
