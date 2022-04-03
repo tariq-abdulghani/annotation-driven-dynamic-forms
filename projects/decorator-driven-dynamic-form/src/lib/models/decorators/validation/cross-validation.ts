@@ -1,5 +1,6 @@
 import { ValidatorFn } from '@angular/forms';
 
+export const CROSS_VALIDATION_METADATA_KEY = Symbol('CrossValidation'); 
 type Effect = {
   input: string;
   message: string;
@@ -11,26 +12,19 @@ type CrossValidationSpec = {
   
 };
 
-export class CrossValidator {
-  constructor(public spec: CrossValidationSpec) {}
-}
-export function CrossValidation(spec: CrossValidationSpec) {
-  return function <T extends { new (...args: any[]): {} }>(constructor: T) {
-    //@ts-ignore
-    constructor[spec.id] = new CrossValidator(spec);
-    return constructor;
+export function CrossValidation(spec: CrossValidationSpec): ClassDecorator {
+  return target => {
+    const crossValidationMeta = Reflect.getMetadata(CROSS_VALIDATION_METADATA_KEY, target);
+    if(!crossValidationMeta){
+      return Reflect.defineMetadata(CROSS_VALIDATION_METADATA_KEY, [spec], target);
+    }else{
+      crossValidationMeta.push(spec);
+    }
   };
 }
 
 export class CrossValidationProcessor {
-  public static process(formEntity: any): CrossValidator[] {
-    // console.log('formEntity', formEntity, formEntity.constructor);
-    const validators: CrossValidator[] = [];
-    Object.keys(formEntity.constructor).forEach((key) => {
-      if (formEntity.constructor[key] instanceof CrossValidator) {
-        validators.push(formEntity.constructor[key]);
-      }
-    });
-    return validators;
+  public static process(formEntity: any): CrossValidationSpec[] | undefined{
+    return Reflect.getMetadata(CROSS_VALIDATION_METADATA_KEY, formEntity.constructor);
   }
 }
