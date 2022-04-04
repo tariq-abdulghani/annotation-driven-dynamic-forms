@@ -23,8 +23,8 @@ export function CrossValidation(spec: CrossValidationSpec): ClassDecorator {
   };
 }
 
-export class CrossValidationProcessor {
-  public static process(formEntity: any): CrossValidationSpec[] | undefined{
+export class CrossValidationMeta {
+  public static get(formEntity: any): CrossValidationSpec[] | undefined{
     return Reflect.getMetadata(CROSS_VALIDATION_METADATA_KEY, formEntity.constructor);
   }
 }

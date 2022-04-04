@@ -10,9 +10,11 @@ import {
 import { MetaDataRegisterer } from '../../utils/meta-data-registerer';
 import { InputSpec } from '../../models/types/inputs/input-specs';
 import { BasicAction } from '../../models/types/actions/actions-api';
-import { CrossValidationProcessor } from '../../models/decorators/validation/cross-validation';
+import { CrossValidationMeta } from '../../models/decorators/validation/cross-validation';
 import { InputsMetaData } from '../../models/decorators/inputs/inputs-meta-data';
 import { Validations } from '../../models/decorators/validation/validations';
+import { FormMetaData } from '../../models/decorators/forms/forms';
+import { ActionsMetaData } from '../../models/decorators/actions/actions-metadata';
 
 @Injectable()
 export class FormEntityProcessorService {
@@ -22,19 +24,21 @@ export class FormEntityProcessorService {
     meta?: FormMeta;
     [x: string]: any;
   }): InputDescription {
+    
+    const properties = FormMetaData.get(formEntity);
+    const actions = ActionsMetaData.get(formEntity);
+    if(properties){
+      properties.set('actions', actions);
+    }
+    console.log("form meta data",properties);
+
+    // new InputNode(properties, new FormGroup({'', new}), new Map());
+    
+
     const formDescription = new InputDescription(
       formEntity.meta,
       InputTypes.COMPOSITE
     );
-
-    const crossValidators = CrossValidationProcessor.process(formEntity);
-    if (crossValidators && crossValidators.length > 0) {
-      crossValidators.forEach((cv) => {
-        // formDescription.errorMap.set(cv.spec.id, cv.spec.message || '');
-        formDescription.validators.push(cv.validatorFn);
-      });
-    }
-
     const formGroupInitializer = {} as { [x: string]: any };
 
     // find actions and put them in meta attribute
@@ -47,22 +51,22 @@ export class FormEntityProcessorService {
         }
       }
     });
-    // enhancements
+    // enhancements migration
     for (const key in formEntity) {
       const properties = InputsMetaData.get(formEntity, key);
       if (properties && properties?.get('inputType') != InputTypes.COMPOSITE) {
-        const validatorsAndErrors = Validations.getValidatorsAndErrorMap(
+        const {validators, errorMap} = Validations.getValidatorsAndErrorMap(
           formEntity,
           key
         );
         const formControl = new FormControl(
           formEntity[key], //initialize
-          validatorsAndErrors.validators
+          validators
         );
         const inputNode = new InputNode(
           properties,
           formControl,
-          validatorsAndErrors.errorMap
+          errorMap
         );
         console.log(inputNode);
       }
@@ -129,6 +133,14 @@ export class FormEntityProcessorService {
 
     // set error messages here ??
     // will not work with nested ones they have no name in meta data
+    const crossValidators = CrossValidationMeta.get(formEntity);
+    if (crossValidators && crossValidators.length > 0) {
+      crossValidators.forEach((cv) => {
+        // formDescription.errorMap.set(cv.spec.id, cv.spec.message || '');
+        formDescription.validators.push(cv.validatorFn);
+      });
+    }
+    
     crossValidators?.forEach((validator) => {
       validator.effects.forEach((effect) => {
         const relatedInput = formDescription.childInputs?.find(

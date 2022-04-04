@@ -1,3 +1,4 @@
+import { MapUtil } from '../../../utils/map-util';
 import { MetaDataRegisterer } from '../../../utils/meta-data-registerer';
 import {
   FormMeta,
@@ -5,9 +6,11 @@ import {
   NestedFormMeta,
   NestedFormSpec,
 } from '../../types/forms/form-meta';
+export const FORM_METADATA_KEY = Symbol('FormSpec'); 
 
 export function FormEntity(formSpec?: FormSpec) {
   return function <T extends { new (...args: any[]): {} }>(constructor: T) {
+    FormMetaData.add(formSpec, constructor);
     return class extends constructor {
       meta = new FormMeta(formSpec);
       valueSetter = (value: any) => {
@@ -27,8 +30,16 @@ export function FormEntity(formSpec?: FormSpec) {
   };
 }
 
-export function NestedFormEntity(formSpec: NestedFormSpec) {
-  return function (target: any, propertyKey: string) {
-    MetaDataRegisterer.add(target, propertyKey, new NestedFormMeta(formSpec));
-  };
-}
+export class FormMetaData{
+  public static add(formSpec: FormSpec|undefined, constructor: any){
+    Reflect.defineMetadata(FORM_METADATA_KEY, MapUtil.formObject(new FormMeta(formSpec)), constructor.prototype);
+  }
+
+  public static get(target: any){
+    // console.log(target);
+    return Reflect.getMetadata(FORM_METADATA_KEY, target) as Map<string, any>;
+  }
+  
+
+} 
+

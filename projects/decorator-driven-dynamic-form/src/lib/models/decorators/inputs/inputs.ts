@@ -10,6 +10,7 @@ import {
 import { InputTypes } from '../../types/inputs/input-types.enum';
 import { MetaDataRegisterer } from '../../../utils/meta-data-registerer';
 import { InputsMetaData } from './inputs-meta-data';
+import { NestedFormMeta, NestedFormSpec } from '../../types/forms/form-meta';
 
 export function TextControl(specs: TextInputSpec) {
   return function (target: any, propertyKey: string) {
@@ -74,5 +75,16 @@ export function RadioButtonsControl(specs: RadioButtonsSpec) {
       propertyKey,
       new InputDescription(specs, InputTypes.RADIO_BUTTONS)
     );
+  };
+}
+
+export function NestedFormEntity(specs: NestedFormSpec) {
+  return function (target: any, propertyKey: string) {
+    InputsMetaData.add(
+      { ...specs, inputType: InputTypes.COMPOSITE },
+      target,
+      propertyKey
+    );
+    MetaDataRegisterer.add(target, propertyKey, new NestedFormMeta(specs));
   };
 }
