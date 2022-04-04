@@ -50,7 +50,7 @@ export class ShopForm {
     width: 6,
     placeHolder: 'asssss',
   })
-  shopName: string | null | undefined = undefined;
+  shopName: string | null | undefined = 'job';
 
   @NumberControl({
     id: 'capacity',

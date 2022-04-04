@@ -9,9 +9,15 @@ import {
 } from '../../types/inputs/input-specs';
 import { InputTypes } from '../../types/inputs/input-types.enum';
 import { MetaDataRegisterer } from '../../../utils/meta-data-registerer';
+import { InputsMetaData } from './inputs-meta-data';
 
 export function TextControl(specs: TextInputSpec) {
   return function (target: any, propertyKey: string) {
+    InputsMetaData.add(
+      { ...specs, inputType: InputTypes.TEXT },
+      target,
+      propertyKey
+    );
     MetaDataRegisterer.add(
       target,
       propertyKey,

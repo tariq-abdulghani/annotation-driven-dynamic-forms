@@ -2,15 +2,17 @@ import { Injectable } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { InputTypes } from '../../models/types/inputs/input-types.enum';
 import { UpdateStrategy } from '../../models/types/forms/form-update-strategy';
+import { FormMeta, NestedFormMeta } from '../../models/types/forms/form-meta';
 import {
-  FormMeta,
-  NestedFormMeta,
-} from '../../models/types/forms/form-meta';
-import { InputDescription } from '../../models/types/inputs/input-description';
+  InputDescription,
+  InputNode,
+} from '../../models/types/inputs/input-description';
 import { MetaDataRegisterer } from '../../utils/meta-data-registerer';
 import { InputSpec } from '../../models/types/inputs/input-specs';
 import { BasicAction } from '../../models/types/actions/actions-api';
 import { CrossValidationProcessor } from '../../models/decorators/validation/cross-validation';
+import { InputsMetaData } from '../../models/decorators/inputs/inputs-meta-data';
+import { Validations } from '../../models/decorators/validation/validations';
 
 @Injectable()
 export class FormEntityProcessorService {
@@ -45,7 +47,27 @@ export class FormEntityProcessorService {
         }
       }
     });
-
+    // enhancements
+    for (const key in formEntity) {
+      const properties = InputsMetaData.get(formEntity, key);
+      if (properties && properties?.get('inputType') != InputTypes.COMPOSITE) {
+        const validatorsAndErrors = Validations.getValidatorsAndErrorMap(
+          formEntity,
+          key
+        );
+        const formControl = new FormControl(
+          formEntity[key], //initialize
+          validatorsAndErrors.validators
+        );
+        const inputNode = new InputNode(
+          properties,
+          formControl,
+          validatorsAndErrors.errorMap
+        );
+        console.log(inputNode);
+      }
+    }
+    //
     for (const key in formEntity) {
       const metaData = MetaDataRegisterer.get(formEntity, key);
       if (metaData instanceof InputDescription) {
@@ -59,7 +81,7 @@ export class FormEntityProcessorService {
           formDescription.childInputs = [];
         }
         formDescription.childInputs?.push(boundDescription);
-        formGroupInitializer[metaData.metaData.get('name')] = formControl;
+        formGroupInitializer[metaData.properties.get('name')] = formControl;
         this.bindFieldToFormControl(formEntity, key, formControl);
       } else if (metaData instanceof NestedFormMeta) {
         console.warn('metaData instanceof NestedFormMeta', metaData);
@@ -70,10 +92,13 @@ export class FormEntityProcessorService {
         // initialize
         nestedFormEntity.valueSetter(formEntity[key]);
         formDescription.childInputs!.push(nestedFormDescription);
-        nestedFormDescription.metaData.add('legend', metaData.legend) //. = metaData.legend; // todo investigate
-        nestedFormDescription.metaData.add('width', metaData.width); // todo investigate
-        nestedFormDescription.metaData.add('name',metaData.name); // todo investigate
-        nestedFormDescription.metaData.add('labelStyling', formEntity.meta?.labelStyling); // label styling must be inherited
+        nestedFormDescription.properties.add('legend', metaData.legend); //. = metaData.legend; // todo investigate
+        nestedFormDescription.properties.add('width', metaData.width); // todo investigate
+        nestedFormDescription.properties.add('name', metaData.name); // todo investigate
+        nestedFormDescription.properties.add(
+          'labelStyling',
+          formEntity.meta?.labelStyling
+        ); // label styling must be inherited
         formGroupInitializer[metaData.name] = nestedFormDescription.control;
 
         this.bindCompositeFieldToFormGroup(formEntity, key, nestedFormEntity);
@@ -107,13 +132,10 @@ export class FormEntityProcessorService {
     crossValidators?.forEach((validator) => {
       validator.effects.forEach((effect) => {
         const relatedInput = formDescription.childInputs?.find(
-          (i) => i.metaData.get('name') == effect.input
+          (i) => i.properties.get('name') == effect.input
         );
         // console.log('related input ', relatedInput, input.errorConfig);
-        relatedInput?.errorMap.set(
-          validator.errorName,
-          effect.message
-        );
+        relatedInput?.errorMap.set(validator.errorName, effect.message);
         // console.log('related input ', relatedInput);
       });
     });
@@ -121,15 +143,13 @@ export class FormEntityProcessorService {
   }
 
   public process(formEntity: any): any {
-    const description = this.describe(
-      formEntity
-    ) as InputDescription;
+    const description = this.describe(formEntity) as InputDescription;
     // subscribe to enable or disable controls
     description?.control!.valueChanges.subscribe((formValue) => {
       // console.log('form value change', formValue);
       description!.childInputs?.forEach((d) => {
-        if (d.metaData.get('enableFn')) {
-          switch (d.metaData.get('enableFn')(formValue)) {
+        if (d.properties.get('enableFn')) {
+          switch (d.properties.get('enableFn')(formValue)) {
             case true:
               d!.control?.enable({ emitEvent: false });
               break;

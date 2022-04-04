@@ -8,14 +8,14 @@
       <div
         lib-input
         [inputDescription]="inputDescription"
-        [labelStyling]="formDescription.metaData.get('labelStyling')"
-        [class]="'col-md-' + inputDescription.metaData.get('width')"
+        [labelStyling]="formDescription.properties.get('labelStyling')"
+        [class]="'col-md-' + inputDescription.properties.get('width')"
       ></div>
     </ng-container>
 
     <ng-container *ngIf="actionsWithGridFlow; else notWithTheFlow">
       <div
-        *ngFor="let action of formDescription.metaData.get('actions')"
+        *ngFor="let action of formDescription.properties.get('actions')"
         class="col-sm-3"
       >
         <button
@@ -30,7 +30,7 @@
     <ng-template #notWithTheFlow>
       <div class="col-12 mb-3">
         <div class="gap-10 d-flex flex-row" [ngClass]="actionsPositionClasses">
-          <div *ngFor="let action of formDescription.metaData.get('actions')">
+          <div *ngFor="let action of formDescription.properties.get('actions')">
             <button
               [type]="action.type"
               [class]="action.class || 'btn btn-primary'"

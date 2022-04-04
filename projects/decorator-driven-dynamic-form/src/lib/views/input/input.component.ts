@@ -62,7 +62,7 @@ export class InputComponent implements OnInit {
     return {
       // 'col-form-label': this.labelStyling != LabelStyling.START,
       'col-sm-2':
-        this.inputDescription.metaData.get('labelStyling') ==
+        this.inputDescription.properties.get('labelStyling') ==
         LabelStyling.START,
     };
   }
@@ -72,10 +72,10 @@ export class InputComponent implements OnInit {
     // return `col-md-${this.inputDescription.meta.width || 12}`;
     return {
       'col-sm':
-        this.inputDescription.metaData.get('labelStyling') ==
+        this.inputDescription.properties.get('labelStyling') ==
         LabelStyling.START,
       row:
-        this.inputDescription.metaData.get('labelStyling') !=
+        this.inputDescription.properties.get('labelStyling') !=
         LabelStyling.START,
     };
   }

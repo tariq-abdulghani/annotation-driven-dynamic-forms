@@ -58,20 +58,20 @@ export class DynamicFormComponent implements OnInit, OnChanges {
   get actionsPositionClasses() {
     return {
       'justify-content-start':
-        this.formDescription.metaData.get('actionPositions') ==
+        this.formDescription.properties.get('actionPositions') ==
         ActionsPosition.NEW_LINE_START,
       'justify-content-end':
-        this.formDescription.metaData.get('actionPositions') ==
+        this.formDescription.properties.get('actionPositions') ==
         ActionsPosition.NEW_LINE_END,
       'justify-content-center':
-        this.formDescription.metaData.get('actionPositions') ==
+        this.formDescription.properties.get('actionPositions') ==
         ActionsPosition.NEW_LINE_CENTER,
     };
   }
 
   get actionsWithGridFlow() {
     return (
-      this.formDescription.metaData.get('actionPositions') ==
+      this.formDescription.properties.get('actionPositions') ==
       ActionsPosition.GRID_FLOW
     );
   }

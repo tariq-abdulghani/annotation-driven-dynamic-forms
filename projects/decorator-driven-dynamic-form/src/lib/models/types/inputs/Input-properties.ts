@@ -1,9 +1,7 @@
-
-export class InputMetaData {
-
+export class InputProperties {
   private properties: Map<string, any> = new Map();
   constructor(specs: any) {
-    Object.entries(specs).forEach(entry => {
+    Object.entries(specs).forEach((entry) => {
       this.properties.set(entry[0], entry[1]);
     });
   }

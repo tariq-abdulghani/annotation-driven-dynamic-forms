@@ -1,9 +1,9 @@
 import { AbstractControl, ValidatorFn } from '@angular/forms';
 import { InputTypes } from './input-types.enum';
-import { InputMetaData } from './Input-meta-data';
+import { InputProperties } from './Input-properties';
 
 export class InputDescription {
-  metaData: InputMetaData;
+  properties: InputProperties;
   control: AbstractControl | null;
   validators: ValidatorFn[];
   errorMap: Map<string, string>;
@@ -15,7 +15,7 @@ export class InputDescription {
     bound.validators = this.validators;
     bound.errorMap = this.errorMap;
     bound.childInputs = this.childInputs;
-    bound.metaData.setProperties(this.metaData.getProperties());
+    bound.properties.setProperties(this.properties.getProperties());
     return bound;
   }
   addError() {}
@@ -26,7 +26,78 @@ export class InputDescription {
     this.validators = [];
     this.childInputs = null;
     this.inputType = controlType;
-    this.metaData = new InputMetaData(specs);
+    this.properties = new InputProperties(specs);
   }
+
+  // constructor(properties: InputProperties, ) {
+  // }
 }
 
+export class InputNode {
+  private properties: Map<string, any>;
+  private control: AbstractControl;
+  private errorMap: Map<string, string>;
+  private childNodes: InputNode[] | null;
+
+  /**
+   *
+   */
+  constructor(
+    properties: Map<string, any>,
+    control: AbstractControl,
+    errorMap: Map<string, string>
+  ) {
+    this.childNodes = null;
+    this.control = control;
+    this.properties = properties;
+    this.errorMap = errorMap;
+  }
+
+  public setProperties(map: Map<string, any>) {
+    this.properties = map;
+  }
+  public addProperty(key: string, value: any) {
+    this.properties.set(key, value);
+  }
+
+  public getProperty(key: string) {
+    return this.properties.get(key);
+  }
+
+  public setControl(control: AbstractControl) {
+    this.control = control;
+  }
+
+  public getControl() {
+    return this.control;
+  }
+
+  public setErrorMap(map: Map<string, string>) {
+    this.errorMap = map;
+  }
+
+  getError(key: string) {
+    return this.errorMap.get(key);
+  }
+
+  addError(key: string, value: string) {
+    this.errorMap.set(key, value);
+  }
+
+  appendChild(node: InputNode) {
+    if (this.childNodes != null) {
+      this.childNodes.push(node);
+    } else {
+      this.childNodes = [node];
+    }
+  }
+  getChildren() {
+    return this.childNodes;
+  }
+
+  // enable
+  // disable
+  isValid() {}
+  inValid() {}
+  isPending() {}
+}
