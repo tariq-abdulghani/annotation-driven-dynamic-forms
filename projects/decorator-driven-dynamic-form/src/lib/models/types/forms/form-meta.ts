@@ -1,4 +1,4 @@
-import { BasicActionMeta } from '../actions/actions-api';
+import { BasicActionMeta } from '../actions/actions';
 import { ActionsPosition } from './form-actions-position';
 import { UpdateStrategy } from './form-update-strategy';
 import { LabelStyling } from './label-styling';
@@ -34,7 +34,7 @@ export class FormMeta extends BaseFormMeta {
       : ActionsPosition.GRID_FLOW;
     this.updateStrategy = formSpec
       ? formSpec.updateStrategy
-      : UpdateStrategy.EAGER;
+      : UpdateStrategy.ON_CHANGE;
     this.labelStyling = formSpec ? formSpec.labelStyling : LabelStyling.TOP;
   }
 }

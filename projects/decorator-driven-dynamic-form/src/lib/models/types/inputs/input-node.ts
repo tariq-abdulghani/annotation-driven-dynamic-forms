@@ -1,36 +1,24 @@
-import { AbstractControl, ValidatorFn } from '@angular/forms';
-import { InputTypes } from './input-types.enum';
-import { InputProperties } from './Input-properties';
+import { AbstractControl } from '@angular/forms';
 
-export class InputDescription {
-  properties: InputProperties;
-  control: AbstractControl | null;
-  validators: ValidatorFn[];
-  errorMap: Map<string, string>;
-  childInputs: InputDescription[] | null;
-  inputType: InputTypes;
-  cloneAndBind(control: AbstractControl): InputDescription {
-    const bound = new InputDescription({}, this.inputType);
-    bound.control = control;
-    bound.validators = this.validators;
-    bound.errorMap = this.errorMap;
-    bound.childInputs = this.childInputs;
-    bound.properties.setProperties(this.properties.getProperties());
-    return bound;
-  }
-  addError() {}
+export interface IInputNode {
+  setProperties(map: Map<string, any>): void;
+  addProperty(key: string, value: any): void;
+  getProperty(key: string): any;
 
-  constructor(specs: any, controlType: InputTypes) {
-    this.control = null;
-    this.errorMap = new Map();
-    this.validators = [];
-    this.childInputs = null;
-    this.inputType = controlType;
-    this.properties = new InputProperties(specs);
-  }
+  setControl(control: AbstractControl): void;
+  getControl(): AbstractControl;
 
-  // constructor(properties: InputProperties, ) {
-  // }
+  setErrorMap(map: Map<string, string>): void;
+  getError(key: string): string | undefined;
+  addError(key: string, value: string): void;
+
+  addChild(node: IInputNode): void;
+  addChildren(nodes: IInputNode[]): void;
+  getChildren(): IInputNode[] | null;
+
+  isValid(): boolean;
+  inValid(): boolean;
+  isPending(): boolean;
 }
 
 export class InputNode {
@@ -84,11 +72,19 @@ export class InputNode {
     this.errorMap.set(key, value);
   }
 
-  appendChild(node: InputNode) {
+  addChild(node: InputNode) {
     if (this.childNodes != null) {
       this.childNodes.push(node);
     } else {
       this.childNodes = [node];
+    }
+  }
+
+  addChildren(nodes: InputNode[]) {
+    if (this.childNodes != null) {
+      this.childNodes.push(...nodes);
+    } else {
+      this.childNodes = [...nodes];
     }
   }
   getChildren() {

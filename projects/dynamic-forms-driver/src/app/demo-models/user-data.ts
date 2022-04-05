@@ -11,7 +11,7 @@ import {
     {
       input: 'userName',
       message: 'email cant be the same as user name',
-      },
+    },
   ],
   validatorFn: (userDataForm: AbstractControl) => {
     const userName = userDataForm.get('userName');
@@ -27,7 +27,7 @@ export class UserData {
     type: 'text',
     label: 'user name',
   })
-  userName: string | null = null;
+  userName: string | null = 'Bob';
 
   @TextControl({
     id: 'email',

@@ -1,5 +1,5 @@
 export enum UpdateStrategy {
-  EAGER = 'EAGER',
-  LAZY = 'LAZY',
-  ACTION = 'ACTION',
+  ON_CHANGE = 'ON_CHANGE',
+  ON_PLUR = 'ON_PLUR',
+  ON_SUBMIT = 'ON_SUBMIT',
 }

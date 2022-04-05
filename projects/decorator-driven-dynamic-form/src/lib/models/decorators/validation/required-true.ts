@@ -1,14 +1,16 @@
 import { Validators } from '@angular/forms';
-import { InputDescription } from '../../types/inputs/input-description';
-import { MetaDataRegisterer } from '../../../utils/meta-data-registerer';
+import { ValidationsMetaData } from './ValidationsMetaData';
 
 export function RequiredTrue(errConfig: { message: string }) {
   return function (target: any, propertyKey: string) {
-    const metaData = MetaDataRegisterer.get<InputDescription>(
+    ValidationsMetaData.add(
+      {
+        errorName: 'required',
+        errorMessage: errConfig.message,
+        validatorFn: Validators.requiredTrue,
+      },
       target,
       propertyKey
     );
-    metaData.validators.push(Validators.requiredTrue);
-    metaData.errorMap.set('required', errConfig.message);
   };
 }

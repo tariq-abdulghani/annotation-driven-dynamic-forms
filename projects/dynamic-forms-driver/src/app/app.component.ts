@@ -1,7 +1,5 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { MetaDataRegisterer } from 'decorator-driven-dynamic-form';
 import { FormEntityProcessorService } from 'decorator-driven-dynamic-form';
-import { InlineSearchForm } from './demo-models/inline-search-form';
 
 import { ShopForm, ShopFormTransformer } from './demo-models/shop-from';
 
@@ -19,6 +17,10 @@ export class AppComponent implements OnInit, AfterViewInit {
   shopFormTransformer = new ShopFormTransformer();
 
   onSubmit($event: any) {
+    console.log($event);
+  }
+
+  onClick($event: any) {
     console.log($event);
   }
 
@@ -47,9 +49,16 @@ export class AppComponent implements OnInit, AfterViewInit {
     // // };
 
     // console.log(this.formEntityProcessorService.process(this.shopForm));
-    this.shopForm.capacity = 1580;
-    console.log(this.shopForm);
+    this.shopForm.capacity = 5;
+
+    this.shopForm.userData = { email: 'kkk', userName: 'kjkjkj' };
+    this.shopForm.userData.email = 'gggg';
+    console.log(this.shopForm, this.shopForm.userData);
   }
 
-  ngAfterViewInit(): void {}
+  ngAfterViewInit(): void {
+    //@ts-ignore
+    // this.shopForm.userData?.email = 'ddd@ttt';
+    // this.shopForm.userData = { email: 'kkk', userName: 'kjkjkj' };
+  }
 }

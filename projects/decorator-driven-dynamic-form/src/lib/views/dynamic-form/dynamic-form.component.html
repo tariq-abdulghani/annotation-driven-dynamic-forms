@@ -1,26 +1,29 @@
 <div class="mt-3 mb-3" *ngIf="formDescription">
   <form
     class="row g-3"
-    [formGroup]="$any(formDescription!.control)"
+    [formGroup]="$any(formDescription!.getControl())"
     (ngSubmit)="onSubmit($event)"
   >
-    <ng-container *ngFor="let inputDescription of formDescription.childInputs">
+    <ng-container
+      *ngFor="let inputDescription of formDescription.getChildren()"
+    >
       <div
         lib-input
         [inputDescription]="inputDescription"
-        [labelStyling]="formDescription.properties.get('labelStyling')"
-        [class]="'col-md-' + inputDescription.properties.get('width')"
+        [labelStyling]="formDescription.getProperty('labelStyling')"
+        [class]="'col-md-' + inputDescription.getProperty('width')"
       ></div>
     </ng-container>
 
     <ng-container *ngIf="actionsWithGridFlow; else notWithTheFlow">
       <div
-        *ngFor="let action of formDescription.properties.get('actions')"
+        *ngFor="let action of formDescription.getProperty('actions')"
         class="col-sm-3"
       >
         <button
           [type]="action.type"
           [class]="action.class || 'btn btn-primary'"
+          (click)="onClick(action)"
         >
           {{ action?.label }}
         </button>
@@ -30,10 +33,11 @@
     <ng-template #notWithTheFlow>
       <div class="col-12 mb-3">
         <div class="gap-10 d-flex flex-row" [ngClass]="actionsPositionClasses">
-          <div *ngFor="let action of formDescription.properties.get('actions')">
+          <div *ngFor="let action of formDescription.getProperty('actions')">
             <button
               [type]="action.type"
               [class]="action.class || 'btn btn-primary'"
+              (click)="onClick(action)"
             >
               {{ action?.label }}
             </button>

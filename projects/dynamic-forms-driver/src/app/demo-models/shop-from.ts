@@ -15,6 +15,7 @@ import {
   UpdateStrategy,
   FormValueTransformer,
   LabelStyling,
+  Button,
 } from 'decorator-driven-dynamic-form';
 import { CrossValidation } from 'decorator-driven-dynamic-form';
 import { UserData } from './user-data';
@@ -33,12 +34,13 @@ import { UserData } from './user-data';
     return { shop: true };
   },
 })
-@Submit({ label: 'ok' })
-@Reset({ label: 'clear' })
+@Button({ label: 'cancel', id: 'cancel', class: 'btn btn-danger' })
+@Submit({ label: 'ok', id: 'so' })
+@Reset({ label: 'clear', id: 'do' })
 @FormEntity({
   actionPositions: ActionsPosition.NEW_LINE_CENTER,
-  updateStrategy: UpdateStrategy.ACTION,
-  labelStyling: LabelStyling.START,
+  updateStrategy: UpdateStrategy.ON_SUBMIT,
+  labelStyling: LabelStyling.FLOAT,
 })
 export class ShopForm {
   @NotNull({ message: 'shopName cant be null ?' })
@@ -122,7 +124,7 @@ export class ShopForm {
     name: 'userData',
     width: 12,
   })
-  userData: any = null;
+  userData: UserData | null = null;
 }
 
 export class ShopFormTransformer
