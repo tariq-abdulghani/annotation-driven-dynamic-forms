@@ -16,18 +16,13 @@ export type NestedFormSpec = {
   width?: number;
 };
 
-abstract class BaseFormMeta {
-  labelStyling!: LabelStyling;
-  updateStrategy!: UpdateStrategy;
-}
-
-export class FormMeta extends BaseFormMeta {
+export class FormMeta {
   actions: BasicActionMeta[];
   actionPositions: ActionsPosition;
   updateStrategy: UpdateStrategy;
+  labelStyling!: LabelStyling;
 
   constructor(formSpec?: FormSpec) {
-    super();
     this.actions = [];
     this.actionPositions = formSpec
       ? formSpec.actionPositions
@@ -36,20 +31,5 @@ export class FormMeta extends BaseFormMeta {
       ? formSpec.updateStrategy
       : UpdateStrategy.ON_CHANGE;
     this.labelStyling = formSpec ? formSpec.labelStyling : LabelStyling.TOP;
-  }
-}
-
-export class NestedFormMeta extends BaseFormMeta {
-  legend: string;
-  name: string;
-  declaredClass: any;
-  width?: number;
-
-  constructor(formSpec: NestedFormSpec) {
-    super();
-    this.legend = formSpec.legend;
-    this.name = formSpec.name;
-    this.declaredClass = formSpec.declaredClass;
-    this.width = formSpec.width;
   }
 }

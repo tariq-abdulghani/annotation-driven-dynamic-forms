@@ -13,7 +13,6 @@ export class ErrorMessagePipe implements PipeTransform {
       let errorString: string | null = null;
       const key = Object.keys(validationError)[0];
       errorString = value.getError(key) || '';
-      // console.log(errorString, key, value.formControl.errors, value.formControl.errors[key]);
       return MessageStringInterpolation.interpolate(
         errorString || '',
         validationError[key]

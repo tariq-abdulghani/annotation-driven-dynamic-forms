@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { InputTypes } from '../../models/types/inputs/input-types.enum';
 import { UpdateStrategy } from '../../models/types/forms/form-update-strategy';
+import { InputNodeImpl } from '../../models/types/inputs/input-node-impl';
 import { InputNode } from '../../models/types/inputs/input-node';
 import { CrossValidationMeta } from '../../models/decorators/validation/CrossValidationMeta';
 import { InputsMetaData } from '../../models/decorators/inputs/inputs-meta-data';
@@ -54,7 +55,7 @@ export class FormEntityProcessorService {
           entity[key], //initialize
           validators
         );
-        const inputNode = new InputNode(properties, formControl, errorMap);
+        const inputNode = new InputNodeImpl(properties, formControl, errorMap);
         // console.log(inputNode);
         childInputs.push(inputNode);
         this.bindEntityToInputNode(
@@ -115,7 +116,7 @@ export class FormEntityProcessorService {
         inputNode.getControl();
     });
 
-    const formNode = new InputNode(
+    const formNode: InputNode = new InputNodeImpl(
       formProperties,
       new FormGroup(fomGroupInitializer, { updateOn: updateOn }),
       new Map()
