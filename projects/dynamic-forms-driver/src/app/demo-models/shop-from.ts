@@ -21,24 +21,29 @@ import { CrossValidation } from 'decorator-driven-dynamic-form';
 import { UserData } from './user-data';
 
 @CrossValidation({
-  errorName: 'shop',
+  errorName: 'expirationDate',
   effects: [
     {
-      input: 'capacity',
-      message: 'capacity cant be less than .....',
+      input: 'expiryDate',
+      message: 'expiration date cant be less than production date',
     },
   ],
   validatorFn: (control: AbstractControl) => {
-    const cap = control.get('capacity');
-    cap?.setErrors({ shop: true });
-    return { shop: true };
+    const expiryDate = control.get('expiryDate');
+    const productionDate = control.get('productionDate');
+    if (new Date(expiryDate?.value) <= new Date(productionDate?.value)) {
+      expiryDate?.setErrors({ expirationDate: true });
+      return { expirationDate: true };
+    }
+    return null;
   },
 })
 @Button({ label: 'cancel', id: 'cancel', class: 'btn btn-danger' })
+@Button({ label: 'print', id: 'print', class: 'btn btn-light' })
 @Submit({ label: 'ok', id: 'so' })
 @Reset({ label: 'clear', id: 'do' })
 @FormEntity({
-  actionPositions: ActionsPosition.NEW_LINE_CENTER,
+  actionPositions: ActionsPosition.NEW_LINE_END,
   updateStrategy: UpdateStrategy.ON_SUBMIT,
   labelStyling: LabelStyling.FLOAT,
 })
@@ -66,11 +71,18 @@ export class ShopForm {
   @DateControl({
     id: 'expiryDate',
     name: 'expiryDate',
-    type: 'week',
+    type: 'date',
     label: 'expiry date',
-    placeHolder: 'week 10, 2022',
   })
-  expiryDate: string | null = '01-01-2023';
+  expiryDate: string | null = '01-09-2023';
+
+  @DateControl({
+    id: 'productionDate',
+    name: 'productionDate',
+    type: 'date',
+    label: 'production date',
+  })
+  productionDate: string | null = '01-01-2023';
 
   @CheckboxControl({
     id: 'rememberMe',
