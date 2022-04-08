@@ -1,14 +1,11 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { MetaDataRegisterer } from 'decorator-driven-dynamic-form';
-import { FormEntityProcessorService } from 'decorator-driven-dynamic-form';
-
 import { ShopForm, ShopFormTransformer } from './demo-models/shop-from';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
-  providers: [FormEntityProcessorService],
+  providers: [],
 })
 export class AppComponent implements OnInit, AfterViewInit {
   title = 'dynamic-forms-driver';
@@ -21,11 +18,15 @@ export class AppComponent implements OnInit, AfterViewInit {
     console.log($event);
   }
 
+  onClick($event: any) {
+    console.log($event);
+  }
+
   onChange($event: any) {
     console.log('new value', $event);
   }
 
-  constructor(private formEntityProcessorService: FormEntityProcessorService) {}
+  constructor() {}
 
   ngOnInit(): void {
     // //@ts-ignore
@@ -38,20 +39,17 @@ export class AppComponent implements OnInit, AfterViewInit {
     // //   zipCode: '78',
     // // };
 
-    console.log(this.formEntityProcessorService.process(this.shopForm));
-    this.shopForm.capacity = 1580;
-    console.log(this.shopForm);
-    console.log(MetaDataRegisterer.get(this.shopForm, 'shopName')); //capacity
-    console.log(MetaDataRegisterer.get(this.shopForm, 'capacity')); //capacity//expiryDate
-    console.log(MetaDataRegisterer.get(this.shopForm, 'expiryDate')); //rememberMe
-    console.log(MetaDataRegisterer.get(this.shopForm, 'rememberMe')); //style
-    console.log(MetaDataRegisterer.get(this.shopForm, 'style')); //paymentMethod
-    console.log(MetaDataRegisterer.get(this.shopForm, 'paymentMethod')); //paymentMethod
+    // console.log(this.formEntityProcessorService.process(this.shopForm));
+    this.shopForm.capacity = 5;
+
+    this.shopForm.userData = { email: 'kkk', userName: 'kjkjkj' };
+    this.shopForm.userData.email = 'gggg';
+    console.log(this.shopForm, this.shopForm.userData);
   }
 
   ngAfterViewInit(): void {
-    // console.log("address ", this.loginForm.address);
-    // //@ts-ignore
-    // this.loginForm.address.zipCode = "xxyl";
+    //@ts-ignore
+    // this.shopForm.userData?.email = 'ddd@ttt';
+    // this.shopForm.userData = { email: 'kkk', userName: 'kjkjkj' };
   }
 }

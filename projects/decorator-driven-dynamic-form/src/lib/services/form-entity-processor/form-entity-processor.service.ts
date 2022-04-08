@@ -1,128 +1,149 @@
 import { Injectable } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { InputTypes } from '../../models/types/inputs-meta/input-types.enum';
-import { UpdateStrategy } from '../../models/types/forms-meta/form-update-strategy';
-import {
-  FormMeta,
-  NestedFormMeta,
-} from '../../models/types/forms-meta/form-meta';
-import { InputDescription } from '../../models/types/inputs-meta/input-description';
-import { MetaDataRegisterer } from '../../models/types/inputs-meta/meta-data-registerer';
-import { InputSpec } from '../../models/types/inputs-meta/input-specs';
-import { BasicAction } from '../../models/types/actions/actions-api';
+import { InputTypes } from '../../models/types/inputs/input-types.enum';
+import { UpdateStrategy } from '../../models/types/forms/form-update-strategy';
+import { InputNodeImpl } from '../../models/types/inputs/input-node-impl';
+import { InputNode } from '../../models/types/inputs/input-node';
+import { CrossValidationMeta } from '../../models/decorators/validation/CrossValidationMeta';
+import { InputsMetaData } from '../../models/decorators/inputs/inputs-meta-data';
+import { ValidationsMetaData } from '../../models/decorators/validation/ValidationsMetaData';
+import { FormMetaData } from '../../models/decorators/forms/Form-meta-data';
+import { ActionsMetaData } from '../../models/decorators/actions/actions-metadata';
 
 @Injectable()
 export class FormEntityProcessorService {
-  constructor() {}
-
-  public describe(formEntity: {
-    meta?: FormMeta;
-    [x: string]: any;
-  }): InputDescription<any> {
-    const formDescription = new InputDescription<any>(
-      formEntity.meta,
-      InputTypes.COMPOSITE
-    );
-    const formGroupInitializer = {} as { [x: string]: any };
-
-    // find actions and put them in meta attribute
-    Object.entries(formEntity).forEach(([propertyKey, propertyValue]) => {
-      if (!MetaDataRegisterer.get(formEntity, propertyKey)) {
-        // (formDescription as { [x: string]: any })[propertyKey] = propertyValue;
-        if (formEntity[propertyKey] instanceof BasicAction) {
-          formEntity.meta?.actions.push(formEntity[propertyKey]);
-          delete formEntity[propertyKey];
-        }
-      }
-    });
-
-    for (const key in formEntity) {
-      const metaData = MetaDataRegisterer.get(formEntity, key);
-      if (metaData instanceof InputDescription) {
-        const formControl = new FormControl(
-          formEntity[key],
-          metaData.validators
-        );
-
-        const boundDescription = metaData.cloneAndBind(formControl);
-        if (formDescription.childInputs == null) {
-          formDescription.childInputs = [];
-        }
-        formDescription.childInputs?.push(boundDescription);
-        formGroupInitializer[metaData.meta.name] = formControl;
-        this.bindFieldToFormControl(formEntity, key, formControl);
-      } else if (metaData instanceof NestedFormMeta) {
-        console.warn('metaData instanceof NestedFormMeta', metaData);
-        const nestedFormEntity = new metaData.declaredClass();
-        const nestedFormDescription = this.describe(nestedFormEntity);
-        // bind formDescription to nested form entity
-        nestedFormEntity.control = nestedFormDescription.control;
-        // initialize
-        nestedFormEntity.valueSetter(formEntity[key]);
-        formDescription.childInputs!.push(nestedFormDescription);
-        nestedFormDescription.meta.legend = metaData.legend; // todo investigate
-        formGroupInitializer[metaData.name] = nestedFormDescription.control;
-
-        this.bindCompositeFieldToFormGroup(formEntity, key, nestedFormEntity);
-      }
-    }
-
-    switch (formEntity!.meta?.updateStrategy) {
-      case UpdateStrategy.EAGER:
-        formDescription.control = new FormGroup(formGroupInitializer, {
-          updateOn: 'change',
-        });
-        break;
-
-      case UpdateStrategy.LAZY:
-        formDescription.control = new FormGroup(formGroupInitializer, {
-          updateOn: 'blur',
-        });
-        break;
-
-      case UpdateStrategy.ACTION:
-        formDescription.control = new FormGroup(formGroupInitializer, {
-          updateOn: 'submit',
-        });
-        break;
-    }
-    return formDescription;
-  }
-
-  public process(formEntity: any): any {
-    const description = this.describe(
-      formEntity
-    ) as InputDescription<InputSpec>;
+  public process(formEntity: any): InputNode {
+    const node = this.createNode(formEntity) as InputNode;
     // subscribe to enable or disable controls
-    description?.control!.valueChanges.subscribe((formValue) => {
-      // console.log('form value change', formValue);
-      description!.childInputs?.forEach((d) => {
-        if (d.meta.enableFn) {
-          switch (d.meta.enableFn(formValue)) {
+    node?.getControl()!.valueChanges.subscribe((formValue) => {
+      node!.getChildren()?.forEach((d) => {
+        if (d.getProperty('enableFn')) {
+          switch (d.getProperty('enableFn')(formValue)) {
             case true:
-              d!.control?.enable({ emitEvent: false });
+              //@ts-ignore
+              d!.getControl?.enable({ emitEvent: false });
               break;
 
             case false:
-              d!.control?.disable({ emitEvent: false });
+              //@ts-ignore
+              d!.getControl?.disable({ emitEvent: false });
               break;
           }
         }
       });
     });
-    return description;
+    return node;
   }
 
-  /**
-   * Modifies value accessor of the property
-   * to set form control when set and get form
-   * control value at get
-   *
-   * @param target object
-   * @param propertyKey  name of property
-   * @param formControl
-   */
-  private bindFieldToFormControl(
+  private createNode(
+    entity: any,
+    parentProperties?: Map<string, any>
+  ): InputNode {
+    const formProperties = parentProperties || FormMetaData.get(entity);
+    const actions = ActionsMetaData.get(entity);
+    if (formProperties) {
+      formProperties.set('actions', actions);
+    }
+
+    const childInputs = [] as InputNode[];
+    for (const key in entity) {
+      const properties = InputsMetaData.get(entity, key);
+      if (properties && properties?.get('inputType') != InputTypes.COMPOSITE) {
+        const { validators, errorMap } =
+          ValidationsMetaData.getValidatorsAndErrorMap(entity, key);
+        const formControl = new FormControl(
+          entity[key], //initialize
+          validators
+        );
+        const inputNode = new InputNodeImpl(properties, formControl, errorMap);
+        // console.log(inputNode);
+        childInputs.push(inputNode);
+        this.bindEntityToInputNode(
+          entity,
+          inputNode.getProperty('name'),
+          inputNode.getControl() as FormControl
+        );
+      } else if (
+        properties &&
+        properties?.get('inputType') == InputTypes.COMPOSITE
+      ) {
+        const nestedFormEntity = new (properties?.get('declaredClass'))();
+        // initialize nested form entity values
+        if (entity[key] != null) {
+          Object.keys(entity[key]).forEach((k) => {
+            nestedFormEntity[k] = entity[key][k];
+          });
+        }
+        const nestedFormNode = this.createNode(
+          nestedFormEntity,
+          new Map(formProperties)
+        );
+
+        // fill node properties with nested form properties
+        for (const propertyKeyValue of properties.entries()) {
+          nestedFormNode.addProperty(propertyKeyValue[0], propertyKeyValue[1]);
+        }
+        // override nested form properties with its parent properties
+        // warn??
+        for (const propertyKeyValue of formProperties.entries()) {
+          nestedFormNode.addProperty(propertyKeyValue[0], propertyKeyValue[1]);
+        }
+
+        childInputs.push(nestedFormNode);
+        this.bindEntityToInputTree(entity, key, nestedFormEntity);
+      }
+    }
+
+    // update strategy
+    let updateOn: 'change' | 'blur' | 'submit';
+    switch (formProperties.get('updateStrategy') as UpdateStrategy) {
+      case UpdateStrategy.ON_PLUR:
+        updateOn = 'blur';
+        break;
+
+      case UpdateStrategy.ON_SUBMIT:
+        updateOn = 'submit';
+        break;
+
+      default:
+        updateOn = 'change';
+        break;
+    }
+
+    const fomGroupInitializer: { [x: string]: any } = {};
+    childInputs.forEach((inputNode) => {
+      fomGroupInitializer[inputNode.getProperty('name')] =
+        inputNode.getControl();
+    });
+
+    const formNode: InputNode = new InputNodeImpl(
+      formProperties,
+      new FormGroup(fomGroupInitializer, { updateOn: updateOn }),
+      new Map()
+    );
+    formNode.addChildren(childInputs);
+    // cross validation //
+    const crossValidators = CrossValidationMeta.get(entity);
+    if (crossValidators && crossValidators.length > 0) {
+      crossValidators.forEach((cv) => {
+        formNode.getControl().addValidators([cv.validatorFn]);
+        formNode.getControl().updateValueAndValidity();
+      });
+    }
+
+    crossValidators?.forEach((validator) => {
+      validator.effects.forEach((effect) => {
+        const relatedInput = formNode
+          .getChildren()
+          ?.find((i) => i.getProperty('name') == effect.input);
+
+        relatedInput?.addError(validator.errorName, effect.message);
+      });
+    });
+    return formNode;
+  }
+
+  private bindEntityToInputNode(
     target: any,
     propertyKey: string,
     formControl: FormControl
@@ -143,26 +164,17 @@ export class FormEntityProcessorService {
     });
   }
 
-  /**
-   * Modifies value accessor to make use of form group functionality
-   * it set all its field with given value which is reflected to their form control
-   * and gets the value form the corresponding form group
-   *
-   * @param target objet
-   * @param propertyKey property name
-   * @param formEntity instance of class annotated with `@FormEntity`
-   */
-  private bindCompositeFieldToFormGroup(
+  private bindEntityToInputTree(
     target: any,
     propertyKey: string,
     formEntity: any
   ) {
     const setter = function (val?: any) {
+      console.log('value setter is called ', val);
       formEntity.valueSetter(val);
     };
 
     const getter = function () {
-      // return formEntity.formGroup?.value || formEntity;
       return formEntity;
     };
 

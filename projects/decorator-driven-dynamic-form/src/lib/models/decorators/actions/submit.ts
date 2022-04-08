@@ -1,14 +1,9 @@
-import {
-  BasicAction,
-  BasicActionMeta,
-  NativeActionSpec,
-} from '../../types/actions/actions-api';
+import { NativeActionSpec } from '../../types/actions/actions';
+import { ActionsMetaData } from './actions-metadata';
 
 export function Submit(meta: NativeActionSpec) {
   return function <T extends { new (...args: any[]): {} }>(constructor: T) {
-    console.log(constructor);
-    return class extends constructor {
-      submit = new BasicAction({ ...meta, type: 'submit' });
-    };
+    ActionsMetaData.add({ ...meta, type: 'submit' }, constructor);
+    return class extends constructor {};
   };
 }

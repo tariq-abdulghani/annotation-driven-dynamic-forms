@@ -1,14 +1,16 @@
 import { Validators } from '@angular/forms';
-import { InputDescription } from '../../types/inputs-meta/input-description';
-import { MetaDataRegisterer } from '../../types/inputs-meta/meta-data-registerer';
+import { ValidationsMetaData } from './ValidationsMetaData';
 
 export function Min(errConfig: { message: string; minValue: number }) {
   return function (target: any, propertyKey: string) {
-    const metaData = MetaDataRegisterer.get<InputDescription<any>>(
+    ValidationsMetaData.add(
+      {
+        errorName: 'min',
+        errorMessage: errConfig.message,
+        validatorFn: Validators.min(errConfig.minValue),
+      },
       target,
       propertyKey
     );
-    metaData.validators.push(Validators.min(errConfig.minValue));
-    metaData.errorMap.set('min', errConfig.message);
   };
 }

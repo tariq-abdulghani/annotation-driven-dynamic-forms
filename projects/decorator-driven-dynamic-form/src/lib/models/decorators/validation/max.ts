@@ -1,14 +1,16 @@
 import { Validators } from '@angular/forms';
-import { InputDescription } from '../../types/inputs-meta/input-description';
-import { MetaDataRegisterer } from '../../types/inputs-meta/meta-data-registerer';
+import { ValidationsMetaData } from './ValidationsMetaData';
 
 export function Max(errConfig: { message: string; maxValue: number }) {
   return function (target: any, propertyKey: string) {
-    const metaData = MetaDataRegisterer.get<InputDescription<any>>(
+    ValidationsMetaData.add(
+      {
+        errorName: 'max',
+        errorMessage: errConfig.message,
+        validatorFn: Validators.max(errConfig.maxValue),
+      },
       target,
       propertyKey
     );
-    metaData.validators.push(Validators.max(errConfig.maxValue));
-    metaData.errorMap.set('max', errConfig.message);
   };
 }
