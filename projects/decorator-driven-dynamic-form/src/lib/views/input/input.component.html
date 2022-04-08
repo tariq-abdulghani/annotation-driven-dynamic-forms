@@ -1,52 +1,54 @@
 <ng-container
   *ngIf="
-    inputDescription.inputType == INPUT_TYPES.TEXT ||
-    inputDescription.inputType == INPUT_TYPES.NUMBER ||
-    inputDescription.inputType == INPUT_TYPES.DATE
+    inputDescription.getProperty('inputType') == INPUT_TYPES.TEXT ||
+    inputDescription.getProperty('inputType') == INPUT_TYPES.NUMBER ||
+    inputDescription.getProperty('inputType') == INPUT_TYPES.DATE
   "
 >
   <div [class]="inputContainerClasses">
     <label
       *ngIf="!isFloatingLabel"
-      [attr.for]="inputDescription.metaData.get('id')"
+      [attr.for]="inputDescription.getProperty('id')"
       [ngClass]="labelClasses"
       [ngClass]="{
-        'required-control-label': inputDescription.metaData.get('required'),
+        'required-control-label': inputDescription.getProperty('required'),
         'invalid-label':
-          inputDescription.control?.touched && inputDescription.control?.invalid
+          inputDescription.getControl()?.touched &&
+          inputDescription.getControl()?.invalid
       }"
-      >{{ inputDescription.metaData.get("label") }}</label
+      >{{ inputDescription.getProperty("label") }}</label
     >
     <div [class]="inputDivClasses">
       <input
         class="form-control"
         [ngClass]="{
           'is-invalid':
-            inputDescription.control?.touched &&
-            inputDescription.control?.invalid
+            inputDescription.getControl()?.touched &&
+            inputDescription.getControl()?.invalid
         }"
-        [placeholder]="inputDescription.metaData.get('placeHolder') || ''"
-        [id]="inputDescription.metaData.get('id')"
-        [type]="inputDescription.metaData.get('type')"
-        [formControl]="$any(inputDescription.control)"
-        [name]="inputDescription.metaData.get('name')"
-        [attr.readonly]="inputDescription.metaData.get('readonly')"
+        [placeholder]="inputDescription.getProperty('placeHolder') || ''"
+        [id]="inputDescription.getProperty('id')"
+        [type]="inputDescription.getProperty('type')"
+        [formControl]="$any(inputDescription.getControl())"
+        [name]="inputDescription.getProperty('name')"
+        [attr.readonly]="inputDescription.getProperty('readonly')"
       />
       <label
         *ngIf="isFloatingLabel"
-        [attr.for]="inputDescription.metaData.get('id')"
+        [attr.for]="inputDescription.getProperty('id')"
         [ngClass]="{
-          'required-control-label': inputDescription.metaData.get('required'),
+          'required-control-label': inputDescription.getProperty('required'),
           'invalid-label':
-            inputDescription.control?.touched &&
-            inputDescription.control?.invalid
+            inputDescription.getControl()?.touched &&
+            inputDescription.getControl()?.invalid
         }"
-        >{{ inputDescription.metaData.get("label") }}</label
+        >{{ inputDescription.getProperty("label") }}</label
       >
       <div
         class="invalid-feedback"
         *ngIf="
-          inputDescription.control?.touched && inputDescription.control?.invalid
+          inputDescription.getControl()?.touched &&
+          inputDescription.getControl()?.invalid
         "
       >
         {{ inputDescription | errorMessage }}
@@ -55,62 +57,66 @@
   </div>
 </ng-container>
 
-<ng-container *ngIf="inputDescription.inputType == INPUT_TYPES.SELECT">
+<ng-container
+  *ngIf="inputDescription.getProperty('inputType') == INPUT_TYPES.SELECT"
+>
   <div [class]="inputContainerClasses">
     <label
       *ngIf="!isFloatingLabel"
-      [attr.for]="inputDescription.metaData.get('id')"
+      [attr.for]="inputDescription.getProperty('id')"
       [ngClass]="labelClasses"
       [ngClass]="{
-        'required-control-label': inputDescription.metaData.get('required'),
+        'required-control-label': inputDescription.getProperty('required'),
         'invalid-label':
-          inputDescription.control?.touched && inputDescription.control?.invalid
+          inputDescription.getControl()?.touched &&
+          inputDescription.getControl()?.invalid
       }"
-      >{{ inputDescription.metaData.get("label") }}</label
+      >{{ inputDescription.getProperty("label") }}</label
     >
     <div [class]="inputDivClasses">
       <select
         class="form-select"
         [ngClass]="{
           'is-invalid':
-            inputDescription.control?.touched &&
-            inputDescription.control?.invalid
+            inputDescription.getControl()?.touched &&
+            inputDescription.getControl()?.invalid
         }"
-        [id]="inputDescription.metaData.get('id')"
-        [formControl]="$any(inputDescription.control)"
-        [name]="inputDescription.metaData.get('name')"
-        [compareWith]="inputDescription.metaData.get('compareWith')"
+        [id]="inputDescription.getProperty('id')"
+        [formControl]="$any(inputDescription.getControl())"
+        [name]="inputDescription.getProperty('name')"
+        [compareWith]="inputDescription.getProperty('compareWith')"
       >
         <option
           *ngFor="
             let opt of dataLoader.load(
-              inputDescription.metaData.get('dataSource')
+              inputDescription.getProperty('dataSource')
             ) | async
           "
           [ngValue]="
-            opt[inputDescription.metaData.get('bindValue')]
-              ? opt[inputDescription.metaData.get('bindValue')]
+            opt[inputDescription.getProperty('bindValue')]
+              ? opt[inputDescription.getProperty('bindValue')]
               : opt
           "
         >
-          {{ opt[inputDescription.metaData.get("bindLabel")] }}
+          {{ opt[inputDescription.getProperty("bindLabel")] }}
         </option>
       </select>
       <label
         *ngIf="isFloatingLabel"
-        [attr.for]="inputDescription.metaData.get('id')"
+        [attr.for]="inputDescription.getProperty('id')"
         [ngClass]="{
-          'required-control-label': inputDescription.metaData.get('required'),
+          'required-control-label': inputDescription.getProperty('required'),
           'invalid-label':
-            inputDescription.control?.touched &&
-            inputDescription.control?.invalid
+            inputDescription.getControl()?.touched &&
+            inputDescription.getControl()?.invalid
         }"
-        >{{ inputDescription.metaData.get("label") }}</label
+        >{{ inputDescription.getProperty("label") }}</label
       >
       <div
         class="invalid-feedback"
         *ngIf="
-          inputDescription.control?.touched && inputDescription.control?.invalid
+          inputDescription.getControl()?.touched &&
+          inputDescription.getControl()?.invalid
         "
       >
         {{ inputDescription | errorMessage }}
@@ -119,36 +125,39 @@
   </div>
 </ng-container>
 
-<ng-container *ngIf="inputDescription.inputType == INPUT_TYPES.CHECKBOX">
+<ng-container
+  *ngIf="inputDescription.getProperty('inputType') == INPUT_TYPES.CHECKBOX"
+>
   <div [class]="inputContainerClasses">
     <div class="form-check">
       <input
         class="form-check-input"
         [ngClass]="{
           'is-invalid':
-            inputDescription.control?.touched &&
-            inputDescription.control?.invalid
+            inputDescription.getControl()?.touched &&
+            inputDescription.getControl()?.invalid
         }"
-        [id]="inputDescription.metaData.get('id')"
+        [id]="inputDescription.getProperty('id')"
         type="checkbox"
-        [formControl]="$any(inputDescription.control)"
-        [name]="inputDescription.metaData.get('name')"
+        [formControl]="$any(inputDescription.getControl())"
+        [name]="inputDescription.getProperty('name')"
       />
       <label
-        [attr.for]="inputDescription.metaData.get('id')"
+        [attr.for]="inputDescription.getProperty('id')"
         class="form-check-label"
         [ngClass]="{
-          'required-control-label': inputDescription.metaData.get('required'),
+          'required-control-label': inputDescription.getProperty('required'),
           'invalid-label':
-            inputDescription.control?.touched &&
-            inputDescription.control?.invalid
+            inputDescription.getControl()?.touched &&
+            inputDescription.getControl()?.invalid
         }"
-        >{{ inputDescription.metaData.get("label") }}</label
+        >{{ inputDescription.getProperty("label") }}</label
       >
       <div
         class="invalid-feedback"
         *ngIf="
-          inputDescription.control?.touched && inputDescription.control?.invalid
+          inputDescription.getControl()?.touched &&
+          inputDescription.getControl()?.invalid
         "
       >
         {{ inputDescription | errorMessage }}
@@ -157,10 +166,12 @@
   </div>
 </ng-container>
 
-<ng-container *ngIf="inputDescription.inputType == INPUT_TYPES.RADIO_BUTTONS">
+<ng-container
+  *ngIf="inputDescription.getProperty('inputType') == INPUT_TYPES.RADIO_BUTTONS"
+>
   <fieldset class="row mt-3 mb-3">
     <legend [ngClass]="radioLegendClasses" class="col-form-label">
-      {{ inputDescription.metaData.get("legend") }}
+      {{ inputDescription.getProperty("legend") }}
     </legend>
 
     <!-- <label [ngClass]="legendClasses" class="col-form-label">
@@ -170,31 +181,31 @@
     <div [ngClass]="radioInputContainerClasses">
       <div class="row mt-1 mb-1">
         <div
-          [class]="'col-sm-' + inputDescription.metaData.get('inputWidth')"
+          [class]="'col-sm-' + inputDescription.getProperty('inputWidth')"
           *ngFor="
             let opt of dataLoader.load(
-              inputDescription.metaData.get('dataSource')
+              inputDescription.getProperty('dataSource')
             ) | async;
             let i = index
           "
         >
           <input
             class="form-check-input mr-50"
-            [id]="inputDescription.metaData.get('id') + i"
+            [id]="inputDescription.getProperty('id') + i"
             type="radio"
-            [formControl]="$any(inputDescription.control)"
+            [formControl]="$any(inputDescription.getControl())"
             [value]="
-              inputDescription.metaData.get('bindValue')
-                ? opt[inputDescription.metaData.get('bindValue')]
+              inputDescription.getProperty('bindValue')
+                ? opt[inputDescription.getProperty('bindValue')]
                 : opt
             "
-            [name]="inputDescription.metaData.get('name')"
+            [name]="inputDescription.getProperty('name')"
           />
           <label
             class="form-check-label"
-            [attr.for]="inputDescription.metaData.get('id') + i"
+            [attr.for]="inputDescription.getProperty('id') + i"
           >
-            {{ opt[inputDescription.metaData.get("bindLabel")] }}
+            {{ opt[inputDescription.getProperty("bindLabel")] }}
           </label>
         </div>
       </div>
@@ -202,20 +213,22 @@
   </fieldset>
 </ng-container>
 
-<ng-container *ngIf="inputDescription.inputType == INPUT_TYPES.COMPOSITE">
+<ng-container
+  *ngIf="inputDescription.getProperty('inputType') == INPUT_TYPES.COMPOSITE"
+>
   <fieldset class="row g-3">
     <legend [ngClass]="compositeLegendClasses" class="col-form-label">
-      {{ inputDescription.metaData.get("legend") }}
+      {{ inputDescription.getProperty("legend") }}
     </legend>
 
     <div [ngClass]="compositeInputContainerClasses">
       <div class="row g-3">
-        <ng-container *ngFor="let childInput of inputDescription.childInputs">
+        <ng-container *ngFor="let childInput of inputDescription.getChildren()">
           <div
             lib-input
             [inputDescription]="childInput"
-            [labelStyling]="inputDescription.metaData.get('labelStyling')"
-            [class]="'col-md-' + childInput.metaData.get('width')"
+            [labelStyling]="inputDescription.getProperty('labelStyling')"
+            [class]="'col-md-' + childInput.getProperty('width')"
           ></div>
         </ng-container>
       </div>

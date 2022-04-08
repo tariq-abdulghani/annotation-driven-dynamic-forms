@@ -1,12 +1,17 @@
-# Decorator Driven Dynamic Forms version 3.0.0-a.1
+# Decorator Driven Dynamic Forms version 5.0.0-a.1
 
 > Opinionated way to create dynamic forms with **no json** , **no inheritance**
 > just use **decorators**
 
 ## What is new in this version
- 
+
+new features
+cross validation
+custom buttons
+buttons alignment
+
 fixed issues
-  setting nested form elements issue is fixed.
+setting nested form elements issue is fixed.
 
 ## Project Goals
 
@@ -18,11 +23,7 @@ fixed issues
    is a perfect example
 4. intuitive API I think creating something great means we can use it easily and really understand it without many efforts
 5. composable forms you can nest forms to any level to make form creation easily
-6. supports two forms layouts
-
-   6.1. grid
-
-   6.2 single column
+6. supports complex layouts by using grids
 
 7. opinionated based on commons and defaults
 8. binding form model to form control and view which mean you create the form model
@@ -39,11 +40,8 @@ fixed issues
 - [x] validation
 - [x] customized error messages and string interpolation can be used `some text...${var} some text ..`
 - [x] decorator driven
-- [x] defaults like required controls have an `*` default error class
 - [x] supports composition of forms
-- [x] supports submit and reset actions
 - [x] responsive relies on bootstrap5
-- [x] single column layout
 
 - [ ] theming is not supported yet
 - [ ] custom styling is not supported yet
@@ -57,7 +55,7 @@ fixed issues
 - [x] single select controls
 - [x] check boxes
 - [x] radio buttons
-
+- [ ] text area not supported yet
 - [ ] multiple select is not supported yet
 - [ ] range is not supported yet
 
@@ -99,7 +97,6 @@ address class which is a form that will be nested in another form
 ```typescript
 import {
   FormEntity,
-  FormLayout,
   NotNull,
   TextControl,
 } from "decorator-driven-dynamic-form";
@@ -298,79 +295,327 @@ export class AppComponent implements OnInit {
 
 ```
 
+## another use with cross validation
+
+```typescript
+import { AbstractControl } from "@angular/forms";
+import {
+  FormEntity,
+  TextControl,
+  NumberControl,
+  DateControl,
+  CheckboxControl,
+  SelectControl,
+  RadioButtonsControl,
+  NestedFormEntity,
+  Submit,
+  Reset,
+  NotNull,
+  ActionsPosition,
+  UpdateStrategy,
+  FormValueTransformer,
+  LabelStyling,
+  Button,
+} from "decorator-driven-dynamic-form";
+import { CrossValidation } from "decorator-driven-dynamic-form";
+import { UserData } from "./user-data";
+
+@CrossValidation({
+  errorName: "expirationDate",
+  effects: [
+    {
+      input: "expiryDate",
+      message: "expiration date cant be less than production date",
+    },
+  ],
+  validatorFn: (control: AbstractControl) => {
+    const expiryDate = control.get("expiryDate");
+    const productionDate = control.get("productionDate");
+    if (new Date(expiryDate?.value) <= new Date(productionDate?.value)) {
+      expiryDate?.setErrors({ expirationDate: true });
+      return { expirationDate: true };
+    }
+    return null;
+  },
+})
+@Button({ label: "cancel", id: "cancel", class: "btn btn-danger" })
+@Button({ label: "print", id: "print", class: "btn btn-light" })
+@Submit({ label: "ok", id: "so" })
+@Reset({ label: "clear", id: "do" })
+@FormEntity({
+  actionPositions: ActionsPosition.NEW_LINE_END,
+  updateStrategy: UpdateStrategy.ON_SUBMIT,
+  labelStyling: LabelStyling.FLOAT,
+})
+export class ShopForm {
+  @NotNull({ message: "shopName cant be null ?" })
+  @TextControl({
+    id: "shopName",
+    name: "shopName",
+    type: "text",
+    label: "shop name",
+    width: 6,
+    placeHolder: "asssss",
+  })
+  shopName: string | null | undefined = "job";
+
+  @NumberControl({
+    id: "capacity",
+    name: "capacity",
+    label: "capacity",
+    placeHolder: "...",
+    width: 6,
+  })
+  capacity: number | null = 200;
+
+  @DateControl({
+    id: "expiryDate",
+    name: "expiryDate",
+    type: "date",
+    label: "expiry date",
+  })
+  expiryDate: string | null = "01-09-2023";
+
+  @DateControl({
+    id: "productionDate",
+    name: "productionDate",
+    type: "date",
+    label: "production date",
+  })
+  productionDate: string | null = "01-01-2023";
+
+  @CheckboxControl({
+    id: "rememberMe",
+    name: "rememberMe",
+    label: "remember Me",
+    width: 7,
+  })
+  rememberMe: boolean | null = false;
+  @CheckboxControl({
+    id: "callMe",
+    name: "callMe",
+    label: "call Me",
+    width: 7,
+  })
+  callMe: boolean | null = false;
+
+  @SelectControl({
+    id: "style",
+    name: "style",
+    label: "style",
+    bindLabel: "description",
+    bindValue: null,
+    placeHolder: "wow",
+    compareWith: (a, b) => false,
+    dataSource: [
+      { id: 1, description: "visa" },
+      { id: 2, description: "cash" },
+    ],
+  })
+  style: any | null = null;
+
+  @RadioButtonsControl({
+    id: "paymentMethod",
+    name: "paymentMethod",
+    label: "paymentMethod",
+    bindLabel: "description",
+    bindValue: null,
+    width: 6,
+    inputWidth: 6,
+    dataSource: [
+      { id: 1, description: "visa" },
+      { id: 2, description: "cash" },
+    ],
+    legend: "Payment Method",
+  })
+  paymentMethod: any = null;
+
+  @NestedFormEntity({
+    declaredClass: UserData,
+    legend: "User Data",
+    name: "userData",
+    width: 12,
+  })
+  userData: UserData | null = null;
+}
+
+export class ShopFormTransformer
+  implements FormValueTransformer<ShopForm, any>
+{
+  transform(formValue: ShopForm) {
+    const transformedVal = {
+      userInfo: formValue.userData,
+      shopInfo: { name: formValue.shopName },
+    };
+    return transformedVal;
+  }
+}
+```
+
+```typescript
+import { FormEntity, TextControl } from "decorator-driven-dynamic-form";
+
+@FormEntity()
+export class UserData {
+  @TextControl({
+    id: "userName",
+    name: "userName",
+    type: "text",
+    label: "user name",
+  })
+  userName: string | null = "Bob";
+
+  @TextControl({
+    id: "email",
+    name: "email",
+    type: "email",
+    label: "email",
+  })
+  email: string | null = null;
+}
+```
+
+```typescript
+export class AppComponent implements OnInit, AfterViewInit {
+  title = "dynamic-forms-driver";
+
+  shopForm = new ShopForm();
+  // loginForm = new LoginForm();
+  shopFormTransformer = new ShopFormTransformer();
+
+  onSubmit($event: any) {
+    console.log($event);
+  }
+
+  // fired when custom buttons clicked
+  onClick($event: any) {
+    console.log($event);
+  }
+  // fired when any form field changes
+  onChange($event: any) {
+    console.log("new value", $event);
+  }
+
+  constructor() {}
+}
+```
+
+```angular2html
+<div class="container">
+  <ddd-form
+    [formEntity]="shopForm"
+    (changeEvent)="onChange($event)"
+    (submitEvent)="onSubmit($event)"
+    (buttonClickEvent)="onClick($event)"
+  ></ddd-form>
+</div>
+
+```
+
 Run `ng s` and see the result your self.
 
 ## API summary
 
 ### Component API
 
-| Input          |   type   |                                                                            description |
-| -------------- | :------: | -------------------------------------------------------------------------------------: |
-| `[formEntity]` | `Object` | any instance of class annotated with `@FormEntity()`, the input form model to the view |
+| Input                |               type               |                                                                                                             description |
+| -------------------- | :------------------------------: | ----------------------------------------------------------------------------------------------------------------------: |
+| `[formEntity]`       |             `Object`             |                                  any instance of class annotated with `@FormEntity()`, the input form model to the view |
+| `[valueTransformer]` | 'FormValueTransformer<any, any>' | an interface if provided and object with that interface it will be used to trnsform form value based on trasform method |
 
-| Output          |   type   |                            description |
-| --------------- | :------: | -------------------------------------: |
-| `(submitEvent)` | `Object` | `FormGroup` value of the rendered form |
+| Output               |                 type                 |                                                                                          description |
+| -------------------- | :----------------------------------: | ---------------------------------------------------------------------------------------------------: |
+| `(submitEvent)`      |                `any`                 |                                                               `FormGroup` value of the rendered form |
+| `(changeEvent)`      |                `any`                 |                                                                       `FormGroup` value after change |
+| `(buttonClickEvent)` | `{buttonId: string, formValue: any}` | when added custom button to the form it will emit that object that contains button id and form value |
 
 ### Decorators
 
-#### `@FormEntity(param?:FormMeta)`
+#### `@FormEntity(param?:FormSpec)`
 
 to declare class as form model that can be used in dynamic from component
 param of type
 
 ```typescript
-export interface FormMeta {
-  updateStrategy: FormUpdateStrategy;
-  layout: FormLayout; // defaults to `FormLayout.GRID`
-}
+export type FormSpec = {
+  labelStyling: LabelStyling;
+  updateStrategy: UpdateStrategy;
+  actionPositions: ActionsPosition;
+};
 ```
 
 update strategy of type
 
 ```typescript
-export enum FormUpdateStrategy {
-  EAGER = 0, // update  on change
-  LAZY = 1, // update on blur
+export enum UpdateStrategy {
+  ON_CHANGE = "ON_CHANGE",
+  ON_PLUR = "ON_PLUR",
+  ON_SUBMIT = "ON_SUBMIT",
 }
 ```
 
-form layout is of type
+label styling
 
 ```typescript
-enum FormLayout {
-  SINGLE_COLUMN = "SINGLE_COLUMN",
-  GRID = "GRID",
+export enum LabelStyling {
+  TOP = "TOP",
+  START = "START",
+  FLOAT = "FLOAT",
 }
 ```
 
-#### `@NestedFormEntity(param: NestedFormMeta)`
+actions position
+
+```typescript
+export enum ActionsPosition {
+  GRID_FLOW = "GRID_FLOW", // makes actions follow gird used for inline forms
+  NEW_LINE_START = "NEW_LINE_START", // make actions at start of new line after line break
+  NEW_LINE_END = "NEW_LINE_END", // make actions at end of new line after line break
+  NEW_LINE_CENTER = "NEW_LINE_CENTER", // make actions at center of new line after line break
+}
+```
+
+#### `@NestedFormEntity(param: NestedFormSpec)`
 
 to include FormEntity as field in another model
 param of type
 
 ```typescript
-interface NestedFormMeta {
+export type NestedFormSpec = {
+  legend: string;
   name: string;
-  classDeclaration: any;
-  legend?: string;
-}
+  declaredClass: any;
+  width?: number;
+};
 ```
 
 **name** : is the form group name you give to these form
-**classDeclaration**: in the class it self that you want to make it as field `constructor`
+**declaredClass**: in the class it self that you want to make it as field `constructor`
 **legend** if specified shows as legend of field set
 
-#### `@Reset({ label: string, class: string })`
+#### `@Reset(meta: NativeActionSpec)`
 
 to set reset button meta data like label or even it class
-default is null it has no configuration but
 
-#### `@Submit({ label: 'save', class: 'btn btn-primary' })`
+#### `@Submit(meta: NativeActionSpec)`
 
 to set submit button meta data like label or even it class
-in the future it should support its place left or right or center
-default is `submit` and class is `btn btn-primary`.
+default class is `btn btn-primary`.
+
+### `Button(meta: NativeActionSpec)`
+
+to add a custom button to the form like cancel button
+good use case is in pop up with from and you can cancel or save
+
+```typescript
+export type NativeActionSpec = {
+  id: string;
+  label: string;
+  width?: number;
+  class?: string;
+  enableFn?: (ctx?: FormGroup) => boolean;
+};
+```
 
 #### `@TextControl(textCtrlMeta: TextControlMeta)`
 
@@ -430,6 +675,7 @@ interface RadioButtonsMeta extends ControlMetaData, FieldSetMeta {
   bindLabel: string;
   bindValue: string | null;
   dataSource: URL | any[] | Observable<any[]>;
+  inputWidth?: number; //  controls the width of each button so they can be on one line or one button on a line
 }
 ```
 
@@ -466,6 +712,25 @@ interface RadioButtonsMeta extends ControlMetaData, FieldSetMeta {
 
   @Email({ message: string })
 
+```
+
+### Cross Validation
+
+used to validate form value taking relative relation between fields
+good use case is date form and date to
+where we want date from always be less than date to
+
+```typescript
+@CrossValidation(spec: CrossValidationSpec)
+type Effect = {
+  input: string;
+  message: string; // error message appears when error occurs it will appear on that input
+};
+export type CrossValidationSpec = {
+  errorName: string;
+  effects: Effect[];
+  validatorFn: ValidatorFn;
+};
 ```
 
 ## License

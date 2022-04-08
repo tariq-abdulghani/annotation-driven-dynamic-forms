@@ -1,13 +1,9 @@
-import { MetaDataRegisterer } from '../../../utils/meta-data-registerer';
-import {
-  FormMeta,
-  FormSpec,
-  NestedFormMeta,
-  NestedFormSpec,
-} from '../../types/forms/form-meta';
+import { FormMeta, FormSpec } from '../../types/forms/form-meta';
+import { FormMetaData } from './Form-meta-data';
 
 export function FormEntity(formSpec?: FormSpec) {
   return function <T extends { new (...args: any[]): {} }>(constructor: T) {
+    FormMetaData.add(formSpec, constructor);
     return class extends constructor {
       meta = new FormMeta(formSpec);
       valueSetter = (value: any) => {
@@ -24,11 +20,5 @@ export function FormEntity(formSpec?: FormSpec) {
         }
       };
     };
-  };
-}
-
-export function NestedFormEntity(formSpec: NestedFormSpec) {
-  return function (target: any, propertyKey: string) {
-    MetaDataRegisterer.add(target, propertyKey, new NestedFormMeta(formSpec));
   };
 }

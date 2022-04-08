@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { InputTypes } from '../../models/types/inputs/input-types.enum';
 import { FormEntityProcessorService } from '../../services/form-entity-processor/form-entity-processor.service';
-import { InputDescription } from '../../models/types/inputs/input-description';
+import { InputNode } from '../../models/types/inputs/input-node';
 import { FormValueTransformer } from '../../models/types/forms/form-value-transformer';
 import { ActionsPosition } from '../../models/types/forms/form-actions-position';
 
@@ -17,15 +17,18 @@ import { ActionsPosition } from '../../models/types/forms/form-actions-position'
   selector: 'ddd-form',
   templateUrl: './dynamic-form.component.html',
   styleUrls: ['./dynamic-form.component.css'],
+  providers: [],
 })
 export class DynamicFormComponent implements OnInit, OnChanges {
   readonly CONTROL_TYPES = InputTypes;
-  formDescription!: InputDescription;
+  formDescription!: InputNode;
   @Input('formEntity') formModel!: any;
   @Input('valueTransformer') valueTransformer?: FormValueTransformer<any, any>;
   @Output('submitEvent') submitEvent: EventEmitter<any> =
     new EventEmitter<any>();
   @Output('changeEvent') changEvent: EventEmitter<any> =
+    new EventEmitter<any>();
+  @Output('buttonClickEvent') buttonClickEvent: EventEmitter<any> =
     new EventEmitter<any>();
   constructor(private formEntityProcessorService: FormEntityProcessorService) {}
 
@@ -38,41 +41,55 @@ export class DynamicFormComponent implements OnInit, OnChanges {
         this.formModel
       );
       console.log(this.formDescription);
-      this.formDescription!.control?.valueChanges.subscribe((value: any) => {
-        this.changEvent.emit(value);
-      });
+      this.formDescription!.getControl()?.valueChanges.subscribe(
+        (value: any) => {
+          this.changEvent.emit(value);
+        }
+      );
     }
   }
 
   onSubmit(v: any) {
-    this.formDescription.control?.markAllAsTouched();
-    console.log(this.formDescription.control);
-    if (this.formDescription.control?.valid) {
-      const formValue = this.valueTransformer
-        ? this.valueTransformer.transform(this.formDescription.control.value)
-        : this.formDescription.control.value;
-      this.submitEvent.emit(formValue);
+    this.formDescription.getControl()?.markAllAsTouched();
+    console.log(this.formDescription.getControl());
+    if (this.formDescription.getControl()?.valid) {
+      this.submitEvent.emit(this.formValue);
     }
   }
 
   get actionsPositionClasses() {
     return {
       'justify-content-start':
-        this.formDescription.metaData.get('actionPositions') ==
+        this.formDescription.getProperty('actionPositions') ==
         ActionsPosition.NEW_LINE_START,
       'justify-content-end':
-        this.formDescription.metaData.get('actionPositions') ==
+        this.formDescription.getProperty('actionPositions') ==
         ActionsPosition.NEW_LINE_END,
       'justify-content-center':
-        this.formDescription.metaData.get('actionPositions') ==
+        this.formDescription.getProperty('actionPositions') ==
         ActionsPosition.NEW_LINE_CENTER,
     };
   }
 
   get actionsWithGridFlow() {
     return (
-      this.formDescription.metaData.get('actionPositions') ==
+      this.formDescription.getProperty('actionPositions') ==
       ActionsPosition.GRID_FLOW
     );
+  }
+
+  onClick(action: any) {
+    if (action.type == 'button') {
+      this.buttonClickEvent.emit({
+        actionId: action.id,
+        formValue: this.formValue,
+      });
+    }
+  }
+
+  get formValue() {
+    return this.valueTransformer
+      ? this.valueTransformer.transform(this.formDescription.getControl().value)
+      : this.formDescription.getControl().value;
   }
 }

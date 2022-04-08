@@ -1,15 +1,11 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { MetaDataRegisterer } from 'decorator-driven-dynamic-form';
-import { FormEntityProcessorService } from 'decorator-driven-dynamic-form';
-import { InlineSearchForm } from './demo-models/inline-search-form';
-
 import { ShopForm, ShopFormTransformer } from './demo-models/shop-from';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
-  providers: [FormEntityProcessorService],
+  providers: [],
 })
 export class AppComponent implements OnInit, AfterViewInit {
   title = 'dynamic-forms-driver';
@@ -22,11 +18,15 @@ export class AppComponent implements OnInit, AfterViewInit {
     console.log($event);
   }
 
+  onClick($event: any) {
+    console.log($event);
+  }
+
   onChange($event: any) {
     console.log('new value', $event);
   }
 
-  constructor(private formEntityProcessorService: FormEntityProcessorService) {}
+  constructor() {}
 
   ngOnInit(): void {
     // console.log(this.shopForm);
@@ -47,9 +47,16 @@ export class AppComponent implements OnInit, AfterViewInit {
     // // };
 
     // console.log(this.formEntityProcessorService.process(this.shopForm));
-    this.shopForm.capacity = 1580;
-    console.log(this.shopForm);
+    this.shopForm.capacity = 5;
+
+    this.shopForm.userData = { email: 'kkk', userName: 'kjkjkj' };
+    this.shopForm.userData.email = 'gggg';
+    console.log(this.shopForm, this.shopForm.userData);
   }
 
-  ngAfterViewInit(): void {}
+  ngAfterViewInit(): void {
+    //@ts-ignore
+    // this.shopForm.userData?.email = 'ddd@ttt';
+    // this.shopForm.userData = { email: 'kkk', userName: 'kjkjkj' };
+  }
 }
