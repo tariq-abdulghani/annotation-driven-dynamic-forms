@@ -1,13 +1,11 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { FormEntityProcessorService } from 'decorator-driven-dynamic-form';
-
 import { ShopForm, ShopFormTransformer } from './demo-models/shop-from';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
-  providers: [FormEntityProcessorService],
+  providers: [],
 })
 export class AppComponent implements OnInit, AfterViewInit {
   title = 'dynamic-forms-driver';
@@ -28,7 +26,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     console.log('new value', $event);
   }
 
-  constructor(private formEntityProcessorService: FormEntityProcessorService) {}
+  constructor() {}
 
   ngOnInit(): void {
     // console.log(this.shopForm);
