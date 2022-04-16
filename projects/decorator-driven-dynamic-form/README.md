@@ -1,4 +1,4 @@
-# Decorator Driven Dynamic Forms version 5.0.0-a.1
+# Decorator Driven Dynamic Forms version 6.0.0-a.1
 
 > Opinionated way to create dynamic forms with **no json** , **no inheritance**
 > just use **decorators**
@@ -6,12 +6,7 @@
 ## What is new in this version
 
 new features
-cross validation
-custom buttons
-buttons alignment
-
-fixed issues
-setting nested form elements issue is fixed.
+async validation is now supported
 
 ## Project Goals
 
@@ -730,6 +725,26 @@ export type CrossValidationSpec = {
   errorName: string;
   effects: Effect[];
   validatorFn: ValidatorFn;
+};
+```
+
+### Async validation
+
+used to validate fields asynchronously
+
+```typescript
+@AsyncValidation(specs: AsyncValidationSpec)
+
+export interface InjectableAsyncValidatorProvider {
+  provider: any;
+}
+export type AsyncValidationSpec = {
+  validator:
+    | AsyncValidator // class that implements async validator interface and not injectable
+    | AsyncValidatorFn
+    | InjectableAsyncValidatorProvider; // injectable class that mplements async validator interface
+  errorMessage: string;
+  errorName: string;
 };
 ```
 

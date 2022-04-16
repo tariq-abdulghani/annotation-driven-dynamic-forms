@@ -74,7 +74,7 @@ import { UserData } from './user-data';
 @FormEntity({
   actionPositions: ActionsPosition.NEW_LINE_END,
   updateStrategy: UpdateStrategy.ON_PLUR,
-  labelStyling: LabelStyling.FLOAT,
+  labelStyling: LabelStyling.START,
 })
 export class ShopForm {
   @AsyncValidation({
