@@ -16,10 +16,39 @@ import {
   FormValueTransformer,
   LabelStyling,
   Button,
+  Max,
+  AsyncValidation,
 } from 'decorator-driven-dynamic-form';
 import { CrossValidation } from 'decorator-driven-dynamic-form';
+import { AsyncValidatorService } from '../servicies/async-validator';
 import { UserData } from './user-data';
-
+@CrossValidation({
+  errorName: 'expirationRange',
+  effects: [
+    {
+      input: 'expiryDate',
+      message: 'expiration range cant be larger than 2 years',
+    },
+    {
+      input: 'productionDate',
+      message: 'expiration range cant be larger than 2 years',
+    },
+  ],
+  validatorFn: (control: AbstractControl) => {
+    const expiryDate = control.get('expiryDate');
+    const productionDate = control.get('productionDate');
+    if (
+      new Date(expiryDate?.value).getFullYear() -
+        new Date(productionDate?.value).getFullYear() >
+      2
+    ) {
+      expiryDate?.setErrors({ expirationRange: true });
+      productionDate?.setErrors({ expirationRange: true });
+      return { expirationRange: true };
+    }
+    return null;
+  },
+})
 @CrossValidation({
   errorName: 'expirationDate',
   effects: [
@@ -44,10 +73,20 @@ import { UserData } from './user-data';
 @Reset({ label: 'clear', id: 'do' })
 @FormEntity({
   actionPositions: ActionsPosition.NEW_LINE_END,
-  updateStrategy: UpdateStrategy.ON_SUBMIT,
+  updateStrategy: UpdateStrategy.ON_PLUR,
   labelStyling: LabelStyling.FLOAT,
 })
 export class ShopForm {
+  @AsyncValidation({
+    errorName: 'shit',
+    errorMessage: 'shit is bad!!',
+    validator: { provider: AsyncValidatorService },
+    // validator: (abs: AbstractControl) => {
+    //   return new Promise<any>((resolve: any) => {
+    //     setTimeout(() => resolve({ shit: true }), 10000);
+    //   });
+    // },
+  })
   @NotNull({ message: 'shopName cant be null ?' })
   @TextControl({
     id: 'shopName',
@@ -59,6 +98,7 @@ export class ShopForm {
   })
   shopName: string | null | undefined = 'job';
 
+  @Max({ message: 'cant be larger than 1000', maxValue: 1000 })
   @NumberControl({
     id: 'capacity',
     name: 'capacity',

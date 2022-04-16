@@ -1,17 +1,19 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { InputTypes } from '../../models/types/inputs/input-types.enum';
 import { UpdateStrategy } from '../../models/types/forms/form-update-strategy';
 import { InputNodeImpl } from '../../models/types/inputs/input-node-impl';
 import { InputNode } from '../../models/types/inputs/input-node';
-import { CrossValidationMeta } from '../../models/decorators/validation/CrossValidationMeta';
 import { InputsMetaData } from '../../models/decorators/inputs/inputs-meta-data';
-import { ValidationsMetaData } from '../../models/decorators/validation/ValidationsMetaData';
 import { FormMetaData } from '../../models/decorators/forms/Form-meta-data';
 import { ActionsMetaData } from '../../models/decorators/actions/actions-metadata';
+import { CrossValidationMeta } from '../../models/decorators/validation/cross/CrossValidationMeta';
+import { ValidationsMetaData } from '../../models/decorators/validation/sync/ValidationsMetaData';
+import { AsyncValidationMeta } from '../../models/decorators/validation/async/async-validation-meta-data';
 
 @Injectable()
 export class FormEntityProcessorService {
+  constructor(private injector: Injector) {}
   public process(formEntity: any): InputNode {
     const node = this.createNode(formEntity) as InputNode;
     // subscribe to enable or disable controls
@@ -55,6 +57,32 @@ export class FormEntityProcessorService {
           entity[key], //initialize
           validators
         );
+        // async validation
+        const asyncValAndError = AsyncValidationMeta.getValidatorsAndErrorMap(
+          entity,
+          key
+        );
+        console.log(asyncValAndError);
+        asyncValAndError.validators.forEach((asyncVal) => {
+          console.log(asyncVal);
+          //@ts-ignore
+          if (asyncVal?.provider) {
+            const injValidator = this.injector.get(
+              //@ts-ignore
+              asyncVal?.provider
+            );
+            console.log('async validation processing', injValidator);
+            formControl.addAsyncValidators(injValidator.validate);
+            // formControl.updateValueAndValidity();
+          } else if (asyncVal.validate) {
+            formControl.addAsyncValidators(asyncVal.validate);
+          } else if (typeof asyncVal == 'function') {
+            formControl.addAsyncValidators(asyncVal);
+          }
+        });
+        asyncValAndError.errorMap.forEach((value, key) => {
+          errorMap.set(key, value);
+        });
         const inputNode = new InputNodeImpl(properties, formControl, errorMap);
         // console.log(inputNode);
         childInputs.push(inputNode);
