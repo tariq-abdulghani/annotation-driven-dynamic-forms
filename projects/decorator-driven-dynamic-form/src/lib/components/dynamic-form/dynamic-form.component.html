@@ -1,23 +1,20 @@
-<div class="mt-3 mb-3" *ngIf="formDescription">
+<div class="mt-3 mb-3" *ngIf="inputTree">
   <form
     class="row g-3"
-    [formGroup]="$any(formDescription!.getControl())"
+    [formGroup]="$any(inputTree!.getControl())"
     (ngSubmit)="onSubmit($event)"
   >
-    <ng-container
-      *ngFor="let inputDescription of formDescription.getChildren()"
-    >
+    <ng-container *ngFor="let inputNode of inputTree.getChildren()">
       <div
-        lib-input
-        [inputDescription]="inputDescription"
-        [labelStyling]="formDescription.getProperty('labelStyling')"
-        [class]="'col-md-' + inputDescription.getProperty('width')"
+        lib-dynamic-form-input
+        [inputNode]="inputNode"
+        [class]="'col-md-' + inputNode.getProperty('width')"
       ></div>
     </ng-container>
 
     <ng-container *ngIf="actionsWithGridFlow; else notWithTheFlow">
       <div
-        *ngFor="let action of formDescription.getProperty('actions')"
+        *ngFor="let action of inputTree.getProperty('actions')"
         class="col-sm-3"
       >
         <button
@@ -33,7 +30,7 @@
     <ng-template #notWithTheFlow>
       <div class="col-12 mb-3">
         <div class="gap-10 d-flex flex-row" [ngClass]="actionsPositionClasses">
-          <div *ngFor="let action of formDescription.getProperty('actions')">
+          <div *ngFor="let action of inputTree.getProperty('actions')">
             <button
               [type]="action.type"
               [class]="action.class || 'btn btn-primary'"
