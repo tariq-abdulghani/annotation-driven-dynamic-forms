@@ -1,6 +1,5 @@
 import { Observable } from 'rxjs';
 import { InputTypes } from './input-types.enum';
-import { InputDescription } from './input-description';
 
 export interface InputSpec {
   name: string;
@@ -40,59 +39,4 @@ export interface RadioButtonsSpec extends InputSpec {
   bindLabel: string;
   bindValue: string | null;
   dataSource: URL | any[] | Observable<any[]>;
-}
-
-export class TextInputDescription extends InputDescription<InputSpec> {
-  /**
-   *
-   */
-  constructor(meta: TextInputSpec) {
-    super(meta, InputTypes.TEXT);
-  }
-}
-
-export class NumberInputDescription extends InputDescription<InputSpec> {
-  /**
-   *
-   */
-  constructor(meta: NumberInputSpec) {
-    meta.type = 'number';
-    super(meta, InputTypes.NUMBER);
-  }
-}
-
-export class DateInputDescription extends InputDescription<InputSpec> {
-  /**
-   *
-   */
-  constructor(meta: DateInputSpec) {
-    super(meta, InputTypes.DATE);
-  }
-}
-
-export class SelectInputDescription extends InputDescription<SelectInputSpec> {
-  /**
-   *
-   */
-  constructor(meta: SelectInputSpec) {
-    super(meta, InputTypes.SELECT);
-  }
-}
-
-export class CheckboxInputDescription extends InputDescription<CheckInputSpec> {
-  /**
-   *
-   */
-  constructor(meta: CheckInputSpec) {
-    super(meta, InputTypes.CHECKBOX);
-  }
-}
-
-export class RadioButtonsInputDescription extends InputDescription<RadioButtonsSpec> {
-  /**
-   *
-   */
-  constructor(meta: RadioButtonsSpec) {
-    super(meta, InputTypes.RADIO_BUTTONS);
-  }
 }
