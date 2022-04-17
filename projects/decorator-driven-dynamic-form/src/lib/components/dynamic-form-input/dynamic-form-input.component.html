@@ -5,7 +5,44 @@
     inputNode.getProperty('inputType') == INPUT_TYPES.DATE
   "
 >
-  <div>
+  <label
+    [attr.for]="inputNode.getProperty('id')"
+    [ngClass]="{
+      'required-control-label': inputNode.getProperty('required'),
+      'invalid-label':
+        inputNode.getControl()?.touched && inputNode.getControl()?.invalid
+    }"
+    >{{ inputNode.getProperty("label") }}</label
+  >
+  <input
+    class="form-control"
+    [ngClass]="{
+      'is-invalid':
+        inputNode.getControl()?.touched && inputNode.getControl()?.invalid
+    }"
+    [placeholder]="inputNode.getProperty('placeHolder') || ''"
+    [id]="inputNode.getProperty('id')"
+    [type]="inputNode.getProperty('type')"
+    [formControl]="$any(inputNode.getControl())"
+    [name]="inputNode.getProperty('name')"
+    [attr.readonly]="inputNode.getProperty('readonly')"
+  />
+  <div
+    class="input-hint invalid-feedback"
+    *ngIf="
+      inputNode.getControl()?.touched && inputNode.getControl()?.invalid;
+      else hint
+    "
+  >
+    {{ inputNode | errorMessage }}
+  </div>
+  <ng-template #hint>
+    <div class="input-hint form-text">
+      {{ inputNode.getProperty("hint") }}
+    </div>
+  </ng-template>
+
+  <!-- <div>
     <label
       [attr.for]="inputNode.getProperty('id')"
       [ngClass]="{
@@ -39,5 +76,5 @@
         {{ inputNode | errorMessage }}
       </div>
     </div>
-  </div>
+  </div> -->
 </ng-container>

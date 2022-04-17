@@ -7,6 +7,7 @@ import { DataLoaderService } from '../../services/data-loader/data-loader.servic
   selector: '[lib-dynamic-form-input]',
   templateUrl: './dynamic-form-input.component.html',
   styleUrls: ['./dynamic-form-input.component.css'],
+  providers: [DataLoaderService],
 })
 export class DynamicFormInputComponent implements OnInit {
   readonly INPUT_TYPES = InputTypes;

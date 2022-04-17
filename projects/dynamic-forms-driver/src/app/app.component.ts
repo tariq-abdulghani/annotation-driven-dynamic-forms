@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { Book } from './demo-models/book';
 
 @Component({
   selector: 'app-root',
@@ -9,6 +10,7 @@ import { AfterViewInit, Component, OnInit } from '@angular/core';
 export class AppComponent implements OnInit, AfterViewInit {
   title = 'dynamic-forms-driver';
 
+  bookEntity = new Book();
   onSubmit($event: any) {
     console.log($event);
   }

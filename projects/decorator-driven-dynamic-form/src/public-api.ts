@@ -35,7 +35,6 @@ export * from './lib/services/form-entity-processor/form-entity-processor.servic
 export * from './lib/models/types/forms/form-actions-position';
 export * from './lib/models/types/forms/form-update-strategy';
 export * from './lib/models/types/forms/form-value-transformer';
-export * from './lib/models/types/forms/label-styling';
 
 export * from './lib/models/decorators/validation/cross/cross-validation';
 
