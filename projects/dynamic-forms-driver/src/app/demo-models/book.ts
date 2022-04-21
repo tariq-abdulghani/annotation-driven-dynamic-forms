@@ -1,3 +1,4 @@
+import { AbstractControl } from '@angular/forms';
 import {
   FormEntity,
   TextControl,
@@ -5,11 +6,24 @@ import {
   Submit,
   NumberControl,
   DateControl,
+  AsyncValidation,
 } from 'decorator-driven-dynamic-form';
 
 @Submit({ id: 'submit', label: 'ok' })
 @FormEntity()
 export class Book {
+  @AsyncValidation({
+    errorName: 'async',
+    errorMessage:
+      'async validation is working now u can call back end and validate easily',
+    validator: (control: AbstractControl) => {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve({ async: true });
+        }, 10000);
+      });
+    },
+  })
   @NotNull({ message: 'isbn is mandatory' })
   @TextControl({
     id: 'isbn',

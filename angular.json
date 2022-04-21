@@ -27,8 +27,8 @@
               "projects/dynamic-forms-driver/src/assets"
             ],
             "styles": [
-              "projects/dynamic-forms-driver/src/styles.css",
-              "node_modules/bootstrap/dist/css/bootstrap.min.css"
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "dist/decorator-driven-dynamic-form/assests/styles/styles.css"
             ],
             "scripts": []
           },

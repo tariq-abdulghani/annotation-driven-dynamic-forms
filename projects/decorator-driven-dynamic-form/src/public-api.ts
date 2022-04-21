@@ -32,7 +32,6 @@ export * from './lib/models/types/inputs/input-types.enum';
 
 export * from './lib/services/form-entity-processor/form-entity-processor.service';
 
-export * from './lib/models/types/forms/form-actions-position';
 export * from './lib/models/types/forms/form-update-strategy';
 export * from './lib/models/types/forms/form-value-transformer';
 

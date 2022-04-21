@@ -6,7 +6,6 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { ActionsPosition } from '../../models/types/forms/form-actions-position';
 import { FormValueTransformer } from '../../models/types/forms/form-value-transformer';
 import { InputNode } from '../../models/types/inputs/input-node';
 import { FormEntityProcessorService } from '../../services/form-entity-processor/form-entity-processor.service';
@@ -62,25 +61,5 @@ export class DynamicFormComponent implements OnInit {
     return this.valueTransformer
       ? this.valueTransformer.transform(this.inputTree.getControl().value)
       : this.inputTree.getControl().value;
-  }
-
-  get actionsPositionClasses() {
-    return {
-      'justify-content-start':
-        this.inputTree.getProperty('actionPositions') ==
-        ActionsPosition.NEW_LINE_START,
-      'justify-content-end':
-        this.inputTree.getProperty('actionPositions') ==
-        ActionsPosition.NEW_LINE_END,
-      'justify-content-center':
-        this.inputTree.getProperty('actionPositions') ==
-        ActionsPosition.NEW_LINE_CENTER,
-    };
-  }
-
-  get actionsWithGridFlow() {
-    return (
-      this.inputTree.getProperty('actionPositions') == ActionsPosition.GRID_FLOW
-    );
   }
 }
