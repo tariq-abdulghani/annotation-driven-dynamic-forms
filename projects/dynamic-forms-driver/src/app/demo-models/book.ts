@@ -13,13 +13,14 @@ import {
 @FormEntity()
 export class Book {
   @AsyncValidation({
-    errorName: 'async',
-    errorMessage:
-      'async validation is working now u can call back end and validate easily',
+    errorName: 'isbn',
+    errorMessage: 'ISBN length cant be less than 15 chars',
     validator: (control: AbstractControl) => {
       return new Promise((resolve) => {
         setTimeout(() => {
-          resolve({ async: true });
+          let err =
+            (control.value as string).length < 15 ? { isbn: true } : null;
+          resolve(err);
         }, 10000);
       });
     },

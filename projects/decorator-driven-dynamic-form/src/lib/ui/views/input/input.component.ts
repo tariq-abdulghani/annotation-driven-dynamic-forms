@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { InputTypes } from '../../../core/models/types/inputs/input-types.enum';
 // import { LabelStyling } from '../../models/types/forms/label-styling';
-import { InputNode } from '../../models/types/inputs/input-node';
-import { InputTypes } from '../../models/types/inputs/input-types.enum';
+
 import { DataLoaderService } from '../../services/data-loader/data-loader.service';
 
 @Component({

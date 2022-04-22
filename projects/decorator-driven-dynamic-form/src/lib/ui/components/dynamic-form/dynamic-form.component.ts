@@ -6,9 +6,9 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { FormValueTransformer } from '../../models/types/forms/form-value-transformer';
-import { InputNode } from '../../models/types/inputs/input-node';
-import { FormEntityProcessorService } from '../../services/form-entity-processor/form-entity-processor.service';
+import { FormValueTransformer } from '../../../core/models/types/forms/form-value-transformer';
+import { InputNode } from '../../../core/models/types/inputs/input-node';
+import { FormEntityProcessorService } from '../../../core/services/form-entity-processor/form-entity-processor.service';
 
 @Component({
   selector: 'ddd-form',

@@ -2,11 +2,12 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 // import { DynamicFormComponent } from './views/dynamic-form/dynamic-form.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ErrorMessagePipe } from './pipes/error-message.pipe';
-import { FormEntityProcessorService } from './services/form-entity-processor/form-entity-processor.service';
-import { InputComponent } from './views/input/input.component';
-import { DynamicFormInputComponent } from './components/dynamic-form-input/dynamic-form-input.component';
-import { DynamicFormComponent } from './components/dynamic-form/dynamic-form.component';
+import { FormEntityProcessorService } from '../public-api';
+import { DynamicFormInputComponent } from './ui/components/dynamic-form-input/dynamic-form-input.component';
+import { DynamicFormComponent } from './ui/components/dynamic-form/dynamic-form.component';
+import { ErrorMessagePipe } from './ui/pipes/error-message.pipe';
+import { InputComponent } from './ui/views/input/input.component';
+
 @NgModule({
   declarations: [
     DynamicFormComponent,

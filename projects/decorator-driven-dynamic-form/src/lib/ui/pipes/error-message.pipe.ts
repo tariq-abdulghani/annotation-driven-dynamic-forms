@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { InputNode } from '../models/types/inputs/input-node';
+import { InputNode } from '../../core/models/types/inputs/input-node';
 import { MessageStringInterpolation } from '../utils/message-string-interpolation';
 
 @Pipe({
