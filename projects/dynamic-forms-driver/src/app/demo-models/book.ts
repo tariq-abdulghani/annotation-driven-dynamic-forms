@@ -36,18 +36,18 @@ export class Book {
   })
   isbn: string | null = null;
 
-  // @NumberControl({
-  //   id: 'price',
-  //   name: 'price',
-  //   hint: 'price cant be less than 1$',
-  //   width: 4,
-  // })
-  // price: number | null = null;
+  @NumberControl({
+    id: 'price',
+    name: 'price',
+    hint: 'price cant be less than 1$',
+    width: 4,
+  })
+  price: number | null = null;
 
-  // @DateControl({
-  //   id: 'publishDate',
-  //   name: 'publishDate',
-  //   type: 'date',
-  // })
-  // publishDate: string | null = null;
+  @DateControl({
+    id: 'publishDate',
+    name: 'publishDate',
+    type: 'date',
+  })
+  publishDate: string | null = null;
 }

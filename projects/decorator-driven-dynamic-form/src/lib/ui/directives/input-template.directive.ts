@@ -8,7 +8,7 @@ export class InputTemplateDirective {
   constructor(private templateRef: TemplateRef<any>) {}
 
   public getInputType() {
-    return this.inputType;
+    return this.inputType.toUpperCase();
   }
 
   public getTemplateRef() {

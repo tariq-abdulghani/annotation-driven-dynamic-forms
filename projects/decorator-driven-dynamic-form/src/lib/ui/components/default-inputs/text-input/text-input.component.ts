@@ -1,7 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { DynamicFormInput } from '../../input-component-registry/decorators/dynamic-form-input';
-import { DynamicFormComponent } from '../dynamic-form/dynamic-form.component';
-import { InputComponent } from '../input/input.component';
+import { DynamicFormInput } from '../../../input-component-registry/decorators/dynamic-form-input';
+import { InputComponent } from '../../input/input.component';
 
 @DynamicFormInput({ inputType: 'TEXT' })
 @Component({
