@@ -14,6 +14,8 @@ import { InputAnchorDirective } from './ui/directives/input-anchor/input-anchor.
 import { DateInputComponent } from './ui/components/default-inputs/date-input/date-input.component';
 import { NumberInputComponent } from './ui/components/default-inputs/number-input/number-input.component';
 import { TextInputComponent } from './ui/components/default-inputs/text-input/text-input.component';
+import { CheckboxInputComponent } from './ui/components/default-inputs/checkbox-input/checkbox-input.component';
+import { NestedFormComponent } from './ui/components/default-inputs/nested-form/nested-form.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +29,8 @@ import { TextInputComponent } from './ui/components/default-inputs/text-input/te
     TextInputComponent,
     NumberInputComponent,
     DateInputComponent,
+    CheckboxInputComponent,
+    NestedFormComponent,
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule],
   exports: [DynamicFormComponent, InputTemplateDirective, InputComponent],

@@ -7,7 +7,9 @@ import {
   NumberControl,
   DateControl,
   AsyncValidation,
+  NestedFormEntity,
 } from 'decorator-driven-dynamic-form';
+import { Author } from './author';
 
 @Submit({ id: 'submit', label: 'ok' })
 @FormEntity()
@@ -50,4 +52,12 @@ export class Book {
     type: 'date',
   })
   publishDate: string | null = null;
+
+  @NestedFormEntity({
+    legend: 'Author',
+    name: 'author',
+    declaredClass: Author,
+    legendClass: '',
+  })
+  author: Author | null = null;
 }
