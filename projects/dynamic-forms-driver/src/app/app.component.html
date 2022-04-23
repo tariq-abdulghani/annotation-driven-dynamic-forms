@@ -4,5 +4,21 @@
     (changeEvent)="onChange($event)"
     (submitEvent)="onSubmit($event)"
     (buttonClickEvent)="onClick($event)"
-  ></ddd-form>
+  >
+    <ng-template dfInputTemplate [inputType]="'TEXT'">
+      <div class="form-floating">
+        <input
+          type="password"
+          class="form-control"
+          id="floatingPassword"
+          placeholder="Password"
+        />
+        <label for="floatingPassword">Password</label>
+      </div>
+    </ng-template>
+
+    <ng-template dfInputTemplate [inputType]="'NUMBER'">
+      <label>hello custom text input </label>
+    </ng-template>
+  </ddd-form>
 </div>

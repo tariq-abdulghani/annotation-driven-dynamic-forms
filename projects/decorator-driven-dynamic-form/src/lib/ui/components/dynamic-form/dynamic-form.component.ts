@@ -1,21 +1,28 @@
 import {
+  AfterContentInit,
+  AfterViewInit,
   Component,
+  ContentChildren,
   EventEmitter,
   Input,
   OnInit,
   Output,
+  QueryList,
   SimpleChanges,
+  TemplateRef,
+  ViewChildren,
 } from '@angular/core';
 import { FormValueTransformer } from '../../../core/models/types/forms/form-value-transformer';
 import { InputNode } from '../../../core/models/types/inputs/input-node';
 import { FormEntityProcessorService } from '../../../core/services/form-entity-processor/form-entity-processor.service';
+import { InputTemplateDirective } from '../../directives/input-template.directive';
 
 @Component({
   selector: 'ddd-form',
   templateUrl: './dynamic-form.component.html',
   styleUrls: ['./dynamic-form.component.css'],
 })
-export class DynamicFormComponent implements OnInit {
+export class DynamicFormComponent implements OnInit, AfterContentInit {
   inputTree!: InputNode;
   @Input('formEntity') formModel!: any;
   @Input('valueTransformer') valueTransformer?: FormValueTransformer<any, any>;
@@ -25,7 +32,19 @@ export class DynamicFormComponent implements OnInit {
     new EventEmitter<any>();
   @Output('buttonClickEvent') buttonClickEvent: EventEmitter<any> =
     new EventEmitter<any>();
+  @ViewChildren(InputTemplateDirective)
+  inputTemplateList!: QueryList<InputTemplateDirective>;
+
+  @ContentChildren(InputTemplateDirective)
+  inputTemplateQueryList!: QueryList<InputTemplateDirective>;
+
+  public inputTemplateMap = new Map<string, TemplateRef<any>>();
   constructor(private formEntityProcessorService: FormEntityProcessorService) {}
+  ngAfterContentInit(): void {
+    this.inputTemplateQueryList.forEach((item) => {
+      this.inputTemplateMap.set(item.getInputType(), item.getTemplateRef());
+    });
+  }
 
   ngOnInit(): void {}
 
@@ -33,7 +52,7 @@ export class DynamicFormComponent implements OnInit {
     if (changes.formModel) {
       this.formModel = changes.formModel.currentValue;
       this.inputTree = this.formEntityProcessorService.process(this.formModel);
-      console.log(this.inputTree);
+      // console.log(this.inputTree);
       this.inputTree!.getControl()?.valueChanges.subscribe((value: any) => {
         this.changEvent.emit(value);
       });

@@ -5,10 +5,17 @@
   (ngSubmit)="onSubmit($event)"
 >
   <ng-container *ngFor="let inputNode of inputTree.getChildren()">
-    <div
+    <!-- <div
       lib-dynamic-form-input
       [inputNode]="inputNode"
       [class]="'col-md-' + inputNode.getProperty('width')"
+    ></div> -->
+
+    <div
+      [class]="'col-md-' + inputNode.getProperty('width')"
+      df-input-resolver
+      [inputNode]="inputNode"
+      [inputTemplatesMap]="inputTemplateMap"
     ></div>
   </ng-container>
 
@@ -27,3 +34,4 @@
     </div>
   </div>
 </form>
+<ng-content></ng-content>

@@ -1,0 +1,7 @@
+<ng-container
+  *ngIf="getTemplateRef()"
+  [ngTemplateOutlet]="getTemplateRef()"
+  [ngTemplateOutletContext]="{ $implicit: getInputNode() }"
+></ng-container>
+
+<ng-template dfInputAnchor></ng-template>
