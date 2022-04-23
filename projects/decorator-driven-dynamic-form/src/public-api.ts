@@ -44,3 +44,4 @@ export * from './lib/ui/components/dynamic-form/dynamic-form.component';
 export * from './lib/ui/components/input/input.component';
 
 export * from './lib/ui/directives/input-template.directive';
+export * from './lib/ui/input-component-registry/decorators/dynamic-form-input';
