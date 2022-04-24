@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ControlValueAccessor } from '@angular/forms';
 import {
   DynamicFormInput,
   InputComponent,
