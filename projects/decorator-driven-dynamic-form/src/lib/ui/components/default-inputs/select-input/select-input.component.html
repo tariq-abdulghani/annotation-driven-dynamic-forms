@@ -6,23 +6,33 @@
     'invalid-label':
       inputNode.getControl()?.touched && inputNode.getControl()?.invalid
   }"
->
-  {{ inputNode.getProperty("label") }}
+  >{{ inputNode.getProperty("label") }}
 </label>
-<input
-  class="form-control d-form-input"
+
+<select
+  class="form-select d-form-input"
   [ngClass]="{
     invalid: inputNode.getControl()?.touched && inputNode.getControl()?.invalid,
     pending: inputNode.isPending()
   }"
-  [placeholder]="inputNode.getProperty('placeHolder') || ''"
   [id]="inputNode.getProperty('id')"
-  [type]="inputNode.getProperty('type')"
   [formControl]="$any(inputNode.getControl())"
   [name]="inputNode.getProperty('name')"
-  [attr.readonly]="inputNode.getProperty('readonly')"
-/>
-
+  [compareWith]="inputNode.getProperty('compareWith')"
+>
+  <option
+    *ngFor="
+      let opt of dataLoader.load(inputNode.getProperty('dataSource')) | async
+    "
+    [ngValue]="
+      opt[inputNode.getProperty('bindValue')]
+        ? opt[inputNode.getProperty('bindValue')]
+        : opt
+    "
+  >
+    {{ opt[inputNode.getProperty("bindLabel")] }}
+  </option>
+</select>
 <div class="hint">
   {{
     inputNode.getControl()?.touched && inputNode.getControl()?.invalid

@@ -8,6 +8,7 @@ import {
   DateControl,
   AsyncValidation,
   NestedFormEntity,
+  SelectControl,
 } from 'decorator-driven-dynamic-form';
 import { Author } from './author';
 
@@ -60,4 +61,19 @@ export class Book {
     legendClass: '',
   })
   author: Author | null = null;
+
+  @SelectControl({
+    id: 'genre',
+    name: 'genre',
+    bindLabel: 'description',
+    bindValue: null,
+    dataSource: [
+      { id: 1, description: 'funny' },
+      { id: 2, description: 'horror' },
+      { id: 3, description: 'sci' },
+    ],
+    compareWith: (a, b) => a == b,
+    label: 'genre',
+  })
+  genre: any = null;
 }
