@@ -5,6 +5,7 @@ import {
   SelectInputSpec,
   CheckInputSpec,
   RadioButtonsSpec,
+  CustomInputSpec,
 } from '../../types/inputs/input-specs';
 import { InputTypes } from '../../types/inputs/input-types.enum';
 import { InputsMetaData } from './inputs-meta-data';
@@ -75,6 +76,16 @@ export function NestedFormEntity(specs: NestedFormSpec) {
   return function (target: any, propertyKey: string) {
     InputsMetaData.add(
       { ...specs, inputType: InputTypes.COMPOSITE },
+      target,
+      propertyKey
+    );
+  };
+}
+
+export function CustomControl(specs: CustomInputSpec) {
+  return function (target: any, propertyKey: string) {
+    InputsMetaData.add(
+      { ...specs, inputType: specs.inputType.toUpperCase() },
       target,
       propertyKey
     );

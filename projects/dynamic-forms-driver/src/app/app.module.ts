@@ -5,9 +5,10 @@ import { DecoratorDrivenDynamicFormsModule } from 'decorator-driven-dynamic-form
 
 import { AppComponent } from './app.component';
 import { CustomTextInputComponent } from './custom-inputs/custom-text-input/custom-text-input.component';
+import { RatingComponent } from './custom-inputs/rating/rating.component';
 
 @NgModule({
-  declarations: [AppComponent, CustomTextInputComponent],
+  declarations: [AppComponent, CustomTextInputComponent, RatingComponent],
   imports: [BrowserModule, DecoratorDrivenDynamicFormsModule, HttpClientModule],
   providers: [],
   bootstrap: [AppComponent],

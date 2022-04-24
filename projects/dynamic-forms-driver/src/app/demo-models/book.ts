@@ -9,6 +9,8 @@ import {
   AsyncValidation,
   NestedFormEntity,
   SelectControl,
+  CustomControl,
+  Max,
 } from 'decorator-driven-dynamic-form';
 import { Author } from './author';
 
@@ -76,4 +78,12 @@ export class Book {
     label: 'genre',
   })
   genre: any = null;
+
+  @Max({ maxValue: 5, message: 'ddfff' })
+  @CustomControl({
+    inputType: 'rating',
+    id: 'rate',
+    name: 'rate',
+  })
+  rate: number = 4;
 }

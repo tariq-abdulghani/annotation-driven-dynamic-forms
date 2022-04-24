@@ -40,3 +40,7 @@ export interface RadioButtonsSpec extends InputSpec {
   bindValue: string | null;
   dataSource: URL | any[] | Observable<any[]>;
 }
+
+export interface CustomInputSpec extends InputSpec {
+  inputType: string;
+}

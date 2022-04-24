@@ -1,0 +1,16 @@
+.ratingStar {
+  cursor: pointer;
+  display: inline-block;
+  font-size: 2em;
+  color: #777;
+}
+
+.bright-ratingStar {
+  color: gold;
+  /* color: #0d6efd; */
+  /* color: gainsboro; */
+}
+
+.dimmed-ratingStar {
+  color: #777;
+}

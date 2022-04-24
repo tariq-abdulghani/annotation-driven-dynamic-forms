@@ -1,0 +1,11 @@
+<label>rate</label>
+<div>
+  <span
+    class="ratingStar"
+    *ngFor="let ratingStar of ratingItems; let i = index"
+    [ngClass]="{ 'bright-ratingStar': i < rate }"
+    (click)="onClick(i)"
+  >
+    &#9733;
+  </span>
+</div>
