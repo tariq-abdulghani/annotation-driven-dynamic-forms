@@ -3,7 +3,7 @@
   <span
     class="ratingStar"
     *ngFor="let ratingStar of ratingItems; let i = index"
-    [ngClass]="{ 'bright-ratingStar': i < rate }"
+    [ngClass]="{ 'bright-ratingStar': i < getValue() }"
     (click)="onClick(i)"
   >
     &#9733;

@@ -28,4 +28,9 @@ export class AppComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {}
 
   ngAfterViewInit(): void {}
+
+  setRate(value: any) {
+    console.log(value);
+    this.bookEntity.rate = value;
+  }
 }

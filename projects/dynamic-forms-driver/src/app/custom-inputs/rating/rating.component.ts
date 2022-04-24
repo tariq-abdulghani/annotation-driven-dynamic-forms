@@ -12,21 +12,23 @@ import {
 })
 export class RatingComponent extends InputComponent implements OnInit {
   fullRate = 5;
-  rate = 0;
   constructor() {
     super();
   }
 
   ngOnInit(): void {
-    this.rate = this.inputNode.getControl().value;
+    if (this.getValue() == null) {
+      // remember to always initialize variables to avoid null pointer exceptions
+      // always do that in ngOnInit
+      this.setValue(0);
+    }
   }
 
   get ratingItems(): number[] {
-    return new Array(this.fullRate).fill(1);
+    return new Array(this.fullRate);
   }
 
   onClick(i: number) {
-    this.rate = i + 1;
-    this.inputNode.getControl().setValue(this.rate);
+    this.setValue(i + 1);
   }
 }

@@ -61,7 +61,7 @@ export class InputResolverComponent implements OnInit, OnChanges {
       const componentRef = viewContainerRef.createComponent<InputComponent>(
         componentFactoryResolver
       );
-      componentRef.instance.setInputNode(this.getInputNode());
+      componentRef.instance.initialize(this.getInputNode());
     }
   }
 }
