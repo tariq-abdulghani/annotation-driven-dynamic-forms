@@ -48,6 +48,10 @@
   background-image: var(--df-radio-img-url);
 }
 
+.d-form .form-check-input[type="radio"] {
+  border-radius: 50%;
+}
+
 .d-form .d-form-input:focus {
   box-shadow: var(--df-focus-box-shadow);
 }

@@ -2,6 +2,7 @@ import {
   CheckboxControl,
   FormEntity,
   NumberControl,
+  RadioButtonsControl,
   TextControl,
 } from 'decorator-driven-dynamic-form';
 
@@ -27,6 +28,22 @@ export class Author {
     id: 'married',
     name: 'married',
     label: 'married',
+    width: 4,
   })
   married: boolean = false;
+
+  @RadioButtonsControl({
+    bindLabel: 'description',
+    bindValue: null,
+    inputWidth: 3,
+    dataSource: [
+      { id: 1, description: 'male' },
+      { id: 2, description: 'female' },
+      { id: 3, description: 'else!' },
+    ],
+    id: 'gender',
+    legend: 'Gender',
+    name: 'gender',
+  })
+  gender: any = null;
 }

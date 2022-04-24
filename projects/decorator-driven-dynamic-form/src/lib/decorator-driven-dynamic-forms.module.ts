@@ -16,6 +16,7 @@ import { NumberInputComponent } from './ui/components/default-inputs/number-inpu
 import { TextInputComponent } from './ui/components/default-inputs/text-input/text-input.component';
 import { CheckboxInputComponent } from './ui/components/default-inputs/checkbox-input/checkbox-input.component';
 import { NestedFormComponent } from './ui/components/default-inputs/nested-form/nested-form.component';
+import { RadioButtonsInputComponent } from './ui/components/default-inputs/radio-buttons-input/radio-buttons-input.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { NestedFormComponent } from './ui/components/default-inputs/nested-form/
     DateInputComponent,
     CheckboxInputComponent,
     NestedFormComponent,
+    RadioButtonsInputComponent,
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule],
   exports: [DynamicFormComponent, InputTemplateDirective, InputComponent],

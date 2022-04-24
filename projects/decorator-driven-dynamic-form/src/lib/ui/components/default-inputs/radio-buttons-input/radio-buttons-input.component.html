@@ -1,0 +1,41 @@
+<fieldset class="col-md-12">
+  <legend class="form-label d-form-label radio-legend">
+    {{ inputNode.getProperty("legend") }}
+  </legend>
+  <div class="row g-3">
+    <div
+      [class]="'col-md-' + inputNode.getProperty('inputWidth')"
+      *ngFor="
+        let opt of dataLoader.load(inputNode.getProperty('dataSource')) | async;
+        let i = index
+      "
+    >
+      <div class="form-check">
+        <input
+          class="form-check-input d-form-input"
+          [id]="inputNode.getProperty('id') + i"
+          type="radio"
+          [formControl]="$any(inputNode.getControl())"
+          [value]="
+            inputNode.getProperty('bindValue')
+              ? opt[inputNode.getProperty('bindValue')]
+              : opt
+          "
+          [name]="inputNode.getProperty('name')"
+        />
+
+        <label
+          class="form-check-label d-form-label"
+          [attr.for]="inputNode.getProperty('id') + i"
+        >
+          {{ opt[inputNode.getProperty("bindLabel")] }}
+        </label>
+
+        <!-- <div class="hint">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam
+            hic
+          </div> -->
+      </div>
+    </div>
+  </div>
+</fieldset>
