@@ -11,7 +11,7 @@ import { InputTypes } from '../../types/inputs/input-types.enum';
 import { InputsMetaData } from './inputs-meta-data';
 import { NestedFormSpec } from '../../types/forms/form-meta';
 
-export function TextControl(specs: TextInputSpec) {
+export function TextInput(specs: TextInputSpec) {
   return function (target: any, propertyKey: string) {
     InputsMetaData.add(
       { ...specs, inputType: InputTypes.TEXT },
@@ -21,7 +21,7 @@ export function TextControl(specs: TextInputSpec) {
   };
 }
 
-export function NumberControl(specs: NumberInputSpec) {
+export function NumberInput(specs: NumberInputSpec) {
   return function (target: any, propertyKey: string) {
     specs.type = 'number';
     InputsMetaData.add(
@@ -32,7 +32,7 @@ export function NumberControl(specs: NumberInputSpec) {
   };
 }
 
-export function DateControl(specs: DateInputSpec) {
+export function DateInput(specs: DateInputSpec) {
   return function (target: any, propertyKey: string) {
     InputsMetaData.add(
       { ...specs, inputType: InputTypes.DATE },
@@ -42,7 +42,7 @@ export function DateControl(specs: DateInputSpec) {
   };
 }
 
-export function SelectControl(specs: SelectInputSpec) {
+export function SelectInput(specs: SelectInputSpec) {
   return function (target: any, propertyKey: string) {
     InputsMetaData.add(
       { ...specs, inputType: InputTypes.SELECT },
@@ -52,7 +52,7 @@ export function SelectControl(specs: SelectInputSpec) {
   };
 }
 
-export function CheckboxControl(specs: CheckInputSpec) {
+export function CheckboxInput(specs: CheckInputSpec) {
   return function (target: any, propertyKey: string) {
     InputsMetaData.add(
       { ...specs, inputType: InputTypes.CHECKBOX },
@@ -62,7 +62,7 @@ export function CheckboxControl(specs: CheckInputSpec) {
   };
 }
 
-export function RadioButtonsControl(specs: RadioButtonsSpec) {
+export function RadioGroupInput(specs: RadioButtonsSpec) {
   return function (target: any, propertyKey: string) {
     InputsMetaData.add(
       { ...specs, inputType: InputTypes.RADIO_BUTTONS },
@@ -82,7 +82,7 @@ export function NestedFormEntity(specs: NestedFormSpec) {
   };
 }
 
-export function CustomControl(specs: CustomInputSpec) {
+export function CustomInput(specs: CustomInputSpec) {
   return function (target: any, propertyKey: string) {
     InputsMetaData.add(
       { ...specs, inputType: specs.inputType.toUpperCase() },
