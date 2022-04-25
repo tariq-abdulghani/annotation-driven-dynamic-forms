@@ -1,4 +1,4 @@
-# Decorator Driven Dynamic Forms version 6.0.0-a.1
+# Decorator Driven Dynamic Forms version 7.0.0-a.1
 
 > Opinionated way to create dynamic forms with **no json** , **no inheritance**
 > just use **decorators**
@@ -6,23 +6,32 @@
 ## What is new in this version
 
 new features
-async validation is now supported
+
+1. UI Customization
+   you can provide templates and components to be used as UI elements in form
+2. CSS style file that provide variables and classes that u can use to customize
+   existing UI
 
 ## Project Goals
 
+0. use one consistent strategy for creating form some thing that can be used as specification like other frame works ex JPA java persistence API just an API that tells how to do data base related operation
 1. create annotation driven dynamic form no more inheritance I think metadata must be placed in decorators not as
    class attributes
 2. take most used defaults into considerations we can't create something that abstracts every thing, but we can make
    some things that really fits in the common problems and repeated tasks
-3. the ability to create forms fast _forms that search forms that perform crud operations_
+3. the ability to create forms fast _forms that search, forms that perform CRUD operations_
    is a perfect example
 4. intuitive API I think creating something great means we can use it easily and really understand it without many efforts
+
 5. composable forms you can nest forms to any level to make form creation easily
+
 6. supports complex layouts by using grids
 
 7. opinionated based on commons and defaults
+
 8. binding form model to form control and view which mean you create the form model
    and any updates on it will be reflected on _UI_ and on form controls
+9. flexibility to customize UI , UI that uou want , UI can change but forms, inputs, validations are concepts that are the same.
 
 ## Dependencies
 
@@ -33,21 +42,25 @@ async validation is now supported
 ## Features
 
 - [x] validation
+- [x] cross validation
+- [x] async validation
 - [x] customized error messages and string interpolation can be used `some text...${var} some text ..`
 - [x] decorator driven
 - [x] supports composition of forms
 - [x] responsive relies on bootstrap5
+- [x] layout management based on bootstrap5 grid
 
-- [ ] theming is not supported yet
-- [ ] custom styling is not supported yet
+- [x] theming you can override css classes and styles
+- [x] UI customization you can add your own templates or even your components for customized inputs
+
 - [ ] internationalization is not supported yet
 
 ## Supported Controls
 
-- [x] text controls
-- [x] number controls
-- [x] date controls
-- [x] single select controls
+- [x] text control
+- [x] number control
+- [x] date control
+- [x] single select control
 - [x] check boxes
 - [x] radio buttons
 - [ ] text area not supported yet
@@ -747,6 +760,12 @@ export type AsyncValidationSpec = {
   errorName: string;
 };
 ```
+
+### UI Customization
+
+1. custom template to override view for specific form
+2. use components to provide new components with more complex and business driven UI
+3. override default components if defaults are not suitable
 
 ## License
 
