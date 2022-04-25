@@ -3,29 +3,32 @@
     class="form-check-input d-form-input d-form-check"
     [ngClass]="{
       invalid:
-        inputNode.getControl()?.touched && inputNode.getControl()?.invalid
+        getInputNode().getControl()?.touched &&
+        getInputNode().getControl()?.invalid
     }"
-    [id]="inputNode.getProperty('id')"
+    [id]="getInputNode().getProperty('id')"
     type="checkbox"
-    [formControl]="$any(inputNode.getControl())"
-    [name]="inputNode.getProperty('name')"
+    [formControl]="$any(getInputNode().getControl())"
+    [name]="getInputNode().getProperty('name')"
   />
 
   <label
-    [attr.for]="inputNode.getProperty('id')"
+    [attr.for]="getInputNode().getProperty('id')"
     class="d-form-label form-label form-check-label"
     [ngClass]="{
-      required: inputNode.getProperty('required'),
+      required: getInputNode().getProperty('required'),
       'invalid-label':
-        inputNode.getControl()?.touched && inputNode.getControl()?.invalid
+        getInputNode().getControl()?.touched &&
+        getInputNode().getControl()?.invalid
     }"
-    >{{ inputNode.getProperty("label") }}
+    >{{ getInputNode().getProperty("label") }}
   </label>
   <div class="hint">
     {{
-      inputNode.getControl()?.touched && inputNode.getControl()?.invalid
-        ? (inputNode | errorMessage)
-        : inputNode.getProperty("hint")
+      getInputNode().getControl()?.touched &&
+      getInputNode().getControl()?.invalid
+        ? (getInputNode() | errorMessage)
+        : getInputNode().getProperty("hint")
     }}
   </div>
 </div>

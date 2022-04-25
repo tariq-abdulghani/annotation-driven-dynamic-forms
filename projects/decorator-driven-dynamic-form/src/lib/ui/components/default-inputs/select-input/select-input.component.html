@@ -1,42 +1,46 @@
 <label
-  [attr.for]="inputNode.getProperty('id')"
+  [attr.for]="getInputNode().getProperty('id')"
   class="d-form-label form-label"
   [ngClass]="{
-    required: inputNode.getProperty('required'),
+    required: getInputNode().getProperty('required'),
     'invalid-label':
-      inputNode.getControl()?.touched && inputNode.getControl()?.invalid
+      getInputNode().getControl()?.touched &&
+      getInputNode().getControl()?.invalid
   }"
-  >{{ inputNode.getProperty("label") }}
+  >{{ getInputNode().getProperty("label") }}
 </label>
 
 <select
   class="form-select d-form-input"
   [ngClass]="{
-    invalid: inputNode.getControl()?.touched && inputNode.getControl()?.invalid,
-    pending: inputNode.isPending()
+    invalid:
+      getInputNode().getControl()?.touched &&
+      getInputNode().getControl()?.invalid,
+    pending: getInputNode().isPending()
   }"
-  [id]="inputNode.getProperty('id')"
-  [formControl]="$any(inputNode.getControl())"
-  [name]="inputNode.getProperty('name')"
-  [compareWith]="inputNode.getProperty('compareWith')"
+  [id]="getInputNode().getProperty('id')"
+  [formControl]="$any(getInputNode().getControl())"
+  [name]="getInputNode().getProperty('name')"
+  [compareWith]="getInputNode().getProperty('compareWith')"
 >
   <option
     *ngFor="
-      let opt of dataLoader.load(inputNode.getProperty('dataSource')) | async
+      let opt of dataLoader.load(getInputNode().getProperty('dataSource'))
+        | async
     "
     [ngValue]="
-      opt[inputNode.getProperty('bindValue')]
-        ? opt[inputNode.getProperty('bindValue')]
+      opt[getInputNode().getProperty('bindValue')]
+        ? opt[getInputNode().getProperty('bindValue')]
         : opt
     "
   >
-    {{ opt[inputNode.getProperty("bindLabel")] }}
+    {{ opt[getInputNode().getProperty("bindLabel")] }}
   </option>
 </select>
 <div class="hint">
   {{
-    inputNode.getControl()?.touched && inputNode.getControl()?.invalid
-      ? (inputNode | errorMessage)
-      : inputNode.getProperty("hint")
+    getInputNode().getControl()?.touched && getInputNode().getControl()?.invalid
+      ? (getInputNode() | errorMessage)
+      : getInputNode().getProperty("hint")
   }}
 </div>

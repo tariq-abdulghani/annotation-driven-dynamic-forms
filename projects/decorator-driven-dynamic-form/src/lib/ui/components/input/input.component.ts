@@ -7,7 +7,7 @@ import { InputNode } from '../../../core/models/types/inputs/input-node';
   styleUrls: ['./input.component.css'],
 })
 export class InputComponent implements OnInit {
-  @Input() inputNode!: InputNode;
+  private inputNode!: InputNode;
   protected value!: any;
 
   constructor() {}

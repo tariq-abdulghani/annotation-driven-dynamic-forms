@@ -1,7 +1,7 @@
 <fieldset class="col-md-12">
-  <legend>{{ inputNode.getProperty("legend") }}</legend>
+  <legend>{{ getInputNode().getProperty("legend") }}</legend>
   <div class="row g-3">
-    <ng-container *ngFor="let node of inputNode.getChildren()">
+    <ng-container *ngFor="let node of getInputNode().getChildren()">
       <div
         [class]="'col-md-' + node.getProperty('width')"
         df-input-resolver
