@@ -8,7 +8,7 @@ import { InputNode } from '../../../core/models/types/inputs/input-node';
 })
 export class InputComponent implements OnInit {
   private inputNode!: InputNode;
-  protected value!: any;
+  private value!: any;
 
   constructor() {}
 
@@ -25,7 +25,13 @@ export class InputComponent implements OnInit {
   }
 
   public setValue(val: any) {
-    this.inputNode.getControl().setValue(val);
+    this.inputNode
+      .getControl()
+      .setValue(val, { self: false, emitEvent: false });
+  }
+
+  public commitChanges() {
+    this.inputNode.getControl().updateValueAndValidity();
   }
 
   public getValue() {

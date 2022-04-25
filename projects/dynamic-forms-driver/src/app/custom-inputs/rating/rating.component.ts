@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import {
   DynamicFormContextService,
   DynamicFormInput,
@@ -24,6 +24,7 @@ export class RatingComponent extends InputComponent implements OnInit {
       // always do that in ngOnInit
       this.setValue(0);
     }
+    console.log('update on ', this.getInputNode().getControl().updateOn);
   }
 
   get ratingItems(): number[] {
@@ -32,7 +33,11 @@ export class RatingComponent extends InputComponent implements OnInit {
 
   onClick(i: number) {
     // console.log(this.dynamicFormContextService.getContext());
-
     this.setValue(i + 1);
+  }
+
+  @HostListener('mouseleave', ['$event.target'])
+  onPlur(target: any) {
+    this.commitChanges();
   }
 }

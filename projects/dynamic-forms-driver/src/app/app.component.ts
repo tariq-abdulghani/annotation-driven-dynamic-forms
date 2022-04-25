@@ -26,9 +26,8 @@ export class AppComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {}
+  setRate(value: any) {
+    console.log(value);
+    this.bookEntity.rate = value;
+  }
 }
-
-// setRate(value: any) {
-//   console.log(value);
-//   this.bookEntity.rate = value;
-// }

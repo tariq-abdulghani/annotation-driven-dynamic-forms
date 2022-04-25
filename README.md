@@ -619,6 +619,8 @@ available update strategies
 
 ### Component API
 
+#### DynamicFormComponent API selector `ddd-form`
+
 | Input                |               type               |                                                                                                               description |
 | -------------------- | :------------------------------: | ------------------------------------------------------------------------------------------------------------------------: |
 | `[formEntity]`       |             `Object`             |                                    any instance of class annotated with `@FormEntity()`, the input form model to the view |
@@ -629,6 +631,120 @@ available update strategies
 | `(submitEvent)`      |                `any`                 |                                                               `FormGroup` value of the rendered form |
 | `(changeEvent)`      |                `any`                 |                                                                       `FormGroup` value after change |
 | `(buttonClickEvent)` | `{buttonId: string, formValue: any}` | when added custom button to the form it will emit that object that contains button id and form value |
+
+### Classes
+
+#### InputComponent
+
+its just a class that you extend to add your own components as input components
+it has the following description use this methods to integrate your component to dynamic form
+
+```typescript
+class InputComponent implements OnInit {
+  private inputNode!: InputNode;
+  protected value!: any;
+
+  constructor() {}
+
+  ngOnInit(): void {}
+
+  public getInputNode(): InputNode;
+
+  public initialize(input: InputNode): void;
+
+  public setValue(val: any): void;
+
+  public getValue(): any;
+
+  private onChange(): void;
+}
+```
+
+#### DynamicFormContextService
+
+used to inject current form value if you want to know about it any time in your custom component
+
+```typescript
+@Injectable()
+export class DynamicFormContextService {
+  private context: any;
+  constructor() {}
+
+  public setContext(ctx: any) {
+    this.context = ctx;
+  }
+
+  public getContext() {
+    return this.context;
+  }
+}
+```
+
+#### FormEntityProcessorService
+
+used top process the annotations used by the library to generate input nodes
+you can use it to generate input nodes and write the full UI from scratch recommended if you like so
+
+```typescript
+@Injectable()
+export class FormEntityProcessorService {
+  constructor(private injector: Injector);
+  public process(formEntity: any): InputNode;
+  private createNode(
+    entity: any,
+    parentProperties?: Map<string, any>
+  ): InputNode;
+
+  private bindEntityToInputNode(
+    target: any,
+    propertyKey: string,
+    formControl: FormControl
+  ): void;
+
+  private bindEntityToInputTree(
+    target: any,
+    propertyKey: string,
+    formEntity: any
+  ): void;
+}
+```
+
+### Directives
+
+#### InputTemplateDirective
+
+used to register templates for input to customize per form good use case is login where u want to make inputs look different
+
+example to use
+
+```angular2html
+
+<ddd-form
+    [formEntity]="bookEntity"
+    (changeEvent)="onChange($event)"
+    (submitEvent)="onSubmit($event)"
+    (buttonClickEvent)="onClick($event)"
+  >
+  <ng-template dfInputTemplate [inputType]="'NUMBER'" let-inputNode>
+      <label>{{inputNode.getProperty('label')}}</label>
+  </ng-template>
+</ddd-form>
+
+```
+
+```typescript
+Directive({
+  selector: "[dfInputTemplate]",
+});
+export class InputTemplateDirective {
+  @Input("inputType") inputType!: string;
+  constructor(private templateRef: TemplateRef<any>) {}
+
+  public getInputType(): string;
+
+  public getTemplateRef(): TemplateRef;
+}
+```
 
 ### Decorators
 

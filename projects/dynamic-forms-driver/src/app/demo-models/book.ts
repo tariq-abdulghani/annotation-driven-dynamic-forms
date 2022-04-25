@@ -12,6 +12,7 @@ import {
   Max,
   AsyncValidation,
   UpdateStrategy,
+  Min,
 } from 'decorator-driven-dynamic-form';
 import { Author } from './author';
 
@@ -80,12 +81,13 @@ export class Book {
   genre: any = null;
 
   @Max({ maxValue: 5, message: 'ddfff' })
+  @Min({ minValue: 2, message: 'ddfff' })
   @CustomInput({
     inputType: 'rating',
     id: 'rate',
     name: 'rate',
   })
-  rate: number = 4;
+  rate: number = 5;
 }
 
 /**
