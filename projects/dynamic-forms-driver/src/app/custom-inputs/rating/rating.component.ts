@@ -13,6 +13,8 @@ import {
 })
 export class RatingComponent extends InputComponent implements OnInit {
   fullRate = 5;
+  private valueChanged = false;
+
   constructor(private dynamicFormContextService: DynamicFormContextService) {
     super();
   }
@@ -33,11 +35,15 @@ export class RatingComponent extends InputComponent implements OnInit {
 
   onClick(i: number) {
     // console.log(this.dynamicFormContextService.getContext());
+    this.valueChanged = true;
     this.setValue(i + 1);
   }
 
   @HostListener('mouseleave', ['$event.target'])
   onPlur(target: any) {
-    this.commitChanges();
+    if (this.valueChanged) {
+      this.commitChanges();
+      this.valueChanged = false;
+    }
   }
 }
