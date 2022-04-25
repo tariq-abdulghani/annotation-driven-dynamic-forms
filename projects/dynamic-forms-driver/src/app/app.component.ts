@@ -7,7 +7,7 @@ import { Book } from './demo-models/book';
   styleUrls: ['./app.component.css'],
   providers: [],
 })
-export class AppComponent implements OnInit, AfterViewInit {
+export class AppComponent implements OnInit {
   title = 'dynamic-forms-driver';
 
   bookEntity = new Book();
@@ -26,11 +26,9 @@ export class AppComponent implements OnInit, AfterViewInit {
   constructor() {}
 
   ngOnInit(): void {}
-
-  ngAfterViewInit(): void {}
-
-  setRate(value: any) {
-    console.log(value);
-    this.bookEntity.rate = value;
-  }
 }
+
+// setRate(value: any) {
+//   console.log(value);
+//   this.bookEntity.rate = value;
+// }

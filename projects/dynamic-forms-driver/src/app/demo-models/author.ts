@@ -1,30 +1,55 @@
+import { AbstractControl } from '@angular/forms';
 import {
-  CheckboxControl,
+  CheckboxInput,
+  CrossValidation,
+  DateInput,
   FormEntity,
-  NumberControl,
-  RadioButtonsControl,
-  TextControl,
+  Min,
+  NotNull,
+  NumberInput,
+  RadioGroupInput,
+  TextInput,
 } from 'decorator-driven-dynamic-form';
 
+@CrossValidation({
+  errorName: 'dateOfDeath',
+  effects: [
+    {
+      input: 'deathDate', // input name that is affected by that constrain
+      message: 'death date cant be less than birth date', // error message to display if at that input if the constrain is violated.
+    },
+  ],
+  validatorFn: (control: AbstractControl) => {
+    const deathDate = control.get('deathDate');
+    const birthDate = control.get('birthDate');
+    if (new Date(deathDate?.value) <= new Date(birthDate?.value)) {
+      deathDate?.setErrors({ dateOfDeath: true });
+      return { dateOfDeath: true };
+    }
+    return null;
+  },
+})
 @FormEntity()
 export class Author {
-  @TextControl({
+  @NotNull({ message: 'author name is mandatory' })
+  @TextInput({
     id: 'name',
     name: 'name',
     type: 'text',
     placeHolder: 'name',
     width: 4,
   })
-  name: string = 'Adam';
+  name: string = 'Adam'; // default value
 
-  @NumberControl({
+  @Min({ minValue: 1, message: 'age cant be less than 1' })
+  @NumberInput({
     id: 'age',
     name: 'age',
     width: 4,
   })
   age: number = 28;
 
-  @CheckboxControl({
+  @CheckboxInput({
     id: 'married',
     name: 'married',
     label: 'married',
@@ -32,7 +57,7 @@ export class Author {
   })
   married: boolean = false;
 
-  @RadioButtonsControl({
+  @RadioGroupInput({
     bindLabel: 'description',
     bindValue: null,
     inputWidth: 3,
@@ -46,4 +71,20 @@ export class Author {
     name: 'gender',
   })
   gender: any = null;
+
+  @DateInput({
+    id: 'birth-date',
+    name: 'birthDate',
+    type: 'date',
+    placeHolder: 'birth date',
+  })
+  birthDate: Date | null = null;
+
+  @DateInput({
+    id: 'death-date',
+    name: 'deathDate',
+    type: 'date',
+    placeHolder: 'death date',
+  })
+  deathDate: Date | null = null;
 }

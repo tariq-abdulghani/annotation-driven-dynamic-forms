@@ -1,37 +1,37 @@
 import { AbstractControl } from '@angular/forms';
 import {
   FormEntity,
-  TextControl,
+  TextInput,
   NotNull,
   Submit,
-  NumberControl,
-  DateControl,
-  AsyncValidation,
+  NumberInput,
+  DateInput,
   NestedFormEntity,
-  SelectControl,
-  CustomControl,
+  SelectInput,
+  CustomInput,
   Max,
+  AsyncValidation,
+  UpdateStrategy,
 } from 'decorator-driven-dynamic-form';
 import { Author } from './author';
 
 @Submit({ id: 'submit', label: 'ok' })
-@FormEntity()
+@FormEntity({ updateStrategy: UpdateStrategy.ON_PLUR })
 export class Book {
   @AsyncValidation({
     errorName: 'isbn',
-    errorMessage: 'ISBN length cant be less than 15 chars',
+    errorMessage: 'ISBN must be unique',
     validator: (control: AbstractControl) => {
       return new Promise((resolve) => {
         setTimeout(() => {
-          let err =
-            (control.value as string).length < 15 ? { isbn: true } : null;
+          let err = { isbn: true };
           resolve(err);
         }, 10000);
       });
     },
   })
   @NotNull({ message: 'isbn is mandatory' })
-  @TextControl({
+  @TextInput({
     id: 'isbn',
     name: 'isbn',
     type: 'text',
@@ -41,7 +41,7 @@ export class Book {
   })
   isbn: string | null = null;
 
-  @NumberControl({
+  @NumberInput({
     id: 'price',
     name: 'price',
     hint: 'price cant be less than 1$',
@@ -49,7 +49,7 @@ export class Book {
   })
   price: number | null = null;
 
-  @DateControl({
+  @DateInput({
     id: 'publishDate',
     name: 'publishDate',
     type: 'date',
@@ -64,7 +64,7 @@ export class Book {
   })
   author: Author | null = null;
 
-  @SelectControl({
+  @SelectInput({
     id: 'genre',
     name: 'genre',
     bindLabel: 'description',
@@ -80,10 +80,30 @@ export class Book {
   genre: any = null;
 
   @Max({ maxValue: 5, message: 'ddfff' })
-  @CustomControl({
+  @CustomInput({
     inputType: 'rating',
     id: 'rate',
     name: 'rate',
   })
   rate: number = 4;
 }
+
+/**
+ 
+
+
+@AsyncValidation({
+    errorName: 'isbn',
+    errorMessage: 'ISBN length cant be less than 15 chars',
+    validator: (control: AbstractControl) => {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          let err =
+            (control.value as string).length < 15 ? { isbn: true } : null;
+          resolve(err);
+        }, 10000);
+      });
+    },
+  })
+
+ */

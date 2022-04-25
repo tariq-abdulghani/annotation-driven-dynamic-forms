@@ -5,7 +5,16 @@
     (submitEvent)="onSubmit($event)"
     (buttonClickEvent)="onClick($event)"
   >
-    <!-- <ng-template dfInputTemplate [inputType]="'TEXT'">
+  </ddd-form>
+</div>
+
+<!-- <input
+  type="number"
+  placeholder="inter rate for the book"
+  (change)="setRate($any($event.target).value)"
+/> -->
+
+<!-- <ng-template dfInputTemplate [inputType]="'TEXT'">
       <div class="form-floating">
         <input
           type="password"
@@ -17,14 +26,6 @@
       </div>
     </ng-template> -->
 
-    <!-- <ng-template dfInputTemplate [inputType]="'NUMBER'">
+<!-- <ng-template dfInputTemplate [inputType]="'NUMBER'">
       <label>hello custom text input </label>
     </ng-template> -->
-  </ddd-form>
-</div>
-
-<input
-  type="number"
-  placeholder="inter rate for the book"
-  (change)="setRate($any($event.target).value)"
-/>
