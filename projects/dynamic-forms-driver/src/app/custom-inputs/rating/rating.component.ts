@@ -7,7 +7,7 @@ import {
 
 @DynamicFormInput({ inputType: 'rating' })
 @Component({
-  selector: 'app-rating',
+  selector: 'app-rating.rating-component',
   templateUrl: './rating.component.html',
   styleUrls: ['./rating.component.css'],
 })
@@ -26,6 +26,8 @@ export class RatingComponent extends InputComponent implements OnInit {
       // always do that in ngOnInit
       this.setValue(0);
     }
+    this.fullRate =
+      this.getInputNode().getProperty('fullRate') || this.fullRate;
     console.log('update on ', this.getInputNode().getControl().updateOn);
   }
 
