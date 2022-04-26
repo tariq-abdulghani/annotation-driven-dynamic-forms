@@ -47,6 +47,7 @@ export class Book {
     name: 'price',
     hint: 'price cant be less than 1$',
     width: 4,
+    label: 'price',
   })
   price: number | null = null;
 

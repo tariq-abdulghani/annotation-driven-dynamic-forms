@@ -615,6 +615,255 @@ available update strategies
 2. ON_PLUR
 3. ON_SUBMIT
 
+## UI Customization
+
+1. override CSS file provided
+2. provide templates to customize form locally (per use)
+   ex:
+   `let-inputNode` provides inputNode to the developer to use
+   input node is the building block of this lib
+
+```angular2html
+<div class="container">
+  <ddd-form
+    [formEntity]="bookEntity"
+    (changeEvent)="onChange($event)"
+    (submitEvent)="onSubmit($event)"
+    (buttonClickEvent)="onClick($event)"
+  >
+    <ng-template dfInputTemplate [inputType]="'NUMBER'" let-inputNode>
+      <label class="form-label">{{ inputNode.getProperty("label") }} </label>
+      <input type="number" [formControl]="inputNode.getControl()" />
+    </ng-template>
+  </ddd-form>
+</div>
+```
+
+```typescript
+export interface InputNode {
+  setProperties(map: Map<string, any>): void;
+  addProperty(key: string, value: any): void;
+  getProperty(key: string): any;
+
+  setControl(control: AbstractControl): void;
+  getControl(): AbstractControl;
+
+  setErrorMap(map: Map<string, string>): void;
+  getError(key: string): string | undefined;
+  addError(key: string, value: string): void;
+
+  addChild(node: InputNode): void;
+  addChildren(nodes: InputNode[]): void;
+  getChildren(): InputNode[] | null;
+
+  isValid(): boolean;
+  inValid(): boolean;
+  isPending(): boolean;
+}
+```
+
+3. provide cutom ui components
+   ex`lets create rating component which is used to rate books`
+
+let create the component first
+use `@DynamicFormInput({ inputType: "rating" })` to provide it for framework to be used as input
+
+```typescript
+import { Component, HostListener, OnInit } from "@angular/core";
+import {
+  DynamicFormContextService,
+  DynamicFormInput,
+  InputComponent,
+} from "decorator-driven-dynamic-form";
+
+@DynamicFormInput({ inputType: "rating" })
+@Component({
+  selector: "app-rating.rating-component",
+  templateUrl: "./rating.component.html",
+  styleUrls: ["./rating.component.css"],
+})
+export class RatingComponent extends InputComponent implements OnInit {
+  fullRate = 5;
+  private valueChanged = false;
+
+  constructor() {
+    super();
+  }
+
+  ngOnInit(): void {
+    if (this.getValue() == null) {
+      // remember to always initialize variables to avoid null pointer exceptions
+      // always do that in ngOnInit
+      this.setValue(0);
+    }
+    this.fullRate =
+      this.getInputNode().getProperty("fullRate") || this.fullRate;
+    console.log("update on ", this.getInputNode().getControl().updateOn);
+  }
+
+  get ratingItems(): number[] {
+    return new Array(this.fullRate);
+  }
+
+  onClick(i: number) {
+    this.valueChanged = true;
+    this.setValue(i + 1);
+  }
+
+  @HostListener("mouseleave", ["$event.target"])
+  onPlur(target: any) {
+    if (this.valueChanged) {
+      this.commitChanges();
+      this.valueChanged = false;
+    }
+  }
+}
+```
+
+rating html
+
+```html
+<label class="form-label d-form-label">rate</label>
+<div class="rating-warapper form-control d-form-input">
+  <span
+    class="ratingStar"
+    *ngFor="let ratingStar of ratingItems; let i = index"
+    [ngClass]="{ 'bright-ratingStar': i < getValue() }"
+    (click)="onClick(i)"
+  >
+    &#9733;
+  </span>
+</div>
+```
+
+rating css
+
+```css
+.ratingStar {
+  cursor: pointer;
+  display: inline-block;
+  font-size: 1.5em;
+  color: #777;
+}
+
+.bright-ratingStar {
+  color: gold;
+  /* color: #0d6efd; */
+  /* color: gainsboro; */
+}
+
+.dimmed-ratingStar {
+  color: #777;
+}
+
+.rating-component {
+  display: block;
+}
+
+.rating-warapper {
+  max-width: fit-content !important;
+}
+
+.rating-warapper:hover {
+  border-color: #0d6efd;
+  box-shadow: var(--df-focus-box-shadow);
+}
+```
+
+and in our book class mark input to use it as its input mapping
+
+```typescript
+@Max({ maxValue: 10, message: 'ddfff' })
+@Min({ minValue: 0, message: 'ddfff' })
+@CustomInput({
+  inputType: 'rating',
+  id: 'rate',
+  name: 'rate',
+  fullRate: 10,
+})
+rate: number = 5
+```
+
+book class now looks like
+
+```typescript
+@Submit({ id: "submit", label: "ok" })
+@FormEntity({ updateStrategy: UpdateStrategy.ON_PLUR })
+export class Book {
+  @AsyncValidation({
+    errorName: "isbn",
+    errorMessage: "ISBN must be unique",
+    validator: (control: AbstractControl) => {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          let err = { isbn: true };
+          resolve(err);
+        }, 10000);
+      });
+    },
+  })
+  @NotNull({ message: "isbn is mandatory" })
+  @TextInput({
+    id: "isbn",
+    name: "isbn",
+    type: "text",
+    placeHolder: "ISBN",
+    hint: "hello world hint!",
+    width: 4,
+  })
+  isbn: string | null = null;
+
+  @NumberInput({
+    id: "price",
+    name: "price",
+    hint: "price cant be less than 1$",
+    width: 4,
+    label: "price",
+  })
+  price: number | null = null;
+
+  @DateInput({
+    id: "publishDate",
+    name: "publishDate",
+    type: "date",
+  })
+  publishDate: string | null = null;
+
+  @NestedFormEntity({
+    legend: "Author",
+    name: "author",
+    declaredClass: Author,
+    legendClass: "",
+  })
+  author: Author | null = null;
+
+  @SelectInput({
+    id: "genre",
+    name: "genre",
+    bindLabel: "description",
+    bindValue: null,
+    dataSource: [
+      { id: 1, description: "funny" },
+      { id: 2, description: "horror" },
+      { id: 3, description: "sci" },
+    ],
+    compareWith: (a, b) => a == b,
+    label: "genre",
+  })
+  genre: any = null;
+
+  @Max({ maxValue: 10, message: "ddfff" })
+  @Min({ minValue: 0, message: "ddfff" })
+  @CustomInput({
+    inputType: "rating",
+    id: "rate",
+    name: "rate",
+    fullRate: 10,
+  })
+  rate: number = 5;
+}
+```
+
 ## API summary
 
 ### Component API
@@ -652,9 +901,11 @@ class InputComponent implements OnInit {
 
   public initialize(input: InputNode): void;
 
-  public setValue(val: any): void;
+  public setValue(val: any): void; // note this sets the value but doesn't update it
 
   public getValue(): any;
+
+  public commitChanges(): void; // here update and validation happens
 
   private onChange(): void;
 }

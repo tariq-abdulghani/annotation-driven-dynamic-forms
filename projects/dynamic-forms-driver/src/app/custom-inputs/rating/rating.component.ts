@@ -15,12 +15,11 @@ export class RatingComponent extends InputComponent implements OnInit {
   fullRate = 5;
   private valueChanged = false;
 
-  constructor(private dynamicFormContextService: DynamicFormContextService) {
+  constructor() {
     super();
   }
 
   ngOnInit(): void {
-    // console.log(this.dynamicFormContextService.getContext());
     if (this.getValue() == null) {
       // remember to always initialize variables to avoid null pointer exceptions
       // always do that in ngOnInit
@@ -36,7 +35,6 @@ export class RatingComponent extends InputComponent implements OnInit {
   }
 
   onClick(i: number) {
-    // console.log(this.dynamicFormContextService.getContext());
     this.valueChanged = true;
     this.setValue(i + 1);
   }

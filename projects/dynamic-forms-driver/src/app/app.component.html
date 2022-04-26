@@ -8,11 +8,11 @@
   </ddd-form>
 </div>
 
-<input
+<!-- <input
   type="number"
   placeholder="inter rate for the book"
   (change)="setRate($any($event.target).value)"
-/>
+/> -->
 
 <!-- <ng-template dfInputTemplate [inputType]="'TEXT'">
       <div class="form-floating">
@@ -25,7 +25,9 @@
         <label for="floatingPassword">Password</label>
       </div>
     </ng-template> -->
-
-<!-- <ng-template dfInputTemplate [inputType]="'NUMBER'">
-      <label>hello custom text input </label>
-    </ng-template> -->
+<!-- 
+  <ng-template dfInputTemplate [inputType]="'NUMBER'" let-inputNode>
+      <label class="form-label">{{ inputNode.getProperty("label") }} </label>
+      <input type="number" [formControl]="inputNode.getControl()" />
+    </ng-template>
+ -->
