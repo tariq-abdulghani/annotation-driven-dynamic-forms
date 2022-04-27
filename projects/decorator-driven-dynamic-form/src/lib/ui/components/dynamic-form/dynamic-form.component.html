@@ -1,0 +1,37 @@
+<form
+  *ngIf="inputTree"
+  class="row g-3 d-form"
+  [formGroup]="$any(inputTree!.getControl())"
+  (ngSubmit)="onSubmit($event)"
+>
+  <ng-container *ngFor="let inputNode of inputTree.getChildren()">
+    <!-- <div
+      lib-dynamic-form-input
+      [inputNode]="inputNode"
+      [class]="'col-md-' + inputNode.getProperty('width')"
+    ></div> -->
+
+    <div
+      [class]="'col-md-' + inputNode.getProperty('width')"
+      df-input-resolver
+      [inputNode]="inputNode"
+      [inputTemplatesMap]="inputTemplateMap"
+    ></div>
+  </ng-container>
+
+  <div class="col-12 d-buttons-row">
+    <div
+      class="col-lg-1 col-md-3 col-sm-3"
+      *ngFor="let action of inputTree.getProperty('actions')"
+    >
+      <button
+        [type]="action.type"
+        [class]="'d-form-btn ' + (action.class || 'btn btn-primary')"
+        (click)="onClick(action)"
+      >
+        {{ action?.label }}
+      </button>
+    </div>
+  </div>
+</form>
+<ng-content></ng-content>

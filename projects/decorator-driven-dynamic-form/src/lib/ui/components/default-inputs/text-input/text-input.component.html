@@ -1,0 +1,34 @@
+<label
+  [attr.for]="getInputNode().getProperty('id')"
+  class="d-form-label form-label"
+  [ngClass]="{
+    required: getInputNode().getProperty('required'),
+    'invalid-label':
+      getInputNode().getControl()?.touched &&
+      getInputNode().getControl()?.invalid
+  }"
+  >{{ getInputNode().getProperty("label") }}</label
+>
+<input
+  class="form-control d-form-input"
+  [ngClass]="{
+    invalid:
+      getInputNode().getControl()?.touched &&
+      getInputNode().getControl()?.invalid,
+    pending: getInputNode().isPending()
+  }"
+  [placeholder]="getInputNode().getProperty('placeHolder') || ''"
+  [id]="getInputNode().getProperty('id')"
+  [type]="getInputNode().getProperty('type')"
+  [formControl]="$any(getInputNode().getControl())"
+  [name]="getInputNode().getProperty('name')"
+  [attr.readonly]="getInputNode().getProperty('readonly')"
+/>
+
+<div class="hint">
+  {{
+    getInputNode().getControl()?.touched && getInputNode().getControl()?.invalid
+      ? (getInputNode() | errorMessage)
+      : getInputNode().getProperty("hint")
+  }}
+</div>

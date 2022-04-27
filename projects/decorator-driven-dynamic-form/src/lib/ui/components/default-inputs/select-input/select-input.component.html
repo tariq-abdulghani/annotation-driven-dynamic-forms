@@ -1,0 +1,46 @@
+<label
+  [attr.for]="getInputNode().getProperty('id')"
+  class="d-form-label form-label"
+  [ngClass]="{
+    required: getInputNode().getProperty('required'),
+    'invalid-label':
+      getInputNode().getControl()?.touched &&
+      getInputNode().getControl()?.invalid
+  }"
+  >{{ getInputNode().getProperty("label") }}
+</label>
+
+<select
+  class="form-select d-form-input"
+  [ngClass]="{
+    invalid:
+      getInputNode().getControl()?.touched &&
+      getInputNode().getControl()?.invalid,
+    pending: getInputNode().isPending()
+  }"
+  [id]="getInputNode().getProperty('id')"
+  [formControl]="$any(getInputNode().getControl())"
+  [name]="getInputNode().getProperty('name')"
+  [compareWith]="getInputNode().getProperty('compareWith')"
+>
+  <option
+    *ngFor="
+      let opt of dataLoader.load(getInputNode().getProperty('dataSource'))
+        | async
+    "
+    [ngValue]="
+      opt[getInputNode().getProperty('bindValue')]
+        ? opt[getInputNode().getProperty('bindValue')]
+        : opt
+    "
+  >
+    {{ opt[getInputNode().getProperty("bindLabel")] }}
+  </option>
+</select>
+<div class="hint">
+  {{
+    getInputNode().getControl()?.touched && getInputNode().getControl()?.invalid
+      ? (getInputNode() | errorMessage)
+      : getInputNode().getProperty("hint")
+  }}
+</div>

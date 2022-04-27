@@ -1,0 +1,29 @@
+.ratingStar {
+  cursor: pointer;
+  display: inline-block;
+  font-size: 1.5em;
+  color: #777;
+}
+
+.bright-ratingStar {
+  color: gold;
+  /* color: #0d6efd; */
+  /* color: gainsboro; */
+}
+
+.dimmed-ratingStar {
+  color: #777;
+}
+
+.rating-component {
+  display: block;
+}
+
+.rating-warapper {
+  max-width: fit-content !important;
+}
+
+.rating-warapper:hover {
+  border-color: #0d6efd;
+  box-shadow: var(--df-focus-box-shadow);
+}

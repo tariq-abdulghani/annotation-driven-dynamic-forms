@@ -1,8 +1,33 @@
 <div class="container">
   <ddd-form
-    [formEntity]="shopForm"
+    [formEntity]="bookEntity"
     (changeEvent)="onChange($event)"
     (submitEvent)="onSubmit($event)"
     (buttonClickEvent)="onClick($event)"
-  ></ddd-form>
+  >
+  </ddd-form>
 </div>
+
+<!-- <input
+  type="number"
+  placeholder="inter rate for the book"
+  (change)="setRate($any($event.target).value)"
+/> -->
+
+<!-- <ng-template dfInputTemplate [inputType]="'TEXT'">
+      <div class="form-floating">
+        <input
+          type="password"
+          class="form-control"
+          id="floatingPassword"
+          placeholder="Password"
+        />
+        <label for="floatingPassword">Password</label>
+      </div>
+    </ng-template> -->
+<!-- 
+  <ng-template dfInputTemplate [inputType]="'NUMBER'" let-inputNode>
+      <label class="form-label">{{ inputNode.getProperty("label") }} </label>
+      <input type="number" [formControl]="inputNode.getControl()" />
+    </ng-template>
+ -->

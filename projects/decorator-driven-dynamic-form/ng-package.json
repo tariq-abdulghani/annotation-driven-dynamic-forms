@@ -3,5 +3,7 @@
   "dest": "../../dist/decorator-driven-dynamic-form",
   "lib": {
     "entryFile": "src/public-api.ts"
-  }
+  },
+  "assets": ["assests/styles/styles.css"],
+  "deleteDestPath": true
 }

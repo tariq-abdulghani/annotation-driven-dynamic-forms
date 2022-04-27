@@ -1,0 +1,34 @@
+<div class="form-check">
+  <input
+    class="form-check-input d-form-input d-form-check"
+    [ngClass]="{
+      invalid:
+        getInputNode().getControl()?.touched &&
+        getInputNode().getControl()?.invalid
+    }"
+    [id]="getInputNode().getProperty('id')"
+    type="checkbox"
+    [formControl]="$any(getInputNode().getControl())"
+    [name]="getInputNode().getProperty('name')"
+  />
+
+  <label
+    [attr.for]="getInputNode().getProperty('id')"
+    class="d-form-label form-label form-check-label"
+    [ngClass]="{
+      required: getInputNode().getProperty('required'),
+      'invalid-label':
+        getInputNode().getControl()?.touched &&
+        getInputNode().getControl()?.invalid
+    }"
+    >{{ getInputNode().getProperty("label") }}
+  </label>
+  <div class="hint">
+    {{
+      getInputNode().getControl()?.touched &&
+      getInputNode().getControl()?.invalid
+        ? (getInputNode() | errorMessage)
+        : getInputNode().getProperty("hint")
+    }}
+  </div>
+</div>

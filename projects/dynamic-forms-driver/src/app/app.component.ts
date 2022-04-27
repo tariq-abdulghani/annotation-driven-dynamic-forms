@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { ShopForm, ShopFormTransformer } from './demo-models/shop-from';
+import { Book } from './demo-models/book';
 
 @Component({
   selector: 'app-root',
@@ -7,13 +7,10 @@ import { ShopForm, ShopFormTransformer } from './demo-models/shop-from';
   styleUrls: ['./app.component.css'],
   providers: [],
 })
-export class AppComponent implements OnInit, AfterViewInit {
+export class AppComponent implements OnInit {
   title = 'dynamic-forms-driver';
 
-  shopForm = new ShopForm();
-  // loginForm = new LoginForm();
-  shopFormTransformer = new ShopFormTransformer();
-
+  bookEntity = new Book();
   onSubmit($event: any) {
     console.log($event);
   }
@@ -28,28 +25,9 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   constructor() {}
 
-  ngOnInit(): void {
-    // //@ts-ignore
-    // this.loginForm.gender = { label: 'male', id: 'm' };
-    // this.loginForm.age = 50;
-    // console.log("address ", this.loginForm.address);
-    // // this.loginForm.address = {
-    // //   city: 'wow',
-    // //   state: 'sr',
-    // //   zipCode: '78',
-    // // };
-
-    // console.log(this.formEntityProcessorService.process(this.shopForm));
-    this.shopForm.capacity = 5;
-
-    this.shopForm.userData = { email: 'kkk', userName: 'kjkjkj' };
-    this.shopForm.userData.email = 'gggg';
-    console.log(this.shopForm, this.shopForm.userData);
-  }
-
-  ngAfterViewInit(): void {
-    //@ts-ignore
-    // this.shopForm.userData?.email = 'ddd@ttt';
-    // this.shopForm.userData = { email: 'kkk', userName: 'kjkjkj' };
+  ngOnInit(): void {}
+  setRate(value: any) {
+    console.log(value);
+    this.bookEntity.rate = value;
   }
 }
