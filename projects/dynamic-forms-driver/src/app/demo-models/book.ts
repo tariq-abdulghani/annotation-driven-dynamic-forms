@@ -81,8 +81,8 @@ export class Book {
   })
   genre: any = null;
 
-  @Max({ maxValue: 10, message: 'ddfff' })
-  @Min({ minValue: 0, message: 'ddfff' })
+  @Max({ maxValue: 10, message: "rate can't exceed 10" })
+  @Min({ minValue: 0, message: "rate can't be negative" })
   @CustomInput({
     inputType: 'rating',
     id: 'rate',

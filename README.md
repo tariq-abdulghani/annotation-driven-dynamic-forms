@@ -852,8 +852,8 @@ export class Book {
   })
   genre: any = null;
 
-  @Max({ maxValue: 10, message: "ddfff" })
-  @Min({ minValue: 0, message: "ddfff" })
+  @Max({ maxValue: 10, message: "rate can't exceed 10" })
+  @Min({ minValue: 0, message: "rate can't be negative" })
   @CustomInput({
     inputType: "rating",
     id: "rate",
@@ -882,6 +882,16 @@ export class Book {
 | `(buttonClickEvent)` | `{buttonId: string, formValue: any}` | when added custom button to the form it will emit that object that contains button id and form value |
 
 ### Classes
+
+#### FormValueTransformer
+
+used to transform form value form T to V DTO
+
+```typescript
+export interface FormValueTransformer<T, V> {
+  transform(formValue: T): V;
+}
+```
 
 #### InputComponent
 
