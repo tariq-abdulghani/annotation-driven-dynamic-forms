@@ -73,7 +73,8 @@
 
 > Note that:
 > library is under active development so some API may change.
-> please use each version documentation to test the library your opinions are appreciated
+> please use each version documentation to use the library.
+> your opinions are appreciated
 
 install boot strap if you don't have it`npm i bootstrap` and add it in styles
 `npm i ddd-form`
@@ -1087,7 +1088,9 @@ export type NativeActionSpec = {
 
 #### `CustomInput(specs: CustomInputSpec)`
 
-#### `@DynamicFormInput({ inputType: string })` // used to register components to be used in the form by custom input decorator
+#### `@DynamicFormInput({ inputType: string })`
+
+// used to register components to be used in the form by custom input decorator
 
 ```typescript
 export interface InputSpec {
@@ -1197,7 +1200,7 @@ export type AsyncValidationSpec = {
   validator:
     | AsyncValidator // class that implements async validator interface and not injectable
     | AsyncValidatorFn
-    | InjectableAsyncValidatorProvider; // injectable class that mplements async validator interface
+    | InjectableAsyncValidatorProvider; // injectable class that implements async validator interface
   errorMessage: string;
   errorName: string;
 };
