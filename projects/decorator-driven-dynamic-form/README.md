@@ -1,11 +1,9 @@
-# Decorator Driven Dynamic Forms version 7.0.0-a.1
+# Decorator Driven Dynamic Forms version 8.0.0-a.1
 
 > Opinionated way to create dynamic forms with **no json** , **no inheritance**
 > just use **decorators**
 
 ## What is new in this version
-
-new features
 
 1. UI Customization
    you can provide templates and components to be used as UI elements in form
@@ -80,9 +78,14 @@ new features
 install boot strap if you don't have it`npm i bootstrap` and add it in styles
 `npm i ddd-form`
 
-[`npm install decorator-driven-dynamic-forms --save`]: #
+[`npm install decorator-driven-dynamic-forms --save`]: # after that add its styles from
+`decorator-driven-dynamic-form/assests/styles/styles.css` to your angular app
 
-## Use
+## How To Use?
+
+is step by step demonstration of common use cases
+
+we will model book and author models where book refers to an author
 
 1. import the _DecoratorDrivenDynamicFormsModule_ and _HttpClientModule_ into your app
 
@@ -100,442 +103,909 @@ export class AppModule {}
 
 2. create form model classes
 
-address class which is a form that will be nested in another form
+author class is turned into form entity by using decorators and each field is mapped to an input based on the annotation and we provide meta data to the view.
+
+we can control layout using width ` width: 4` layout is managed by bootstrap5 grid and each input is column and the whole form is a row
+any nested forms will take column and creates row as container for each input it has.
+which provides flexibility in layout break points are managed till now by the form
 
 ```typescript
 import {
+  CheckboxInput,
   FormEntity,
-  NotNull,
-  TextControl,
+  NumberInput,
+  RadioGroupInput,
+  TextInput,
 } from "decorator-driven-dynamic-form";
 
 @FormEntity()
-export class Address {
-  @NotNull({ message: "city is required " })
-  @TextControl({
-    name: "city",
+export class Author {
+  @TextInput({
+    id: "name",
+    name: "name",
     type: "text",
-    id: "city",
+    placeHolder: "name",
     width: 4,
   })
-  city!: string;
+  name: string = "Adam";
 
-  @TextControl({
-    name: "state",
-    type: "text",
-    id: "state",
+  @NumberInput({
+    id: "age",
+    name: "age",
     width: 4,
   })
-  state!: string;
+  age: number = 28;
 
-  @NotNull({ message: "zipCode is required " })
-  @TextControl({
-    name: "zipCode",
-    type: "text",
-    id: "zipCode",
+  @CheckboxInput({
+    id: "married",
+    name: "married",
+    label: "married",
     width: 4,
   })
-  zipCode!: string;
+  married: boolean = false;
 
-  constructor(city: string, sate: string, zipCode: string) {
-    this.city = city;
-    this.state = sate;
-    this.zipCode = zipCode;
-  }
+  @RadioGroupInput({
+    bindLabel: "description",
+    bindValue: null,
+    inputWidth: 3,
+    dataSource: [
+      { id: 1, description: "male" },
+      { id: 2, description: "female" },
+      { id: 3, description: "else!" },
+    ],
+    id: "gender",
+    legend: "Gender",
+    name: "gender",
+  })
+  gender: any = null;
 }
 ```
 
-LoginForm our root form
+book is related to author (each time we enter a book we enter its author data this is not real world scenario, but this example shows how to compose forms using already existing forms)
+we can add buttons to the form and configure its styles
+standard form actions are supported natively, non standard buttons can be added to it will be explained later.
 
 ```typescript
 import {
-  MaxLength,
-  MinLength,
-  NotNull,
-  TextControl,
-  Pattern,
-  Reset,
-  Submit,
-  SelectControl,
-  RadioButtons,
-  NestedFormEntity,
   FormEntity,
-  RequiredTrue,
+  TextInput,
+  NotNull,
+  Submit,
+  NumberInput,
+  DateInput,
+  NestedFormEntity,
+  SelectInput,
   Max,
-  Min,
-  DateControl,
-  NumberControl,
-  CheckboxControl,
 } from "decorator-driven-dynamic-form";
+import { Author } from "./author";
 
-import { Address } from "./address-dto";
-
-@Reset({ label: "clear", class: "btn btn-danger" })
-@Submit({ label: "save", class: "btn btn-primary" })
+@Submit({ id: "submit", label: "ok" })
 @FormEntity()
-export class LoginForm {
-  @MaxLength({ maxlength: 20, message: "max length 20" })
-  @MinLength({ minlength: 3, message: "min length 3" })
-  @NotNull({ message: "user name is required!" })
-  @TextControl({
-    name: "fullName",
+export class Book {
+  @NotNull({ message: "isbn is mandatory" })
+  @TextInput({
+    id: "isbn",
+    name: "isbn",
     type: "text",
-    id: "full-name",
-    label: "user name",
-    placeHolder: "example ...",
+    placeHolder: "ISBN",
+    hint: "hello world hint!",
+    width: 4,
   })
-  name: string | null = null;
+  isbn: string | null = null;
 
-  @NotNull({ message: "password is required!" })
-  @Pattern({
-    pattern: /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/,
-    message:
-      "password must be 8 letters at least, and contains uppercase and special character and alphanumeric",
+  @NumberInput({
+    id: "price",
+    name: "price",
+    hint: "price cant be less than 1$",
+    width: 4,
   })
-  @TextControl({
-    name: "password",
-    type: "password",
-    id: "password",
-  })
-  password: string | null = null;
+  price: number | null = null;
 
-  @Max({ maxValue: 100, message: "age cant be more than ${max} years" })
-  @Min({ minValue: 7, message: "age cant be lass than ${min}" })
-  @NotNull({ message: "age is required" })
-  @NumberControl({
-    id: "age1",
-    name: "age",
-    label: "age",
+  @DateInput({
+    id: "publishDate",
+    name: "publishDate",
+    type: "date",
   })
-  age = 30;
-
-  @DateControl({
-    id: "expiryDate",
-    name: "expiryDate",
-    label: "Expiry Date",
-  })
-  expiryDate: string | null = null;
-
-  @SelectControl({
-    id: "gender",
-    name: "gender",
-    label: "gender",
-    dataSource: [
-      { label: "male", id: "m" },
-      { label: "female", id: "f" },
-    ],
-    bindLabel: "label",
-    bindValue: null,
-    compareWith: (a, b) => (a && b ? a.id == b.id : false),
-  })
-  gender = null;
-
-  @RequiredTrue({ message: "must be true" })
-  @CheckboxControl({
-    name: "employee",
-    id: "employee",
-    label: "Employee",
-    enableFn: (f: any) => f.payment.id == "v",
-  })
-  employee = true;
-
-  @RadioButtons({
-    id: "payment",
-    name: "payment",
-    legend: "Payment",
-    dataSource: [
-      { key: "visa", id: "v" },
-      { key: "cash", id: "c" },
-    ],
-    bindLabel: "key",
-    bindValue: null,
-  })
-  payment = { key: "visa", id: "v" };
+  publishDate: string | null = null;
 
   @NestedFormEntity({
-    name: "address",
-    classDeclaration: Address,
-    legend: "Address",
+    legend: "Author",
+    name: "author",
+    declaredClass: Author,
+    legendClass: "",
   })
-  address: Address | null = null;
+  author: Author | null = null;
+
+  @SelectInput({
+    id: "genre",
+    name: "genre",
+    bindLabel: "description",
+    bindValue: null,
+    dataSource: [
+      { id: 1, description: "funny" },
+      { id: 2, description: "horror" },
+      { id: 3, description: "sci" },
+    ],
+    compareWith: (a, b) => a == b,
+    label: "genre",
+  })
+  genre: any = null;
 }
 ```
 
-3. create new instance of the model
+3. create the entity and prepare parent component to handle the events
+   here we use it directly in app component but we can use it in any other components
 
 ```typescript
 @Component({
   selector: "app-root",
   templateUrl: "./app.component.html",
   styleUrls: ["./app.component.css"],
+  providers: [],
 })
 export class AppComponent implements OnInit {
   title = "dynamic-forms-driver";
 
-  loginForm = new LoginForm();
-
+  bookEntity = new Book();
   onSubmit($event: any) {
     console.log($event);
   }
 
-  ngOnInit(): void {
-    //@ts-ignore
-    this.loginForm.gender = { label: "male", id: "m" };
-    this.loginForm.age = 50;
-    this.loginForm.address = {
-      city: "z",
-      state: "sr",
-      zipCode: "78",
-    };
-  }
-}
-```
-
-4. pass it to the dynamic-form-component
-
-```angular2html
-<div class="container">
-  <ddd-form
-    [formEntity]="loginForm"
-    (submitEvent)="onSubmit($event)"
-  ></ddd-form>
-</div>
-
-```
-
-## another use with cross validation
-
-```typescript
-import { AbstractControl } from "@angular/forms";
-import {
-  FormEntity,
-  TextControl,
-  NumberControl,
-  DateControl,
-  CheckboxControl,
-  SelectControl,
-  RadioButtonsControl,
-  NestedFormEntity,
-  Submit,
-  Reset,
-  NotNull,
-  ActionsPosition,
-  UpdateStrategy,
-  FormValueTransformer,
-  LabelStyling,
-  Button,
-} from "decorator-driven-dynamic-form";
-import { CrossValidation } from "decorator-driven-dynamic-form";
-import { UserData } from "./user-data";
-
-@CrossValidation({
-  errorName: "expirationDate",
-  effects: [
-    {
-      input: "expiryDate",
-      message: "expiration date cant be less than production date",
-    },
-  ],
-  validatorFn: (control: AbstractControl) => {
-    const expiryDate = control.get("expiryDate");
-    const productionDate = control.get("productionDate");
-    if (new Date(expiryDate?.value) <= new Date(productionDate?.value)) {
-      expiryDate?.setErrors({ expirationDate: true });
-      return { expirationDate: true };
-    }
-    return null;
-  },
-})
-@Button({ label: "cancel", id: "cancel", class: "btn btn-danger" })
-@Button({ label: "print", id: "print", class: "btn btn-light" })
-@Submit({ label: "ok", id: "so" })
-@Reset({ label: "clear", id: "do" })
-@FormEntity({
-  actionPositions: ActionsPosition.NEW_LINE_END,
-  updateStrategy: UpdateStrategy.ON_SUBMIT,
-  labelStyling: LabelStyling.FLOAT,
-})
-export class ShopForm {
-  @NotNull({ message: "shopName cant be null ?" })
-  @TextControl({
-    id: "shopName",
-    name: "shopName",
-    type: "text",
-    label: "shop name",
-    width: 6,
-    placeHolder: "asssss",
-  })
-  shopName: string | null | undefined = "job";
-
-  @NumberControl({
-    id: "capacity",
-    name: "capacity",
-    label: "capacity",
-    placeHolder: "...",
-    width: 6,
-  })
-  capacity: number | null = 200;
-
-  @DateControl({
-    id: "expiryDate",
-    name: "expiryDate",
-    type: "date",
-    label: "expiry date",
-  })
-  expiryDate: string | null = "01-09-2023";
-
-  @DateControl({
-    id: "productionDate",
-    name: "productionDate",
-    type: "date",
-    label: "production date",
-  })
-  productionDate: string | null = "01-01-2023";
-
-  @CheckboxControl({
-    id: "rememberMe",
-    name: "rememberMe",
-    label: "remember Me",
-    width: 7,
-  })
-  rememberMe: boolean | null = false;
-  @CheckboxControl({
-    id: "callMe",
-    name: "callMe",
-    label: "call Me",
-    width: 7,
-  })
-  callMe: boolean | null = false;
-
-  @SelectControl({
-    id: "style",
-    name: "style",
-    label: "style",
-    bindLabel: "description",
-    bindValue: null,
-    placeHolder: "wow",
-    compareWith: (a, b) => false,
-    dataSource: [
-      { id: 1, description: "visa" },
-      { id: 2, description: "cash" },
-    ],
-  })
-  style: any | null = null;
-
-  @RadioButtonsControl({
-    id: "paymentMethod",
-    name: "paymentMethod",
-    label: "paymentMethod",
-    bindLabel: "description",
-    bindValue: null,
-    width: 6,
-    inputWidth: 6,
-    dataSource: [
-      { id: 1, description: "visa" },
-      { id: 2, description: "cash" },
-    ],
-    legend: "Payment Method",
-  })
-  paymentMethod: any = null;
-
-  @NestedFormEntity({
-    declaredClass: UserData,
-    legend: "User Data",
-    name: "userData",
-    width: 12,
-  })
-  userData: UserData | null = null;
-}
-
-export class ShopFormTransformer
-  implements FormValueTransformer<ShopForm, any>
-{
-  transform(formValue: ShopForm) {
-    const transformedVal = {
-      userInfo: formValue.userData,
-      shopInfo: { name: formValue.shopName },
-    };
-    return transformedVal;
-  }
-}
-```
-
-```typescript
-import { FormEntity, TextControl } from "decorator-driven-dynamic-form";
-
-@FormEntity()
-export class UserData {
-  @TextControl({
-    id: "userName",
-    name: "userName",
-    type: "text",
-    label: "user name",
-  })
-  userName: string | null = "Bob";
-
-  @TextControl({
-    id: "email",
-    name: "email",
-    type: "email",
-    label: "email",
-  })
-  email: string | null = null;
-}
-```
-
-```typescript
-export class AppComponent implements OnInit, AfterViewInit {
-  title = "dynamic-forms-driver";
-
-  shopForm = new ShopForm();
-  // loginForm = new LoginForm();
-  shopFormTransformer = new ShopFormTransformer();
-
-  onSubmit($event: any) {
-    console.log($event);
-  }
-
-  // fired when custom buttons clicked
   onClick($event: any) {
     console.log($event);
   }
-  // fired when any form field changes
+
   onChange($event: any) {
     console.log("new value", $event);
   }
 
   constructor() {}
+
+  ngOnInit(): void {}
 }
 ```
+
+4. pass it the form entity to the dynamic-form-component
+
+```angular2html
+<ddd-form
+    [formEntity]="bookEntity"
+    (changeEvent)="onChange($event)"
+    (submitEvent)="onSubmit($event)"
+    (buttonClickEvent)="onClick($event)"
+  >
+</ddd-form>
+
+```
+
+5. Run `ng s` and see the result your self.
+
+note we have two way binding between form entity and the UI form u see so if you set any value in the form entity
+it will be reflected in UI and any change in UI will be reflected in the entity
+so try`this.bookEntity.isbn = 'pla-pla'` press Ctl+s and see
+
+## adding validation
+
+in book class we can see the lines
+
+```typescript
+@NotNull({ message: "isbn is mandatory" })
+  @TextInput({
+    id: "isbn",
+    name: "isbn",
+    type: "text",
+    placeHolder: "ISBN",
+    hint: "hello world hint!",
+    width: 4,
+  })
+  isbn: string | null = null; // field isbn in book class now is required
+```
+
+which is used to make the field required
+we can add multiple validations on single field
+validations list
+
+1. NotNull
+2. Min
+3. Max
+4. MaxLength
+5. MinLength
+6. RequiredTrue
+7. Pattern
+
+lets add some validation to the author set min age and name constrains
+
+```typescript
+import {
+  CheckboxInput,
+  FormEntity,
+  Min,
+  NotNull,
+  NumberInput,
+  RadioGroupInput,
+  TextInput,
+} from "decorator-driven-dynamic-form";
+
+@FormEntity()
+export class Author {
+  @NotNull({ message: "author name is mandatory" })
+  @TextInput({
+    id: "name",
+    name: "name",
+    type: "text",
+    placeHolder: "name",
+    width: 4,
+  })
+  name: string = "Adam"; // default value
+
+  @Min({ minValue: 1, message: "age cant be less than 1" })
+  @NumberInput({
+    id: "age",
+    name: "age",
+    width: 4,
+  })
+  age: number = 28;
+
+  @CheckboxInput({
+    id: "married",
+    name: "married",
+    label: "married",
+    width: 4,
+  })
+  married: boolean = false;
+
+  @RadioGroupInput({
+    bindLabel: "description",
+    bindValue: null,
+    inputWidth: 3,
+    dataSource: [
+      { id: 1, description: "male" },
+      { id: 2, description: "female" },
+      { id: 3, description: "else!" },
+    ],
+    id: "gender",
+    legend: "Gender",
+    name: "gender",
+  })
+  gender: any = null;
+}
+```
+
+## another form of validation 'Cross Validation'
+
+cross validation puts constrains across form fields
+like staring date, end date fields are constrained,
+some time you accept some combination of value only here you can use cross validation
+its used on the form entity
+
+`we will add date of birth and date of death of the author and if date of death is provided it must be > birth date`
+lets add the block
+
+```typescript
+@CrossValidation({
+  errorName: 'dateOfDeath',
+  effects: [
+    {
+      input: 'deathDate', // input name that is affected by that constrain
+      message: 'death date cant be less than birth date', // error message to display if at that input if the constrain is violated.
+    },
+  ],
+  validatorFn: (control: AbstractControl) => {
+    const deathDate = control.get('deathDate');
+    const birthDate = control.get('birthDate');
+    if (new Date(deathDate?.value) <= new Date(birthDate?.value)) {
+      deathDate?.setErrors({ expirationDate: true });
+      return { dateOfDeath: true };
+    }
+    return null;
+  },
+})
+
+```
+
+now author class looks like
+
+```typescript
+import { AbstractControl } from "@angular/forms";
+import {
+  CheckboxInput,
+  CrossValidation,
+  DateInput,
+  FormEntity,
+  Min,
+  NotNull,
+  NumberInput,
+  RadioGroupInput,
+  TextInput,
+} from "decorator-driven-dynamic-form";
+
+@CrossValidation({
+  errorName: "dateOfDeath",
+  effects: [
+    {
+      input: "deathDate", // input name that is affected by that constrain
+      message: "death date cant be less than birth date", // error message to display if at that input if the constrain is violated.
+    },
+  ],
+  validatorFn: (control: AbstractControl) => {
+    // control represents form group that holds all the inputs
+    const deathDate = control.get("deathDate");
+    const birthDate = control.get("birthDate");
+    if (new Date(deathDate?.value) <= new Date(birthDate?.value)) {
+      deathDate?.setErrors({ dateOfDeath: true });
+      return { dateOfDeath: true };
+    }
+    return null;
+  },
+})
+@FormEntity()
+export class Author {
+  @NotNull({ message: "author name is mandatory" })
+  @TextInput({
+    id: "name",
+    name: "name",
+    type: "text",
+    placeHolder: "name",
+    width: 4,
+  })
+  name: string = "Adam"; // default value
+
+  @Min({ minValue: 1, message: "age cant be less than 1" })
+  @NumberInput({
+    id: "age",
+    name: "age",
+    width: 4,
+  })
+  age: number = 28;
+
+  @CheckboxInput({
+    id: "married",
+    name: "married",
+    label: "married",
+    width: 4,
+  })
+  married: boolean = false;
+
+  @RadioGroupInput({
+    bindLabel: "description",
+    bindValue: null,
+    inputWidth: 3,
+    dataSource: [
+      { id: 1, description: "male" },
+      { id: 2, description: "female" },
+      { id: 3, description: "else!" },
+    ],
+    id: "gender",
+    legend: "Gender",
+    name: "gender",
+  })
+  gender: any = null;
+
+  @DateInput({
+    id: "birth-date",
+    name: "birthDate",
+    type: "date",
+    placeHolder: "birth date",
+  })
+  birthDate: Date | null = null;
+
+  @DateInput({
+    id: "death-date",
+    name: "deathDate",
+    type: "date",
+    placeHolder: "death date",
+  })
+  deathDate: Date | null = null;
+}
+```
+
+## another form of validation AsyncValidation
+
+used when we validate at backend server so the can be done too
+`we will make sure isbn is unique before submitting the book form`
+
+we will add the block
+this is just demo for async validation
+but in real world scenario we will add a service that will call back end end point to validate
+this will explained later we just explore th API
+
+```typescript
+ @AsyncValidation({
+    errorName: "isbn",
+    errorMessage: "ISBN must be unique",
+    validator: (control: AbstractControl) => {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          let err = { isbn: true };
+          resolve(err);
+        }, 10000);
+      });
+    },
+  })
+```
+
+```typescript
+import { AbstractControl } from "@angular/forms";
+import {
+  FormEntity,
+  TextInput,
+  NotNull,
+  Submit,
+  NumberInput,
+  DateInput,
+  NestedFormEntity,
+  SelectInput,
+  CustomInput,
+  Max,
+  AsyncValidation,
+} from "decorator-driven-dynamic-form";
+import { Author } from "./author";
+
+@Submit({ id: "submit", label: "ok" })
+@FormEntity({ updateStrategy: UpdateStrategy.ON_PLUR })
+export class Book {
+  @AsyncValidation({
+    errorName: "isbn",
+    errorMessage: "ISBN must be unique",
+    validator: (control: AbstractControl) => {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          let err = { isbn: true };
+          resolve(err);
+        }, 10000);
+      });
+    },
+  })
+  @NotNull({ message: "isbn is mandatory" })
+  @TextInput({
+    id: "isbn",
+    name: "isbn",
+    type: "text",
+    placeHolder: "ISBN",
+    hint: "hello world hint!",
+    width: 4,
+  })
+  isbn: string | null = null;
+
+  @NumberInput({
+    id: "price",
+    name: "price",
+    hint: "price cant be less than 1$",
+    width: 4,
+  })
+  price: number | null = null;
+
+  @DateInput({
+    id: "publishDate",
+    name: "publishDate",
+    type: "date",
+  })
+  publishDate: string | null = null;
+
+  @NestedFormEntity({
+    legend: "Author",
+    name: "author",
+    declaredClass: Author,
+    legendClass: "",
+  })
+  author: Author | null = null;
+
+  @SelectInput({
+    id: "genre",
+    name: "genre",
+    bindLabel: "description",
+    bindValue: null,
+    dataSource: [
+      { id: 1, description: "funny" },
+      { id: 2, description: "horror" },
+      { id: 3, description: "sci" },
+    ],
+    compareWith: (a, b) => a == b,
+    label: "genre",
+  })
+  genre: any = null;
+}
+```
+
+note we added `@FormEntity({ updateStrategy: UpdateStrategy.ON_PLUR }) `
+its good for performance to change form update strategy to ON_PLUR or ON_SUBMIT
+available update strategies
+
+1. ON_CHANGE // default
+2. ON_PLUR
+3. ON_SUBMIT
+
+## UI Customization
+
+1. override CSS file provided
+2. provide templates to customize form locally (per use)
+   ex:
+   `let-inputNode` provides inputNode to the developer to use
+   input node is the building block of this lib
 
 ```angular2html
 <div class="container">
   <ddd-form
-    [formEntity]="shopForm"
+    [formEntity]="bookEntity"
     (changeEvent)="onChange($event)"
     (submitEvent)="onSubmit($event)"
     (buttonClickEvent)="onClick($event)"
-  ></ddd-form>
+  >
+    <ng-template dfInputTemplate [inputType]="'NUMBER'" let-inputNode>
+      <label class="form-label">{{ inputNode.getProperty("label") }} </label>
+      <input type="number" [formControl]="inputNode.getControl()" />
+    </ng-template>
+  </ddd-form>
 </div>
-
 ```
 
-Run `ng s` and see the result your self.
+```typescript
+export interface InputNode {
+  setProperties(map: Map<string, any>): void;
+  addProperty(key: string, value: any): void;
+  getProperty(key: string): any;
+
+  setControl(control: AbstractControl): void;
+  getControl(): AbstractControl;
+
+  setErrorMap(map: Map<string, string>): void;
+  getError(key: string): string | undefined;
+  addError(key: string, value: string): void;
+
+  addChild(node: InputNode): void;
+  addChildren(nodes: InputNode[]): void;
+  getChildren(): InputNode[] | null;
+
+  isValid(): boolean;
+  inValid(): boolean;
+  isPending(): boolean;
+}
+```
+
+3. provide cutom ui components
+   ex`lets create rating component which is used to rate books`
+
+let create the component first
+use `@DynamicFormInput({ inputType: "rating" })` to provide it for framework to be used as input
+
+```typescript
+import { Component, HostListener, OnInit } from "@angular/core";
+import {
+  DynamicFormContextService,
+  DynamicFormInput,
+  InputComponent,
+} from "decorator-driven-dynamic-form";
+
+@DynamicFormInput({ inputType: "rating" })
+@Component({
+  selector: "app-rating.rating-component",
+  templateUrl: "./rating.component.html",
+  styleUrls: ["./rating.component.css"],
+})
+export class RatingComponent extends InputComponent implements OnInit {
+  fullRate = 5;
+  private valueChanged = false;
+
+  constructor() {
+    super();
+  }
+
+  ngOnInit(): void {
+    if (this.getValue() == null) {
+      // remember to always initialize variables to avoid null pointer exceptions
+      // always do that in ngOnInit
+      this.setValue(0);
+    }
+    this.fullRate =
+      this.getInputNode().getProperty("fullRate") || this.fullRate;
+    console.log("update on ", this.getInputNode().getControl().updateOn);
+  }
+
+  get ratingItems(): number[] {
+    return new Array(this.fullRate);
+  }
+
+  onClick(i: number) {
+    this.valueChanged = true;
+    this.setValue(i + 1);
+  }
+
+  @HostListener("mouseleave", ["$event.target"])
+  onPlur(target: any) {
+    if (this.valueChanged) {
+      this.commitChanges();
+      this.valueChanged = false;
+    }
+  }
+}
+```
+
+rating html
+
+```html
+<label class="form-label d-form-label">rate</label>
+<div class="rating-warapper form-control d-form-input">
+  <span
+    class="ratingStar"
+    *ngFor="let ratingStar of ratingItems; let i = index"
+    [ngClass]="{ 'bright-ratingStar': i < getValue() }"
+    (click)="onClick(i)"
+  >
+    &#9733;
+  </span>
+</div>
+```
+
+rating css
+
+```css
+.ratingStar {
+  cursor: pointer;
+  display: inline-block;
+  font-size: 1.5em;
+  color: #777;
+}
+
+.bright-ratingStar {
+  color: gold;
+  /* color: #0d6efd; */
+  /* color: gainsboro; */
+}
+
+.dimmed-ratingStar {
+  color: #777;
+}
+
+.rating-component {
+  display: block;
+}
+
+.rating-warapper {
+  max-width: fit-content !important;
+}
+
+.rating-warapper:hover {
+  border-color: #0d6efd;
+  box-shadow: var(--df-focus-box-shadow);
+}
+```
+
+and in our book class mark input to use it as its input mapping
+
+```typescript
+@Max({ maxValue: 10, message: 'ddfff' })
+@Min({ minValue: 0, message: 'ddfff' })
+@CustomInput({
+  inputType: 'rating',
+  id: 'rate',
+  name: 'rate',
+  fullRate: 10,
+})
+rate: number = 5
+```
+
+book class now looks like
+
+```typescript
+@Submit({ id: "submit", label: "ok" })
+@FormEntity({ updateStrategy: UpdateStrategy.ON_PLUR })
+export class Book {
+  @AsyncValidation({
+    errorName: "isbn",
+    errorMessage: "ISBN must be unique",
+    validator: (control: AbstractControl) => {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          let err = { isbn: true };
+          resolve(err);
+        }, 10000);
+      });
+    },
+  })
+  @NotNull({ message: "isbn is mandatory" })
+  @TextInput({
+    id: "isbn",
+    name: "isbn",
+    type: "text",
+    placeHolder: "ISBN",
+    hint: "hello world hint!",
+    width: 4,
+  })
+  isbn: string | null = null;
+
+  @NumberInput({
+    id: "price",
+    name: "price",
+    hint: "price cant be less than 1$",
+    width: 4,
+    label: "price",
+  })
+  price: number | null = null;
+
+  @DateInput({
+    id: "publishDate",
+    name: "publishDate",
+    type: "date",
+  })
+  publishDate: string | null = null;
+
+  @NestedFormEntity({
+    legend: "Author",
+    name: "author",
+    declaredClass: Author,
+    legendClass: "",
+  })
+  author: Author | null = null;
+
+  @SelectInput({
+    id: "genre",
+    name: "genre",
+    bindLabel: "description",
+    bindValue: null,
+    dataSource: [
+      { id: 1, description: "funny" },
+      { id: 2, description: "horror" },
+      { id: 3, description: "sci" },
+    ],
+    compareWith: (a, b) => a == b,
+    label: "genre",
+  })
+  genre: any = null;
+
+  @Max({ maxValue: 10, message: "rate can't exceed 10" })
+  @Min({ minValue: 0, message: "rate can't be negative" })
+  @CustomInput({
+    inputType: "rating",
+    id: "rate",
+    name: "rate",
+    fullRate: 10,
+  })
+  rate: number = 5;
+}
+```
 
 ## API summary
 
 ### Component API
 
-| Input                |               type               |                                                                                                             description |
-| -------------------- | :------------------------------: | ----------------------------------------------------------------------------------------------------------------------: |
-| `[formEntity]`       |             `Object`             |                                  any instance of class annotated with `@FormEntity()`, the input form model to the view |
-| `[valueTransformer]` | 'FormValueTransformer<any, any>' | an interface if provided and object with that interface it will be used to trnsform form value based on trasform method |
+#### DynamicFormComponent API selector `ddd-form`
+
+| Input                |               type               |                                                                                                               description |
+| -------------------- | :------------------------------: | ------------------------------------------------------------------------------------------------------------------------: |
+| `[formEntity]`       |             `Object`             |                                    any instance of class annotated with `@FormEntity()`, the input form model to the view |
+| `[valueTransformer]` | `FormValueTransformer<any, any>` | an interface if provided and object with that interface it will be used to transform form value based on transform method |
 
 | Output               |                 type                 |                                                                                          description |
 | -------------------- | :----------------------------------: | ---------------------------------------------------------------------------------------------------: |
 | `(submitEvent)`      |                `any`                 |                                                               `FormGroup` value of the rendered form |
 | `(changeEvent)`      |                `any`                 |                                                                       `FormGroup` value after change |
 | `(buttonClickEvent)` | `{buttonId: string, formValue: any}` | when added custom button to the form it will emit that object that contains button id and form value |
+
+### Classes
+
+#### FormValueTransformer
+
+used to transform form value form T to V DTO
+
+```typescript
+export interface FormValueTransformer<T, V> {
+  transform(formValue: T): V;
+}
+```
+
+#### InputComponent
+
+its just a class that you extend to add your own components as input components
+it has the following description use this methods to integrate your component to dynamic form
+
+```typescript
+class InputComponent implements OnInit {
+  private inputNode!: InputNode;
+  protected value!: any;
+
+  constructor() {}
+
+  ngOnInit(): void {}
+
+  public getInputNode(): InputNode;
+
+  public initialize(input: InputNode): void;
+
+  public setValue(val: any): void; // note this sets the value but doesn't update it
+
+  public getValue(): any;
+
+  public commitChanges(): void; // here update and validation happens
+
+  private onChange(): void;
+}
+```
+
+#### DynamicFormContextService
+
+used to inject current form value if you want to know about it any time in your custom component
+
+```typescript
+@Injectable()
+export class DynamicFormContextService {
+  private context: any;
+  constructor() {}
+
+  public setContext(ctx: any) {
+    this.context = ctx;
+  }
+
+  public getContext() {
+    return this.context;
+  }
+}
+```
+
+#### FormEntityProcessorService
+
+used top process the annotations used by the library to generate input nodes
+you can use it to generate input nodes and write the full UI from scratch recommended if you like so
+
+```typescript
+@Injectable()
+export class FormEntityProcessorService {
+  constructor(private injector: Injector);
+  public process(formEntity: any): InputNode;
+  private createNode(
+    entity: any,
+    parentProperties?: Map<string, any>
+  ): InputNode;
+
+  private bindEntityToInputNode(
+    target: any,
+    propertyKey: string,
+    formControl: FormControl
+  ): void;
+
+  private bindEntityToInputTree(
+    target: any,
+    propertyKey: string,
+    formEntity: any
+  ): void;
+}
+```
+
+### Directives
+
+#### InputTemplateDirective
+
+used to register templates for input to customize per form good use case is login where u want to make inputs look different
+
+example to use
+
+```angular2html
+
+<ddd-form
+    [formEntity]="bookEntity"
+    (changeEvent)="onChange($event)"
+    (submitEvent)="onSubmit($event)"
+    (buttonClickEvent)="onClick($event)"
+  >
+  <ng-template dfInputTemplate [inputType]="'NUMBER'" let-inputNode>
+      <label>{{inputNode.getProperty('label')}}</label>
+  </ng-template>
+</ddd-form>
+
+```
+
+```typescript
+Directive({
+  selector: "[dfInputTemplate]",
+});
+export class InputTemplateDirective {
+  @Input("inputType") inputType!: string;
+  constructor(private templateRef: TemplateRef<any>) {}
+
+  public getInputType(): string;
+
+  public getTemplateRef(): TemplateRef;
+}
+```
 
 ### Decorators
 
@@ -546,9 +1016,7 @@ param of type
 
 ```typescript
 export type FormSpec = {
-  labelStyling: LabelStyling;
   updateStrategy: UpdateStrategy;
-  actionPositions: ActionsPosition;
 };
 ```
 
@@ -562,28 +1030,7 @@ export enum UpdateStrategy {
 }
 ```
 
-label styling
-
-```typescript
-export enum LabelStyling {
-  TOP = "TOP",
-  START = "START",
-  FLOAT = "FLOAT",
-}
-```
-
-actions position
-
-```typescript
-export enum ActionsPosition {
-  GRID_FLOW = "GRID_FLOW", // makes actions follow gird used for inline forms
-  NEW_LINE_START = "NEW_LINE_START", // make actions at start of new line after line break
-  NEW_LINE_END = "NEW_LINE_END", // make actions at end of new line after line break
-  NEW_LINE_CENTER = "NEW_LINE_CENTER", // make actions at center of new line after line break
-}
-```
-
-#### `@NestedFormEntity(param: NestedFormSpec)`
+#### `@NestedFormEntity(specs: NestedFormSpec)`
 
 to include FormEntity as field in another model
 param of type
@@ -593,6 +1040,7 @@ export type NestedFormSpec = {
   legend: string;
   name: string;
   declaredClass: any;
+  legendClass: string;
   width?: number;
 };
 ```
@@ -625,65 +1073,64 @@ export type NativeActionSpec = {
 };
 ```
 
-#### `@TextControl(textCtrlMeta: TextControlMeta)`
+#### `@TextInput(specs: TextInputSpec)`
+
+#### `@NumberInput(specs: NumberInputSpec)`
+
+#### `@DateInput(specs: DateInputSpec)`
+
+#### `@SelectInput(specs: SelectInputSpec)`
+
+#### `@CheckboxInput(specs: CheckInputSpec)`
+
+#### `@RadioGroupInput(specs: RadioButtonsSpec)`
+
+#### `CustomInput(specs: CustomInputSpec)`
+
+#### `@DynamicFormInput({ inputType: string })` // used to register components to be used in the form by custom input decorator
 
 ```typescript
-interface ControlMetaData {
+export interface InputSpec {
   name: string;
   id: string;
   label?: string;
   placeHolder?: string;
-  width?: number; // control width in bootstrap grid its value from 1 to 12
-  style?: string; // inline style no supported yet
-  class?: string; // you can provide your custom css class (not supported yet)
-
-  enableFn?: (formValue: any) => boolean; // used to enable or disabled field based on form value called if defined to make the field enabled or disabled
-  readonly?: boolean; // used to mark fields as read only works with text and number and dates only
+  width?: number;
+  style?: string;
+  class?: string;
+  enableFn?: (formValue: any) => boolean;
+  readonly?: boolean;
+  hint?: string;
   [x: string]: any;
 }
-interface TextControlMeta extends ControlMetaData {
+
+export interface TextInputSpec extends InputSpec {
   type: "text" | "password" | "email" | "url" | "tel";
 }
-```
 
-#### `@NumberControl(numCtrlMeta: NumberControlMeta)`
+export interface DateInputSpec extends InputSpec {
+  type: "date" | "month" | "week" | "datetime-local";
+}
 
-```typescript
-export interface NumberControlMeta extends ControlMetaData {}
-```
+export interface NumberInputSpec extends InputSpec {}
 
-#### `@DateControl(dateCtrlMeta: DateControlMeta)`
-
-```typescript
-export interface DateControlMeta extends ControlMetaData {}
-```
-
-#### `@SelectControl(selectMeta: SelectControlMeta)`
-
-```typescript
-interface SelectControlMeta extends ControlMetaData {
+export interface SelectInputSpec extends InputSpec {
   bindLabel: string;
   bindValue: string | null;
   compareWith: (a: any, b: any) => boolean;
-  dataSource: URL | any[] | Observable<any[]>; // component loads the data for you you jst tell what data source
-  // URL: means the finding the resource through HTTP and GET
+  dataSource: URL | any[] | Observable<any[]>;
 }
-```
 
-#### `@CheckboxControl(chBx: CheckboxMeta)`
+export interface CheckInputSpec extends InputSpec {}
 
-```typescript
-interface CheckboxMeta extends ControlMetaData {}
-```
-
-#### `@RadioButtons(radiosMeta: RadioButtonsMeta)`
-
-```typescript
-interface RadioButtonsMeta extends ControlMetaData, FieldSetMeta {
+export interface RadioButtonsSpec extends InputSpec {
+  legend: string;
   bindLabel: string;
   bindValue: string | null;
   dataSource: URL | any[] | Observable<any[]>;
-  inputWidth?: number; //  controls the width of each button so they can be on one line or one button on a line
+}
+export interface CustomInputSpec extends InputSpec {
+  inputType: string;
 }
 ```
 
@@ -700,15 +1147,10 @@ interface RadioButtonsMeta extends ControlMetaData, FieldSetMeta {
 // `ValidationError` so `${var}` `var` is replaced by the value that the key `var` has
 // in the error object
 
-  @MaxLength({
-    maxlength: number,
-    message: string, // message can be parametrized ex: 'name cant be larger than  ${requiredLength} characters'
-  })
+// message can be parametrized ex: 'name cant be larger than  ${requiredLength} characters'
+  @MaxLength({maxlength: number, message: string})
 
-  @MinLength({
-    minlength: number,
-    message: string ,
-  })
+  @MinLength({minlength: number, message: string})
 
   @NotNull({ message: string })
 
@@ -749,7 +1191,7 @@ used to validate fields asynchronously
 @AsyncValidation(specs: AsyncValidationSpec)
 
 export interface InjectableAsyncValidatorProvider {
-  provider: any;
+  provider: any; // class that is injectable that implements AsyncValidator interface
 }
 export type AsyncValidationSpec = {
   validator:
@@ -760,12 +1202,6 @@ export type AsyncValidationSpec = {
   errorName: string;
 };
 ```
-
-### UI Customization
-
-1. custom template to override view for specific form
-2. use components to provide new components with more complex and business driven UI
-3. override default components if defaults are not suitable
 
 ## License
 
