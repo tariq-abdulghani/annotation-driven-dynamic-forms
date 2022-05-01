@@ -2,24 +2,27 @@ import { BasicActionMeta } from '../actions/actions';
 import { UpdateStrategy } from './form-update-strategy';
 
 export type FormSpec = {
-  updateStrategy: UpdateStrategy;
+  name: string;
+  updateStrategy?: UpdateStrategy;
 };
 
 export type NestedFormSpec = {
-  legend: string;
+  legend?: string;
   name: string;
   declaredClass: any;
-  legendClass: string;
+  legendClass?: string;
   width?: number;
 };
 
 export class FormMeta {
+  name: string;
   actions: BasicActionMeta[];
   updateStrategy: UpdateStrategy;
 
-  constructor(formSpec?: FormSpec) {
+  constructor(formSpec: FormSpec) {
+    this.name = formSpec?.name;
     this.actions = [];
-    this.updateStrategy = formSpec
+    this.updateStrategy = formSpec.updateStrategy
       ? formSpec.updateStrategy
       : UpdateStrategy.ON_CHANGE;
   }

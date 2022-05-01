@@ -43,7 +43,8 @@ export * from './lib/core/models/decorators/validation/async/async-validation';
 export * from './lib/ui/components/dynamic-form/dynamic-form.component';
 export * from './lib/ui/components/input/input.component';
 
-export * from './lib/ui/directives/input-template.directive';
+export * from './lib/ui/directives/input-template/input-template.directive';
 export * from './lib/ui/input-component-registry/decorators/dynamic-form-input';
+export * from './lib/ui/directives/button-template/button-template.directive';
 
 export * from './lib/core/services/form-context/dynamic-form-context.service';

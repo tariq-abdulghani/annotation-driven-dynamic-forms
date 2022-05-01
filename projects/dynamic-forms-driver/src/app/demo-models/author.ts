@@ -9,6 +9,7 @@ import {
   NumberInput,
   RadioGroupInput,
   TextInput,
+  UpdateStrategy,
 } from 'decorator-driven-dynamic-form';
 
 @CrossValidation({
@@ -29,10 +30,11 @@ import {
     return null;
   },
 })
-@FormEntity()
+@FormEntity({ name: 'author', updateStrategy: UpdateStrategy.ON_CHANGE })
 export class Author {
   @NotNull({ message: 'author name is mandatory' })
   @TextInput({
+    order: 1,
     id: 'name',
     name: 'name',
     type: 'text',

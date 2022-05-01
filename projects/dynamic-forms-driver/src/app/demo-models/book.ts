@@ -17,7 +17,7 @@ import {
 import { Author } from './author';
 
 @Submit({ id: 'submit', label: 'ok' })
-@FormEntity({ updateStrategy: UpdateStrategy.ON_PLUR })
+@FormEntity({ name: 'book', updateStrategy: UpdateStrategy.ON_PLUR })
 export class Book {
   @AsyncValidation({
     errorName: 'isbn',

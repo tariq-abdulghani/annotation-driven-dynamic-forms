@@ -1,14 +1,13 @@
-# Decorator Driven Dynamic Forms version 8.0.0-a.1
+# Decorator Driven Dynamic Forms version 9.0.0-a.1
 
 > Opinionated way to create dynamic forms with **no json** , **no inheritance**
 > just use **decorators**
 
 ## What is new in this version
 
-1. UI Customization
-   you can provide templates and components to be used as UI elements in form
-2. CSS style file that provide variables and classes that u can use to customize
-   existing UI
+1. no explicit form entity initialization you just provide them for scanning(annotation processing)
+2. input order
+3. form buttons templates for customization and reusability
 
 ## Project Goals
 
@@ -95,7 +94,13 @@ import { DecoratorDrivenDynamicFormsModule } from "decorator-driven-dynamic-form
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, HttpClientModule, DecoratorDrivenDynamicFormsModule],
+  imports: [
+    BrowserModule,
+    DecoratorDrivenDynamicFormsModule.scan([Book, Author]), // scans classes for annotation processing
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule,
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })
@@ -119,7 +124,7 @@ import {
   TextInput,
 } from "decorator-driven-dynamic-form";
 
-@FormEntity()
+@FormEntity({ name: "author", updateStrategy: UpdateStrategy.ON_CHANGE })
 export class Author {
   @TextInput({
     id: "name",
@@ -181,7 +186,7 @@ import {
 import { Author } from "./author";
 
 @Submit({ id: "submit", label: "ok" })
-@FormEntity()
+@FormEntity({ name: "book", updateStrategy: UpdateStrategy.ON_PLUR })
 export class Book {
   @NotNull({ message: "isbn is mandatory" })
   @TextInput({
@@ -269,14 +274,14 @@ export class AppComponent implements OnInit {
 4. pass it the form entity to the dynamic-form-component
 
 ```angular2html
-<ddd-form
-    [formEntity]="bookEntity"
+<d-form
+    [entityName]="'book'"
+    [initialValue]="story"
     (changeEvent)="onChange($event)"
     (submitEvent)="onSubmit($event)"
     (buttonClickEvent)="onClick($event)"
   >
-</ddd-form>
-
+  </d-form>
 ```
 
 5. Run `ng s` and see the result your self.
@@ -327,7 +332,7 @@ import {
   TextInput,
 } from "decorator-driven-dynamic-form";
 
-@FormEntity()
+@FormEntity({ name: "book", updateStrategy: UpdateStrategy.ON_PLUR })
 export class Author {
   @NotNull({ message: "author name is mandatory" })
   @TextInput({
@@ -439,7 +444,7 @@ import {
     return null;
   },
 })
-@FormEntity()
+@FormEntity({ name: "author", updateStrategy: UpdateStrategy.ON_PLUR })
 export class Author {
   @NotNull({ message: "author name is mandatory" })
   @TextInput({
@@ -543,7 +548,7 @@ import {
 import { Author } from "./author";
 
 @Submit({ id: "submit", label: "ok" })
-@FormEntity({ updateStrategy: UpdateStrategy.ON_PLUR })
+@FormEntity({ name: "book", updateStrategy: UpdateStrategy.ON_PLUR })
 export class Book {
   @AsyncValidation({
     errorName: "isbn",
@@ -626,7 +631,7 @@ available update strategies
 
 ```angular2html
 <div class="container">
-  <ddd-form
+  <d-form
     [formEntity]="bookEntity"
     (changeEvent)="onChange($event)"
     (submitEvent)="onSubmit($event)"
@@ -636,7 +641,7 @@ available update strategies
       <label class="form-label">{{ inputNode.getProperty("label") }} </label>
       <input type="number" [formControl]="inputNode.getControl()" />
     </ng-template>
-  </ddd-form>
+  </d-form>
 </div>
 ```
 
@@ -789,7 +794,7 @@ book class now looks like
 
 ```typescript
 @Submit({ id: "submit", label: "ok" })
-@FormEntity({ updateStrategy: UpdateStrategy.ON_PLUR })
+@FormEntity({ name: "book", updateStrategy: UpdateStrategy.ON_PLUR })
 export class Book {
   @AsyncValidation({
     errorName: "isbn",
@@ -869,7 +874,7 @@ export class Book {
 
 ### Component API
 
-#### DynamicFormComponent API selector `ddd-form`
+#### DynamicFormComponent API selector `d-form`
 
 | Input                |               type               |                                                                                                               description |
 | -------------------- | :------------------------------: | ------------------------------------------------------------------------------------------------------------------------: |
@@ -981,7 +986,7 @@ example to use
 
 ```angular2html
 
-<ddd-form
+<d-form
     [formEntity]="bookEntity"
     (changeEvent)="onChange($event)"
     (submitEvent)="onSubmit($event)"
@@ -990,7 +995,7 @@ example to use
   <ng-template dfInputTemplate [inputType]="'NUMBER'" let-inputNode>
       <label>{{inputNode.getProperty('label')}}</label>
   </ng-template>
-</ddd-form>
+</d-form>
 
 ```
 
@@ -1010,14 +1015,15 @@ export class InputTemplateDirective {
 
 ### Decorators
 
-#### `@FormEntity(param?:FormSpec)`
+#### `@FormEntity(param:FormSpec)`
 
 to declare class as form model that can be used in dynamic from component
 param of type
 
 ```typescript
 export type FormSpec = {
-  updateStrategy: UpdateStrategy;
+  name: string;
+  updateStrategy?: UpdateStrategy;
 };
 ```
 
@@ -1038,10 +1044,10 @@ param of type
 
 ```typescript
 export type NestedFormSpec = {
-  legend: string;
+  legend?: string;
   name: string;
   declaredClass: any;
-  legendClass: string;
+  legendClass?: string;
   width?: number;
 };
 ```
@@ -1104,6 +1110,7 @@ export interface InputSpec {
   enableFn?: (formValue: any) => boolean;
   readonly?: boolean;
   hint?: string;
+  order?: number;
   [x: string]: any;
 }
 

@@ -20,18 +20,29 @@
   </ng-container>
 
   <div class="col-12 d-buttons-row">
-    <div
-      class="col-lg-1 col-md-3 col-sm-3"
-      *ngFor="let action of inputTree.getProperty('actions')"
+    <ng-container
+      *ngIf="buttonTemplateQueryList.length > 0; else actionsFromMeta"
     >
-      <button
-        [type]="action.type"
-        [class]="'d-form-btn ' + (action.class || 'btn btn-primary')"
-        (click)="onClick(action)"
+      <ng-container
+        *ngFor="let buttonDir of buttonTemplateQueryList"
+        [ngTemplateOutlet]="buttonDir.getTemplate()"
+        [ngTemplateOutletContext]="{ $implicit: inputTree }"
+      ></ng-container>
+    </ng-container>
+    <ng-template #actionsFromMeta>
+      <div
+        class="col-lg-1 col-md-3 col-sm-3"
+        *ngFor="let action of inputTree.getProperty('actions')"
       >
-        {{ action?.label }}
-      </button>
-    </div>
+        <button
+          [type]="action.type"
+          [class]="'d-form-btn ' + (action.class || 'btn btn-primary')"
+          (click)="onClick(action)"
+        >
+          {{ action?.label }}
+        </button>
+      </div>
+    </ng-template>
   </div>
 </form>
 <ng-content></ng-content>

@@ -4,7 +4,7 @@ import { FormMeta, FormSpec } from '../../types/forms/form-meta';
 export const FORM_METADATA_KEY = Symbol('FormSpec');
 
 export class FormMetaData {
-  public static add(formSpec: FormSpec | undefined, constructor: any) {
+  public static add(formSpec: FormSpec, constructor: any) {
     Reflect.defineMetadata(
       FORM_METADATA_KEY,
       MapUtil.formObject(new FormMeta(formSpec)),
