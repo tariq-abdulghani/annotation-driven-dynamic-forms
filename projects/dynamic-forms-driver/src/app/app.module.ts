@@ -14,7 +14,7 @@ import { Book } from './demo-models/book';
   declarations: [AppComponent, CustomTextInputComponent, RatingComponent],
   imports: [
     BrowserModule,
-    DynamicFormModule.register([Book, Author]),
+    DynamicFormModule.register([Book, Author, RatingComponent]),
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
