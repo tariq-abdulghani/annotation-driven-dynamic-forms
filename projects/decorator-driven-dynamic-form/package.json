@@ -1,6 +1,6 @@
 {
   "name": "ddd-form",
-  "version": "8.0.0-a.1",
+  "version": "10.0.0-a",
   "peerDependencies": {
     "@angular/common": "^12.2.0",
     "@angular/core": "^12.2.0",
@@ -12,7 +12,7 @@
   "keywords": [
     "dynamic form",
     "decorator driven",
-    "influenced by JPA and Dot Net"
+    "influenced by Java JPA "
   ],
   "license": "MIT"
 }

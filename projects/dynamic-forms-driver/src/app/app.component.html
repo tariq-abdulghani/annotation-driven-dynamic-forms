@@ -1,11 +1,22 @@
 <div class="container">
-  <ddd-form
-    [formEntity]="bookEntity"
+  <d-form
+    #df
+    entityName="book"
+    [initialValue]="story"
     (changeEvent)="onChange($event)"
     (submitEvent)="onSubmit($event)"
     (buttonClickEvent)="onClick($event)"
   >
-  </ddd-form>
+    <button *dfButton class="btn btn-success" type="submit">submit</button>
+    <button
+      *dfButton
+      class="btn btn-warning"
+      type="button"
+      (click)="df.onClick('cancel')"
+    >
+      cancel
+    </button>
+  </d-form>
 </div>
 
 <!-- <input

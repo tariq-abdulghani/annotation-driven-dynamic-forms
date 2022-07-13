@@ -9,7 +9,7 @@ export class DataLoaderService {
   constructor(private httpClient: HttpClient) {}
   load(
     dataSource: URL | any[] | Observable<any[]>
-  ): Observable<any[]> | Promise<any[]> {
+  ): Observable<any[]> {
     if (dataSource instanceof URL) {
       if (!this.dataSources.get(dataSource.href)) {
         this.dataSources.set(

@@ -2,7 +2,7 @@ import { AbstractControl } from '@angular/forms';
 import {
   FormEntity,
   TextInput,
-  NotNull,
+  Required,
   Submit,
   NumberInput,
   DateInput,
@@ -17,7 +17,7 @@ import {
 import { Author } from './author';
 
 @Submit({ id: 'submit', label: 'ok' })
-@FormEntity({ updateStrategy: UpdateStrategy.ON_PLUR })
+@FormEntity({ name: 'book', updateStrategy: UpdateStrategy.ON_PLUR })
 export class Book {
   @AsyncValidation({
     errorName: 'isbn',
@@ -31,7 +31,7 @@ export class Book {
       });
     },
   })
-  @NotNull({ message: 'isbn is mandatory' })
+  @Required({ message: 'isbn is mandatory' })
   @TextInput({
     id: 'isbn',
     name: 'isbn',

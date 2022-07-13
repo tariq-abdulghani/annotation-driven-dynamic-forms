@@ -2,7 +2,7 @@
  * Public API Surface of decorator-driven-dynamic-form
  */
 
-export * from './lib/decorator-driven-dynamic-forms.module';
+export * from './lib/dynamic-form.module';
 
 // export * from './lib/views/dynamic-form/dynamic-form.component';
 // models
@@ -18,7 +18,7 @@ export * from './lib/core/models/decorators/actions/button';
 // controls
 
 // validation
-export * from './lib/core/models/decorators/validation/sync/not-null';
+export * from './lib/core/models/decorators/validation/sync/required';
 export * from './lib/core/models/decorators/validation/sync/required-true';
 export * from './lib/core/models/decorators/validation/sync/max';
 export * from './lib/core/models/decorators/validation/sync/min';
@@ -43,7 +43,8 @@ export * from './lib/core/models/decorators/validation/async/async-validation';
 export * from './lib/ui/components/dynamic-form/dynamic-form.component';
 export * from './lib/ui/components/input/input.component';
 
-export * from './lib/ui/directives/input-template.directive';
+export * from './lib/ui/directives/input-template/input-template.directive';
 export * from './lib/ui/input-component-registry/decorators/dynamic-form-input';
+export * from './lib/ui/directives/button-template/button-template.directive';
 
 export * from './lib/core/services/form-context/dynamic-form-context.service';

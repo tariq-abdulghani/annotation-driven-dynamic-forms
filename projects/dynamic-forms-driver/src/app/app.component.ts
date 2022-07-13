@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Book } from './demo-models/book';
 
 @Component({
@@ -9,8 +9,21 @@ import { Book } from './demo-models/book';
 })
 export class AppComponent implements OnInit {
   title = 'dynamic-forms-driver';
-
-  bookEntity = new Book();
+  story: Book = {
+    author: {
+      age: 10,
+      birthDate: null,
+      deathDate: null,
+      gender: null,
+      married: true,
+      name: 'sayed',
+    },
+    genre: null,
+    isbn: '123456789',
+    price: 200,
+    publishDate: null,
+    rate: 8,
+  };
   onSubmit($event: any) {
     console.log($event);
   }
@@ -28,6 +41,5 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {}
   setRate(value: any) {
     console.log(value);
-    this.bookEntity.rate = value;
   }
 }
