@@ -2,7 +2,7 @@ import { AbstractControl } from '@angular/forms';
 import {
   FormEntity,
   TextInput,
-  NotNull,
+  Required,
   Submit,
   NumberInput,
   DateInput,
@@ -31,7 +31,7 @@ export class Book {
       });
     },
   })
-  @NotNull({ message: 'isbn is mandatory' })
+  @Required({ message: 'isbn is mandatory' })
   @TextInput({
     id: 'isbn',
     name: 'isbn',

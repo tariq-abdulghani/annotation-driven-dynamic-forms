@@ -31,6 +31,7 @@ export interface SelectInputSpec extends InputSpec {
   bindValue: string | null;
   compareWith: (a: any, b: any) => boolean;
   dataSource: URL | any[] | Observable<any[]>;
+  defaultValueIndex?: number;
 }
 
 export interface CheckInputSpec extends InputSpec {}

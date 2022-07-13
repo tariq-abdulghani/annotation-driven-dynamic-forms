@@ -1,14 +1,19 @@
-# Decorator Driven Dynamic Forms version 8.0.0-a.1
+# Decorator Driven Dynamic Forms version 10.0.0-a
 
 > Opinionated way to create dynamic forms with **no json** , **no inheritance**
 > just use **decorators**
 
 ## What is new in this version
 
-1. UI Customization
-   you can provide templates and components to be used as UI elements in form
-2. CSS style file that provide variables and classes that u can use to customize
-   existing UI
+1. no need for manual construction for form entity its injected now
+2. added new interface FormController to enable us to manage form state
+3. added form context variable to use the same form many times with different contexts
+4. added context override decorator to override attributes based on context
+5. added order attribute, so we can order elements in the view
+6. added min date and max date validation decorators
+7. fixed disabled issue
+8. fixed mutable meta data issue
+9. fixed decorators are not active in production with optimization
 
 ## Project Goals
 
@@ -27,9 +32,7 @@
 
 7. opinionated based on commons and defaults
 
-8. binding form model to form control and view which mean you create the form model
-   and any updates on it will be reflected on _UI_ and on form controls
-9. flexibility to customize UI , UI that uou want , UI can change but forms, inputs, validations are concepts that are the same.
+8. flexibility to customize UI , UI that uou want , UI can change but forms, inputs, validations are concepts that are the same.
 
 ## Dependencies
 
@@ -91,11 +94,15 @@ we will model book and author models where book refers to an author
 1. import the _DecoratorDrivenDynamicFormsModule_ and _HttpClientModule_ into your app
 
 ```typescript
-import { DecoratorDrivenDynamicFormsModule } from "decorator-driven-dynamic-forms.module";
+import { DynamicFormModule } from "decorator-driven-dynamic-forms.module";
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, HttpClientModule, DecoratorDrivenDynamicFormsModule],
+  imports: [
+    BrowserModule,
+    HttpClientModule,
+    DynamicFormModule.register([Author, Book]),
+  ], // register for entities in the system to be ready for injection
   providers: [],
   bootstrap: [AppComponent],
 })
@@ -111,15 +118,7 @@ any nested forms will take column and creates row as container for each input it
 which provides flexibility in layout break points are managed till now by the form
 
 ```typescript
-import {
-  CheckboxInput,
-  FormEntity,
-  NumberInput,
-  RadioGroupInput,
-  TextInput,
-} from "decorator-driven-dynamic-form";
-
-@FormEntity()
+@FormEntity({ name: "Author" })
 export class Author {
   @TextInput({
     id: "name",
@@ -167,23 +166,10 @@ we can add buttons to the form and configure its styles
 standard form actions are supported natively, non standard buttons can be added to it will be explained later.
 
 ```typescript
-import {
-  FormEntity,
-  TextInput,
-  NotNull,
-  Submit,
-  NumberInput,
-  DateInput,
-  NestedFormEntity,
-  SelectInput,
-  Max,
-} from "decorator-driven-dynamic-form";
-import { Author } from "./author";
-
 @Submit({ id: "submit", label: "ok" })
-@FormEntity()
+@FormEntity({ name: "Book" })
 export class Book {
-  @NotNull({ message: "isbn is mandatory" })
+  @Required({ message: "isbn is mandatory" })
   @TextInput({
     id: "isbn",
     name: "isbn",
@@ -247,7 +233,6 @@ export class Book {
 export class AppComponent implements OnInit {
   title = "dynamic-forms-driver";
 
-  bookEntity = new Book();
   onSubmit($event: any) {
     console.log($event);
   }
@@ -269,13 +254,13 @@ export class AppComponent implements OnInit {
 4. pass it the form entity to the dynamic-form-component
 
 ```angular2html
-<ddd-form
-    [formEntity]="bookEntity"
+<d-form
+    entityName="Book"
     (changeEvent)="onChange($event)"
     (submitEvent)="onSubmit($event)"
     (buttonClickEvent)="onClick($event)"
   >
-</ddd-form>
+</d-form>
 
 ```
 
@@ -290,46 +275,38 @@ so try`this.bookEntity.isbn = 'pla-pla'` press Ctl+s and see
 in book class we can see the lines
 
 ```typescript
-@NotNull({ message: "isbn is mandatory" })
-  @TextInput({
-    id: "isbn",
-    name: "isbn",
-    type: "text",
-    placeHolder: "ISBN",
-    hint: "hello world hint!",
-    width: 4,
-  })
-  isbn: string | null = null; // field isbn in book class now is required
+@Required({message: "isbn is mandatory"})
+@TextInput({
+  id: "isbn",
+  name: "isbn",
+  type: "text",
+  placeHolder: "ISBN",
+  hint: "hello world hint!",
+  width: 4,
+})
+isbn: string | null = null; // field isbn in book class now is required
 ```
 
 which is used to make the field required
 we can add multiple validations on single field
 validations list
 
-1. NotNull
+1. Required
 2. Min
 3. Max
 4. MaxLength
 5. MinLength
-6. RequiredTrue
-7. Pattern
+6. MinDate
+7. MaxDate
+8. RequiredTrue
+9. Pattern
 
 lets add some validation to the author set min age and name constrains
 
 ```typescript
-import {
-  CheckboxInput,
-  FormEntity,
-  Min,
-  NotNull,
-  NumberInput,
-  RadioGroupInput,
-  TextInput,
-} from "decorator-driven-dynamic-form";
-
-@FormEntity()
+@FormEntity({ name: "Author" })
 export class Author {
-  @NotNull({ message: "author name is mandatory" })
+  @Required({ message: "author name is mandatory" })
   @TextInput({
     id: "name",
     name: "name",
@@ -407,19 +384,6 @@ lets add the block
 now author class looks like
 
 ```typescript
-import { AbstractControl } from "@angular/forms";
-import {
-  CheckboxInput,
-  CrossValidation,
-  DateInput,
-  FormEntity,
-  Min,
-  NotNull,
-  NumberInput,
-  RadioGroupInput,
-  TextInput,
-} from "decorator-driven-dynamic-form";
-
 @CrossValidation({
   errorName: "dateOfDeath",
   effects: [
@@ -439,9 +403,9 @@ import {
     return null;
   },
 })
-@FormEntity()
+@FormEntity({ name: "Author" })
 export class Author {
-  @NotNull({ message: "author name is mandatory" })
+  @Required({ message: "author name is mandatory" })
   @TextInput({
     id: "name",
     name: "name",
@@ -526,24 +490,8 @@ this will explained later we just explore th API
 ```
 
 ```typescript
-import { AbstractControl } from "@angular/forms";
-import {
-  FormEntity,
-  TextInput,
-  NotNull,
-  Submit,
-  NumberInput,
-  DateInput,
-  NestedFormEntity,
-  SelectInput,
-  CustomInput,
-  Max,
-  AsyncValidation,
-} from "decorator-driven-dynamic-form";
-import { Author } from "./author";
-
 @Submit({ id: "submit", label: "ok" })
-@FormEntity({ updateStrategy: UpdateStrategy.ON_PLUR })
+@FormEntity({ name: "Book", updateStrategy: UpdateStrategy.ON_PLUR })
 export class Book {
   @AsyncValidation({
     errorName: "isbn",
@@ -557,7 +505,7 @@ export class Book {
       });
     },
   })
-  @NotNull({ message: "isbn is mandatory" })
+  @Required({ message: "isbn is mandatory" })
   @TextInput({
     id: "isbn",
     name: "isbn",
@@ -608,7 +556,7 @@ export class Book {
 }
 ```
 
-note we added `@FormEntity({ updateStrategy: UpdateStrategy.ON_PLUR }) `
+note we added `@FormEntity({name:"Book", updateStrategy: UpdateStrategy.ON_PLUR }) `
 its good for performance to change form update strategy to ON_PLUR or ON_SUBMIT
 available update strategies
 
@@ -626,8 +574,8 @@ available update strategies
 
 ```angular2html
 <div class="container">
-  <ddd-form
-    [formEntity]="bookEntity"
+  <d-form
+    entityName="Book"
     (changeEvent)="onChange($event)"
     (submitEvent)="onSubmit($event)"
     (buttonClickEvent)="onClick($event)"
@@ -636,7 +584,7 @@ available update strategies
       <label class="form-label">{{ inputNode.getProperty("label") }} </label>
       <input type="number" [formControl]="inputNode.getControl()" />
     </ng-template>
-  </ddd-form>
+  </d-form>
 </div>
 ```
 
@@ -663,20 +611,13 @@ export interface InputNode {
 }
 ```
 
-3. provide cutom ui components
+3. provide custom ui components
    ex`lets create rating component which is used to rate books`
 
 let create the component first
 use `@DynamicFormInput({ inputType: "rating" })` to provide it for framework to be used as input
 
 ```typescript
-import { Component, HostListener, OnInit } from "@angular/core";
-import {
-  DynamicFormContextService,
-  DynamicFormInput,
-  InputComponent,
-} from "decorator-driven-dynamic-form";
-
 @DynamicFormInput({ inputType: "rating" })
 @Component({
   selector: "app-rating.rating-component",
@@ -771,6 +712,24 @@ rating css
 }
 ```
 
+register custom component
+
+```typescript
+import { DynamicFormModule } from "decorator-driven-dynamic-forms.module";
+
+@NgModule({
+  declarations: [AppComponent],
+  imports: [
+    BrowserModule,
+    HttpClientModule,
+    DynamicFormModule.register([Author, Book, RatingComponent]),
+  ], // register for entities in the system to be ready for injection
+  providers: [],
+  bootstrap: [AppComponent],
+})
+export class AppModule {}
+```
+
 and in our book class mark input to use it as its input mapping
 
 ```typescript
@@ -789,7 +748,7 @@ book class now looks like
 
 ```typescript
 @Submit({ id: "submit", label: "ok" })
-@FormEntity({ updateStrategy: UpdateStrategy.ON_PLUR })
+@FormEntity({ name: "Book", updateStrategy: UpdateStrategy.ON_PLUR })
 export class Book {
   @AsyncValidation({
     errorName: "isbn",
@@ -803,7 +762,7 @@ export class Book {
       });
     },
   })
-  @NotNull({ message: "isbn is mandatory" })
+  @Required({ message: "isbn is mandatory" })
   @TextInput({
     id: "isbn",
     name: "isbn",
@@ -871,10 +830,11 @@ export class Book {
 
 #### DynamicFormComponent API selector `ddd-form`
 
-| Input                |               type               |                                                                                                               description |
-| -------------------- | :------------------------------: | ------------------------------------------------------------------------------------------------------------------------: |
-| `[formEntity]`       |             `Object`             |                                    any instance of class annotated with `@FormEntity()`, the input form model to the view |
-| `[valueTransformer]` | `FormValueTransformer<any, any>` | an interface if provided and object with that interface it will be used to transform form value based on transform method |
+| Input                |               type               |                                                                                                                                                                         description |
+| -------------------- | :------------------------------: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
+| `entityName`         |             `string`             |                                                                                      name of the entity just provide entity name and it will be searched in the registered entities |
+| `[valueTransformer]` | `FormValueTransformer<any, any>` |                                                           an interface if provided and object with that interface it will be used to transform form value based on transform method |
+| `[useContext]`       |             `string`             | used to provide string value that represents different uses of the same form can be used with `@UseContext(ctx:string)` to make some inputs appear in some context and not in other |
 
 | Output               |                 type                 |                                                                                          description |
 | -------------------- | :----------------------------------: | ---------------------------------------------------------------------------------------------------: |
@@ -891,6 +851,49 @@ used to transform form value form T to V DTO
 ```typescript
 export interface FormValueTransformer<T, V> {
   transform(formValue: T): V;
+}
+```
+
+#### FormController
+
+used to control form by injecting instance from the component as ViewChild
+
+```angular2html
+<d-form entityName="Book" #bookForm></d-form>
+```
+
+```typescript
+@ViewChild('bookForm') formController: FormController;
+```
+
+```typescript
+export interface FormController {
+  markAllAsTouched(): void;
+  markAsTouched(path: string): void;
+
+  markAsInvalid(
+    path?: string,
+    errConfig?: { errName: string; errMessage: string }
+  ): void;
+
+  markFieldAsInvalid(
+    path: string,
+    errConfig: { errName: string; errMessage: string }
+  ): void;
+
+  disable(path: string): void;
+  enable(path: string): void;
+
+  setReadonly(path: string): void;
+  unsetReadonly(path: string): void;
+
+  getRowValue(): any;
+  getValue(): any;
+
+  fireAction(id: string): void;
+  reset(value?: any, emitEvent?: boolean): void;
+  patch(value?: any, emitEvent?: boolean): void;
+  getName(): string;
 }
 ```
 
@@ -951,23 +954,14 @@ you can use it to generate input nodes and write the full UI from scratch recomm
 @Injectable()
 export class FormEntityProcessorService {
   constructor(private injector: Injector);
+
   public process(formEntity: any): InputNode;
-  private createNode(
+
+  private createContextualNode(
     entity: any,
+    context: UseContext,
     parentProperties?: Map<string, any>
   ): InputNode;
-
-  private bindEntityToInputNode(
-    target: any,
-    propertyKey: string,
-    formControl: FormControl
-  ): void;
-
-  private bindEntityToInputTree(
-    target: any,
-    propertyKey: string,
-    formEntity: any
-  ): void;
 }
 ```
 
@@ -981,8 +975,8 @@ example to use
 
 ```angular2html
 
-<ddd-form
-    [formEntity]="bookEntity"
+<d-form
+   entityName="Book"
     (changeEvent)="onChange($event)"
     (submitEvent)="onSubmit($event)"
     (buttonClickEvent)="onClick($event)"
@@ -990,7 +984,7 @@ example to use
   <ng-template dfInputTemplate [inputType]="'NUMBER'" let-inputNode>
       <label>{{inputNode.getProperty('label')}}</label>
   </ng-template>
-</ddd-form>
+</d-form>
 
 ```
 
@@ -1010,6 +1004,23 @@ export class InputTemplateDirective {
 
 ### Decorators
 
+#### `@Id()`
+
+used to mark a field as and id field
+in admin library its used to construct URI that needs an id
+
+#### `@UseContext(ctx:string)`
+
+set context variable to form and used to make form reusable
+in many contexts, where we can specify what fields can appear
+to that context to increase usability
+
+#### `@ContextOverride({context: string, properties: object)`
+
+used to override attributes according to context
+some filed may be enabled in a context and disabled in another
+you may also specify other things related to that context
+
 #### `@FormEntity(param?:FormSpec)`
 
 to declare class as form model that can be used in dynamic from component
@@ -1017,6 +1028,7 @@ param of type
 
 ```typescript
 export type FormSpec = {
+  name: string;
   updateStrategy: UpdateStrategy;
 };
 ```
@@ -1059,7 +1071,7 @@ to set reset button meta data like label or even it class
 to set submit button meta data like label or even it class
 default class is `btn btn-primary`.
 
-### `Button(meta: NativeActionSpec)`
+#### `@Button(meta: NativeActionSpec)`
 
 to add a custom button to the form like cancel button
 good use case is in pop up with from and you can cancel or save
@@ -1074,23 +1086,25 @@ export type NativeActionSpec = {
 };
 ```
 
-#### `@TextInput(specs: TextInputSpec)`
+### Fields Decorators:
 
-#### `@NumberInput(specs: NumberInputSpec)`
+1. #### `@TextInput(specs: TextInputSpec)`
 
-#### `@DateInput(specs: DateInputSpec)`
+2. #### `@NumberInput(specs: NumberInputSpec)`
 
-#### `@SelectInput(specs: SelectInputSpec)`
+3. #### `@DateInput(specs: DateInputSpec)`
 
-#### `@CheckboxInput(specs: CheckInputSpec)`
+4. #### `@SelectInput(specs: SelectInputSpec)`
 
-#### `@RadioGroupInput(specs: RadioButtonsSpec)`
+5. #### `@CheckboxInput(specs: CheckInputSpec)`
 
-#### `CustomInput(specs: CustomInputSpec)`
+6. #### `@RadioGroupInput(specs: RadioButtonsSpec)`
+
+7. #### `@CustomInput(specs: CustomInputSpec)`
 
 #### `@DynamicFormInput({ inputType: string })`
 
-// used to register components to be used in the form by custom input decorator
+used to register components to be used in the form by custom input decorator
 
 ```typescript
 export interface InputSpec {
@@ -1122,6 +1136,7 @@ export interface SelectInputSpec extends InputSpec {
   bindValue: string | null;
   compareWith: (a: any, b: any) => boolean;
   dataSource: URL | any[] | Observable<any[]>;
+  defaultValueIndex?: number; // sets the index of default value else the defualt is null
 }
 
 export interface CheckInputSpec extends InputSpec {}
@@ -1155,11 +1170,15 @@ export interface CustomInputSpec extends InputSpec {
 
   @MinLength({minlength: number, message: string})
 
-  @NotNull({ message: string })
+  @Required({ message: string })
 
   @Max({ maxValue: number, message:  string})//message can be parametrized 'age cant be more than ${max} years'
 
   @Min({ minValue: number, message: string})//message can be parametrized 'age cant be lass than ${min}'
+
+  @MaxDate({ maxDate: str | Date, message:  string})
+
+  @MinDate({ minDate: str | Date, message:  string})
 
   @RequiredTrue({ message: string })
 
@@ -1205,6 +1224,10 @@ export type AsyncValidationSpec = {
   errorName: string;
 };
 ```
+
+## Notes:
+
+any opinions are appreciated, any contributions are welcome thanks .
 
 ## License
 

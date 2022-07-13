@@ -1,7 +1,7 @@
 import { Validators } from '@angular/forms';
 import { ValidationsMetaData } from './ValidationsMetaData';
 
-export function NotNull(errConfig: { message: string }) {
+export function Required(errConfig: { message: string }) {
   return function (target: any, propertyKey: string) {
     ValidationsMetaData.add(
       {
