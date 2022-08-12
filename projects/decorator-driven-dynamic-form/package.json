@@ -1,6 +1,7 @@
 {
   "name": "ddd-form",
-  "version": "10.0.0-a",
+  "description": "a library for building forms at run time for angular projects, suitable for large projects that depends on forms using API similar to JPA ",
+  "version": "10.0.1-a",
   "peerDependencies": {
     "@angular/common": "^12.2.0",
     "@angular/core": "^12.2.0",
@@ -9,10 +10,22 @@
   "dependencies": {
     "tslib": "^2.3.0"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://www.npmjs.com/package/ddd-form"
+  },
+  "bugs": {
+    "url": "https://github.com/tariq-abdulghani/annotation-driven-dynamic-forms/issues"
+  },
+  "author": {
+    "name": "Tariq Abdul Ghani",
+    "email": "tariq.abdulghani.hussein@gmail.com",
+    "url": "https://www.linkedin.com/in/tariq-abdul-ghani-1a468414a/"
+  },
   "keywords": [
     "dynamic form",
-    "decorator driven",
-    "influenced by Java JPA "
+    "decorators",
+    "annotations"
   ],
   "license": "MIT"
 }

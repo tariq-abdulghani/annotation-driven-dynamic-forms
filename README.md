@@ -1,19 +1,12 @@
-# Decorator Driven Dynamic Forms version 10.0.0-a
+# Decorator Driven Dynamic Forms version 10.0.1-a
 
 > Opinionated way to create dynamic forms with **no json** , **no inheritance**
 > just use **decorators**
 
 ## What is new in this version
 
-1. no need for manual construction for form entity its injected now
-2. added new interface FormController to enable us to manage form state
-3. added form context variable to use the same form many times with different contexts
-4. added context override decorator to override attributes based on context
-5. added order attribute, so we can order elements in the view
-6. added min date and max date validation decorators
-7. fixed disabled issue
-8. fixed mutable meta data issue
-9. fixed decorators are not active in production with optimization
+1. fixed invalid date issue when users clear date inputs
+2. updated package.json with more meta data about project and the author
 
 ## Project Goals
 
