@@ -1,4 +1,4 @@
-# Decorator Driven Dynamic Forms version 10.0.1-a
+# Decorator Driven Dynamic Forms version 10.0.2-a
 
 > Opinionated way to create dynamic forms with **no json** , **no inheritance**
 > just use **decorators**
