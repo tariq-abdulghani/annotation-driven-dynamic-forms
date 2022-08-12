@@ -12,8 +12,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://www.npmjs.com/package/ddd-form"
+    "url": "https://github.com/tariq-abdulghani/annotation-driven-dynamic-forms"
   },
+  "homepage": "https://github.com/tariq-abdulghani/annotation-driven-dynamic-forms#readme",
   "bugs": {
     "url": "https://github.com/tariq-abdulghani/annotation-driven-dynamic-forms/issues"
   },

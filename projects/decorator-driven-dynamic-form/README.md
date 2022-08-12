@@ -78,6 +78,18 @@ install boot strap if you don't have it`npm i bootstrap` and add it in styles
 [`npm install decorator-driven-dynamic-forms --save`]: # after that add its styles from
 `decorator-driven-dynamic-form/assests/styles/styles.css` to your angular app
 
+## contents
+
+1. [how to use](#how-to-use)
+2. [validation demo ](#adding-validation)
+3. [Cross Validation demo](#another-form-of-validation-cross-validation)
+4. [AsyncValidation demo](#another-form-of-validation-asyncvalidation)
+5. [UI Customization demo](#ui-customization)
+6. [API summary](#api-summary)
+7. [classes](#classes)
+8. [decorators](#decorators)
+9. [directives](#directives)
+
 ## How To Use?
 
 is step by step demonstration of common use cases
