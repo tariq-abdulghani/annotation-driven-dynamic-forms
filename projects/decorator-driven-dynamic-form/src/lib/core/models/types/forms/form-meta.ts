@@ -10,6 +10,7 @@ export type NestedFormSpec = {
   legend?: string;
   name: string;
   declaredClass: any;
+  class?: string;
   legendClass?: string;
   width?: number;
 };
