@@ -19,8 +19,9 @@ import { DynamicFormContextService } from '../../../core/services/form-context/d
 import { FormEntityProcessorService } from '../../../core/services/form-entity-processor/form-entity-processor.service';
 import { ButtonTemplateDirective } from '../../directives/button-template/button-template.directive';
 import { InputTemplateDirective } from '../../directives/input-template/input-template.directive';
-import {UseContext} from "../../../core/models/decorators/context/form-context";
-import {FormController} from "../../../core/models/types/inputs/form-controller";
+import { UseContext } from '../../../core/models/decorators/context/form-context';
+import { FormController } from '../../../core/models/types/inputs/form-controller';
+import { ObjectUtil } from '../../../core/utils/object-util';
 
 @Component({
   selector: 'd-form',
@@ -121,16 +122,17 @@ export class DynamicFormComponent
   }
 
   get formValue() {
-    if(this.includeDisabled){
+    if (this.includeDisabled) {
       return this.valueTransformer
-        ? this.valueTransformer.transform((this.inputTree.getControl() as FormGroup).getRawValue())
+        ? this.valueTransformer.transform(
+            (this.inputTree.getControl() as FormGroup).getRawValue()
+          )
         : (this.inputTree.getControl() as FormGroup).getRawValue();
-    }else{
+    } else {
       return this.valueTransformer
         ? this.valueTransformer.transform(this.inputTree.getControl().value)
         : this.inputTree.getControl().value;
     }
-
   }
 
   applySort(inputNode: InputNode) {
@@ -186,8 +188,18 @@ export class DynamicFormComponent
   reset(value?: any, emitEvent?: boolean): void {
     this.inputTree.getControl().reset(value || {}, { emitEvent: emitEvent });
   }
-  patch(value?: any, emitEvent?: boolean): void{
-    this.inputTree.getControl().reset({...this.inputTree.getControl().value, ...value}, { emitEvent: emitEvent });
+  patch(value?: any, emitEvent?: boolean): void {
+    this.inputTree
+      .getControl()
+      .reset(
+        ObjectUtil.patchObject(
+          (this.inputTree.getControl() as FormGroup).getRawValue(),
+          value
+        ),
+        {
+          emitEvent: emitEvent,
+        }
+      );
   }
   getName(): string {
     return this.entityName;
