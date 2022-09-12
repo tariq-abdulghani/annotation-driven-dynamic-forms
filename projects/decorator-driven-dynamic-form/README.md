@@ -1,12 +1,17 @@
-# Decorator Driven Dynamic Forms version 10.0.2-a
+# Decorator Driven Dynamic Forms version 10.0.3-a
 
 > Opinionated way to create dynamic forms with **no json** , **no inheritance**
 > just use **decorators**
 
 ## What is new in this version
 
-1. fixed invalid date issue when users clear date inputs
-2. updated package.json with more meta data about project and the author
+1. nested forms now can have its own css class via meta attribute class
+   and also its own legen class
+
+2. fixed patch method to use partial objects for nested attributes and also
+   patches disabled fields
+
+3. added `hasChildren(): boolean` method to the interface `InputNode` dont worry it will not affect any working code.
 
 ## Project Goals
 

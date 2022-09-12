@@ -71,6 +71,9 @@ export class InputNodeImpl implements InputNode {
     return this.childNodes;
   }
 
+  hasChildren(): boolean {
+    return this.childNodes ? true : false;
+  }
   // enable
   // disable
   isValid() {

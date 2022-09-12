@@ -21,28 +21,30 @@ import 'reflect-metadata';
 @Injectable()
 export class FormEntityProcessorService {
   constructor(private injector: Injector) {}
-  public process(formEntity: any, context?: UseContext): InputNode {
-    const node = this.createContextualNode(formEntity, context || '');
-    // subscribe to enable or disable controls
-    node?.getControl()!.valueChanges.subscribe((formValue) => {
-      node!.getChildren()?.forEach((d) => {
-        if (d.getProperty('enableFn')) {
-          switch (d.getProperty('enableFn')(formValue)) {
-            case true:
-              d!.getControl()?.enable({ emitEvent: false });
-              break;
 
-            case false:
-              d!.getControl()?.disable({ emitEvent: false });
-              break;
-          }
-        }
-      });
-    });
-    return node;
+  /**
+   *Builds tree like structure from form entities
+   *
+   * @param formEntity class annotated with `FormEntity`
+   * @param context `string` for proper usage please go to docs
+   * @returns `InputNode` tree of input nodes
+   */
+  public process(formEntity: any, context?: UseContext): InputNode {
+    const root = this.createNode(formEntity, context || '');
+    this.handleEnableFn(root); // this.handleEnableFn(node, (node.getControl() as FormGroup).getRawValue()); // should nt be here
+    this.applySort(root);
+    return root;
   }
 
-  private createContextualNode(
+  /**
+   * Used internally to build input nodes
+   *
+   * @param entity class annotated with `FormEntity`
+   * @param context `string` for proper usage please go to docs
+   * @param parentProperties `Map<string, any>`
+   * @returns `InputNode`
+   */
+  private createNode(
     entity: any,
     context: UseContext,
     parentProperties?: Map<string, any>
@@ -121,7 +123,7 @@ export class FormEntityProcessorService {
             nestedFormEntity[k] = entity[key][k];
           });
         }
-        const nestedFormNode = this.createContextualNode(
+        const nestedFormNode = this.createNode(
           nestedFormEntity,
           context,
           new Map(formProperties)
@@ -196,5 +198,59 @@ export class FormEntityProcessorService {
       });
     });
     return formNode;
+  }
+
+  /**
+   * Handles `enableFn` meta attribute
+   * @param root `InputNode`
+   */
+  private handleEnableFn(root: InputNode) {
+    root?.getControl()!.valueChanges.subscribe((formValue) => {
+      root!.getChildren()?.forEach((node: InputNode) => {
+        this.enableOrDisable(node, formValue);
+      });
+    });
+  }
+
+  /**
+   *  * Checks each field recursively to enable or disable it
+   * if `enableFn` is defined on it
+   *
+   * @param root `InputNode`
+   * @param formValue `Object`
+   */
+  private enableOrDisable(node: InputNode, formValue: any) {
+    if (!node.hasChildren()) {
+      if (node.getProperty('enableFn')) {
+        switch (node.getProperty('enableFn')(formValue)) {
+          case true:
+            node!.getControl()?.enable({ emitEvent: false });
+            break;
+          case false:
+            node!.getControl()?.disable({ emitEvent: false });
+            break;
+        }
+      }
+    } else {
+      node.getChildren()?.forEach((child) => {
+        this.enableOrDisable(child, formValue[node.getProperty('name')]);
+      });
+    }
+  }
+
+  /**
+   * Sorts inputs ASC based on `order` `property`
+   * @param inputNode `InputNode`
+   *
+   */
+  private applySort(inputNode: InputNode): void {
+    if (!inputNode.hasChildren()) {
+      return;
+    } else {
+      inputNode
+        .getChildren()
+        ?.sort((a, b) => a.getProperty('order') - b.getProperty('order'));
+      inputNode.getChildren()?.forEach((child) => this.applySort(child));
+    }
   }
 }

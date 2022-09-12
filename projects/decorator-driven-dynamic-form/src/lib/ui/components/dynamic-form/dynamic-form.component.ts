@@ -89,8 +89,6 @@ export class DynamicFormComponent
         this.inputTree!.getControl()?.valueChanges.subscribe((value: any) => {
           this.changEvent.emit(value);
         });
-
-        this.applySort(this.inputTree);
       }
     }
     if (changes.initialValue && changes.initialValue.firstChange) {
@@ -132,17 +130,6 @@ export class DynamicFormComponent
       return this.valueTransformer
         ? this.valueTransformer.transform(this.inputTree.getControl().value)
         : this.inputTree.getControl().value;
-    }
-  }
-
-  applySort(inputNode: InputNode) {
-    if (inputNode.getChildren() == null) {
-      return;
-    } else {
-      inputNode
-        .getChildren()
-        ?.sort((a, b) => a.getProperty('order') - b.getProperty('order'));
-      inputNode.getChildren()?.forEach((child) => this.applySort(child));
     }
   }
 

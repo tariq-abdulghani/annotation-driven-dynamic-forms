@@ -48,6 +48,10 @@ export class Author {
     id: 'age',
     name: 'age',
     width: 4,
+    enableFn: (f) => {
+      console.log('....', f.married);
+      return !f.married;
+    },
   })
   age: number = 28;
 
@@ -71,6 +75,10 @@ export class Author {
     id: 'gender',
     legend: 'Gender',
     name: 'gender',
+    enableFn: (f) => {
+      console.log('....', f);
+      return !f.married;
+    },
   })
   gender: any = null;
 

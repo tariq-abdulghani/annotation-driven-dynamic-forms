@@ -1,8 +1,8 @@
 <div class="container">
+  <!-- [initialValue]="story" -->
   <d-form
     #df
     entityName="book"
-    [initialValue]="story"
     (changeEvent)="onChange($event)"
     (submitEvent)="onSubmit($event)"
     (buttonClickEvent)="onClick($event)"

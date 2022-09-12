@@ -15,6 +15,7 @@ export interface InputNode {
   addChild(node: InputNode): void;
   addChildren(nodes: InputNode[]): void;
   getChildren(): InputNode[] | null;
+  hasChildren(): boolean;
 
   isValid(): boolean;
   inValid(): boolean;
