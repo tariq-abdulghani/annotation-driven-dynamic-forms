@@ -19,6 +19,7 @@ import { EntityRegistry } from './core/services/entity-registry/entity-registry.
 import { FormMetaData } from './core/models/decorators/forms/Form-meta-data';
 import { ButtonTemplateDirective } from './ui/directives/button-template/button-template.directive';
 import { FormEntityProcessorService } from './core/services/form-entity-processor/form-entity-processor.service';
+import { InputProcessorService } from './core/services/input-processor/input-processor.service';
 
 @NgModule({
   declarations: [
@@ -65,7 +66,11 @@ export class DynamicFormModule {
     });
     return {
       ngModule: DynamicFormModule,
-      providers: [FormEntityProcessorService, EntityRegistry],
+      providers: [
+        FormEntityProcessorService,
+        EntityRegistry,
+        InputProcessorService,
+      ],
     };
   }
 }
