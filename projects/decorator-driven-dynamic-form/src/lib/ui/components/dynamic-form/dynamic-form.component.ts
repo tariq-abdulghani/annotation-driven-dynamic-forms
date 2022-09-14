@@ -89,11 +89,18 @@ export class DynamicFormComponent
         this.inputTree!.getControl()?.valueChanges.subscribe((value: any) => {
           this.changEvent.emit(value);
         });
+
+        // check  enabled ot disabled status
+        this.formEntityProcessorService.applyEnableFn(this.inputTree);
       }
     }
     if (changes.initialValue && changes.initialValue.firstChange) {
       let value = changes.initialValue.currentValue;
       this.inputTree.getControl().reset(value, { emitEvent: false });
+      // update value and checks for validation its important to start with valid data
+      this.inputTree.getControl().updateValueAndValidity();
+      // check  enabled ot disabled status
+      this.formEntityProcessorService.applyEnableFn(this.inputTree);
     }
   }
 

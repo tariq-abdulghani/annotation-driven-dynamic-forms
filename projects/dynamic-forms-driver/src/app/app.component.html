@@ -2,6 +2,7 @@
   <!-- [initialValue]="story" -->
   <d-form
     #df
+    [initialValue]="story"
     entityName="book"
     (changeEvent)="onChange($event)"
     (submitEvent)="onSubmit($event)"

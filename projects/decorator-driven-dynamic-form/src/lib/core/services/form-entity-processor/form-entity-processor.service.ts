@@ -27,9 +27,9 @@ export class FormEntityProcessorService {
    * @returns `InputNode` tree of input nodes
    */
   public process(formEntity: any, context?: UseContext): InputNode {
-    const root = this.createNode(formEntity, context || '');
-    this.handleEnableFn(root); // this.handleEnableFn(node, (node.getControl() as FormGroup).getRawValue()); // should nt be here
-    this.applySort(root);
+    const root = this.parse(formEntity, context || '');
+    this.processEnableFn(root); // this.handleEnableFn(node, (node.getControl() as FormGroup).getRawValue()); // should nt be here
+    this.processOrder(root);
     return root;
   }
 
@@ -41,7 +41,7 @@ export class FormEntityProcessorService {
    * @param parentProperties `Map<string, any>`
    * @returns `InputNode`
    */
-  private createNode(
+  private parse(
     entity: any,
     context: UseContext,
     parentProperties?: Map<string, any>
@@ -55,7 +55,7 @@ export class FormEntityProcessorService {
 
     const childInputs = [] as InputNode[];
 
-    this.getKeysWithinContext(entity, context).forEach((key) => {
+    this.processUseContext(entity, context).forEach((key) => {
       if (this.isNotComposite(entity, key)) {
         const inputNode = this.inputProcessor.process(entity, context, key);
         childInputs.push(inputNode);
@@ -81,12 +81,12 @@ export class FormEntityProcessorService {
     const formNode: InputNode = new InputNodeImpl(
       formProperties,
       new FormGroup(fomGroupInitializer, {
-        updateOn: this.getUpdateStrategy(formProperties),
+        updateOn: this.processUpdateStrategy(formProperties),
       }),
       new Map()
     );
     formNode.addChildren(childInputs);
-    this.handleCrossValidation(entity, formNode);
+    this.processCrossValidation(entity, formNode);
 
     return formNode;
   }
@@ -98,7 +98,7 @@ export class FormEntityProcessorService {
    * @param context
    * @returns `string[]` attributes within context
    */
-  private getKeysWithinContext(entity: any, context: string): string[] {
+  private processUseContext(entity: any, context: string): string[] {
     const inContextAttrs: string[] = [];
     for (const key in entity) {
       const ctx = Reflect.getMetadata(USE_CONTEXT_META_KEY, entity, key);
@@ -136,7 +136,7 @@ export class FormEntityProcessorService {
         nestedFormEntity[k] = entity[key][k];
       });
     }
-    const nestedFormNode = this.createNode(
+    const nestedFormNode = this.parse(
       nestedFormEntity,
       context,
       new Map(formProperties)
@@ -162,7 +162,7 @@ export class FormEntityProcessorService {
    * @param formProperties
    * @returns
    */
-  private getUpdateStrategy(
+  private processUpdateStrategy(
     formProperties: Map<string, any>
   ): 'change' | 'blur' | 'submit' {
     // update strategy
@@ -189,7 +189,7 @@ export class FormEntityProcessorService {
    * @param entity
    * @param formNode
    */
-  private handleCrossValidation(entity: any, formNode: InputNode) {
+  private processCrossValidation(entity: any, formNode: InputNode) {
     const crossValidators = CrossValidationMeta.get(entity);
     if (crossValidators && crossValidators.length > 0) {
       crossValidators.forEach((cv) => {
@@ -213,22 +213,33 @@ export class FormEntityProcessorService {
    * Handles `enableFn` meta attribute
    * @param root `InputNode`
    */
-  private handleEnableFn(root: InputNode) {
+  private processEnableFn(root: InputNode) {
     root?.getControl()!.valueChanges.subscribe((formValue) => {
       root!.getChildren()?.forEach((node: InputNode) => {
-        this.enableOrDisable(node, formValue);
+        this.applyIfDefined(node, formValue);
       });
     });
   }
 
   /**
-   *  * Checks each field recursively to enable or disable it
+   * Used to apply `enableFn` after setting from value manually and silent change events
+   * so keep it consistent
+   *
+   * @param root `InputNode`
+   */
+  public applyEnableFn(root: InputNode) {
+    root!.getChildren()?.forEach((node: InputNode) => {
+      this.applyIfDefined(node, (root.getControl() as FormGroup).getRawValue());
+    });
+  }
+  /**
+   * Checks each field recursively to enable or disable it
    * if `enableFn` is defined on it
    *
    * @param root `InputNode`
    * @param formValue `Object`
    */
-  private enableOrDisable(node: InputNode, formValue: any) {
+  private applyIfDefined(node: InputNode, formValue: any) {
     if (!node.hasChildren()) {
       if (node.getProperty('enableFn')) {
         switch (node.getProperty('enableFn')(formValue)) {
@@ -242,7 +253,7 @@ export class FormEntityProcessorService {
       }
     } else {
       node.getChildren()?.forEach((child) => {
-        this.enableOrDisable(child, formValue[node.getProperty('name')]);
+        this.applyIfDefined(child, formValue[node.getProperty('name')]);
       });
     }
   }
@@ -252,14 +263,14 @@ export class FormEntityProcessorService {
    * @param inputNode `InputNode`
    *
    */
-  private applySort(inputNode: InputNode): void {
+  private processOrder(inputNode: InputNode): void {
     if (!inputNode.hasChildren()) {
       return;
     } else {
       inputNode
         .getChildren()
         ?.sort((a, b) => a.getProperty('order') - b.getProperty('order'));
-      inputNode.getChildren()?.forEach((child) => this.applySort(child));
+      inputNode.getChildren()?.forEach((child) => this.processOrder(child));
     }
   }
 

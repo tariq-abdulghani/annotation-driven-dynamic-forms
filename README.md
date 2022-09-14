@@ -3,7 +3,7 @@
 > Opinionated way to create dynamic forms with **no json** , **no inheritance**
 > just use **decorators**
 
-## What is new in this version
+## issues fixed in this version
 
 1. nested forms now can have its own css class via meta attribute class
    and also its own legen class
@@ -12,6 +12,7 @@
    patches disabled fields
 
 3. added `hasChildren(): boolean` method to the interface `InputNode` dont worry it will not affect any working code.
+4. `enableFn` now works on intial values , before this fix value must change to make the effect
 
 ## Project Goals
 
