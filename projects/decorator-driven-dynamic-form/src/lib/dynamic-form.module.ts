@@ -44,6 +44,7 @@ import { InputProcessorService } from './core/services/input-processor/input-pro
     InputTemplateDirective,
     InputComponent,
     ButtonTemplateDirective,
+    ErrorMessagePipe
   ],
 })
 export class DynamicFormModule {

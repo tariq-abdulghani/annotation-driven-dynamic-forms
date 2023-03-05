@@ -1,4 +1,4 @@
-# Decorator Driven Dynamic Forms version 10.0.3-a
+# Decorator Driven Dynamic Forms version 10.0.4-a
 
 > Opinionated way to create dynamic forms with **no json** , **no inheritance**
 > just use **decorators**
@@ -13,6 +13,8 @@
 
 3. added `hasChildren(): boolean` method to the interface `InputNode` dont worry it will not affect any working code.
 4. `enableFn` now works on intial values , before this fix value must change to make the effect
+5. validation error message works now in production
+6. exported ErrorMessagePipe to make customization easier.
 
 ## Project Goals
 

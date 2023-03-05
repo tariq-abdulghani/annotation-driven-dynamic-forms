@@ -1,7 +1,7 @@
 {
   "name": "ddd-form",
   "description": "a library for building forms at run time for angular projects, suitable for large projects that depends on forms using API similar to JPA ",
-  "version": "10.0.3-a",
+  "version": "10.0.4-a",
   "peerDependencies": {
     "@angular/common": "^12.2.0",
     "@angular/core": "^12.2.0",

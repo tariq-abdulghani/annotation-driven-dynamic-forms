@@ -102,14 +102,15 @@ export class InputProcessorService {
     control: AbstractControl
   ) {
     const res = ValidationsMetaData.getValidatorsAndErrorMap(entity, key);
-
+    // console.log('res', res);
     if (res.validators.includes(Validators.required)) {
       properties.set('required', true); // if required set required attribute
     }
 
-    res.errorMap.forEach(([k, v]) => {
-      errorMap.set(k, v);
-    });
+    for (const entry of res.errorMap.entries()) {
+      // console.log('entry',entry[0], entry[1]);
+      errorMap.set(entry[0], entry[1]);
+    }
 
     control.addValidators(res.validators);
   }

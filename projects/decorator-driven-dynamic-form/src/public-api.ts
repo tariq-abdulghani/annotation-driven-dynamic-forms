@@ -48,3 +48,6 @@ export * from './lib/ui/input-component-registry/decorators/dynamic-form-input';
 export * from './lib/ui/directives/button-template/button-template.directive';
 
 export * from './lib/core/services/form-context/dynamic-form-context.service';
+
+// pipes
+export  * from './lib/ui/pipes/error-message.pipe';
