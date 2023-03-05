@@ -51,3 +51,6 @@ export * from './lib/core/services/form-context/dynamic-form-context.service';
 
 // pipes
 export  * from './lib/ui/pipes/error-message.pipe';
+
+// context
+export  * from  './lib/core/models/decorators/context/form-context';

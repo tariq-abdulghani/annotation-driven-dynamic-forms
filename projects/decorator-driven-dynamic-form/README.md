@@ -1,4 +1,4 @@
-# Decorator Driven Dynamic Forms version 10.0.4-a
+# Decorator Driven Dynamic Forms version 10.0.5-a
 
 > Opinionated way to create dynamic forms with **no json** , **no inheritance**
 > just use **decorators**
@@ -15,6 +15,7 @@
 4. `enableFn` now works on intial values , before this fix value must change to make the effect
 5. validation error message works now in production
 6. exported ErrorMessagePipe to make customization easier.
+7. export form context annotations
 
 ## Project Goals
 
