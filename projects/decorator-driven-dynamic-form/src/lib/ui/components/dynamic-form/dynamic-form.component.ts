@@ -35,7 +35,7 @@ export class DynamicFormComponent
   inputTree!: InputNode;
   formEntity!: any;
   @Input('entityName') entityName!: string;
-  @Input('initialValue') initialValue!: any;
+  @Input('initialValue') initialValue!: any; // todo rename it please to form value
   @Input('useContext') useContext!: UseContext;
   @Input('valueTransformer')
   valueTransformer?: FormValueTransformer<any, any>;
@@ -94,7 +94,7 @@ export class DynamicFormComponent
         this.formEntityProcessorService.applyEnableFn(this.inputTree);
       }
     }
-    if (changes.initialValue && changes.initialValue.firstChange) {
+    if (changes.initialValue && changes.initialValue.currentValue) {
       let value = changes.initialValue.currentValue;
       this.inputTree.getControl().reset(value, { emitEvent: false });
       // update value and checks for validation its important to start with valid data
