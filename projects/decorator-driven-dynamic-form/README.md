@@ -1,4 +1,4 @@
-# Decorator Driven Dynamic Forms version 10.0.5-a
+# Decorator Driven Dynamic Forms version 10.0.7-a
 
 > Opinionated way to create dynamic forms with **no json** , **no inheritance**
 > just use **decorators**
@@ -16,6 +16,8 @@
 5. validation error message works now in production
 6. exported ErrorMessagePipe to make customization easier.
 7. export form context annotations
+8. form initial value only takes first change solved
+9. disabled attribute doesn't work
 
 ## Project Goals
 

@@ -91,3 +91,15 @@ export function CustomInput(specs: CustomInputSpec) {
     );
   };
 }
+// TODO make it replacement for custominput and name it dynamic form input
+// todo rename dynmic form input to dynamic form input component or form input component
+// mark the other as depricated
+// export function DynamicInput<S extends InputSpec>(specs: S){
+//   return function (target: any, propertyKey: string) {
+//     InputsMetaData.add(
+//       { ...specs, inputType: specs.inputType.toUpperCase() },
+//       target,
+//       propertyKey
+//     );
+//   };
+// }

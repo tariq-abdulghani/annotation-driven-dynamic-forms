@@ -58,6 +58,8 @@ export class DynamicFormModule {
     SelectInputComponent,
   ];
 
+  // todo
+  // replace ith with forRoot and forChild pattern
   public static register(
     entities: Type<any>[]
   ): ModuleWithProviders<DynamicFormModule> {

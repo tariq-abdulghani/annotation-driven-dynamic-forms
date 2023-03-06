@@ -24,9 +24,10 @@ export class InputProcessorService {
     const formControl = new FormControl(
       entity[key] //initialize
     );
+
     const errorMap = new Map();
 
-    this.handleOnContextOverride(
+    this.handleOnContextOverrideAndProcessProperties(
       entity,
       context,
       key,
@@ -64,7 +65,7 @@ export class InputProcessorService {
    * @param key
    * @param properties
    */
-  private handleOnContextOverride(
+  private handleOnContextOverrideAndProcessProperties(
     entity: any,
     context: string,
     key: string,
@@ -77,10 +78,15 @@ export class InputProcessorService {
       entity,
       key
     );
+    // console.log("ctx-specs", contextSpecs);
     if (contextSpecs && contextSpecs.context == context) {
       Object.entries(contextSpecs.properties).forEach(([k, v]) => {
         properties.set(k, v);
       });
+    }
+
+    if(properties.has('disabled')&& properties.get('disabled')== true){
+      control.disable({emitEvent: false});
     }
   }
 
