@@ -39,12 +39,12 @@ export class DynamicFormComponent
   @Input('useContext') useContext!: UseContext;
   @Input('valueTransformer')
   valueTransformer?: FormValueTransformer<any, any>;
-  @Input('includeDisabled') includeDisabled = false;
+  @Input('includeDisabled') includeDisabled = false; // todo add in documentation
   @Output('submitEvent') submitEvent: EventEmitter<any> =
     new EventEmitter<any>();
   @Output('changeEvent') changEvent: EventEmitter<any> =
     new EventEmitter<any>();
-  @Output('buttonClickEvent') buttonClickEvent: EventEmitter<any> =
+  @Output('buttonClickEvent') buttonClickEvent: EventEmitter<any> = // todo make sure its developer friendly
     new EventEmitter<any>();
 
   @ContentChildren(InputTemplateDirective)
@@ -60,7 +60,7 @@ export class DynamicFormComponent
   ) {}
 
   ngAfterContentInit(): void {
-    console.log('buttonTemplateQueryList', this.buttonTemplateQueryList);
+    // console.log('buttonTemplateQueryList', this.buttonTemplateQueryList);
     this.inputTemplateQueryList.forEach((item) => {
       this.inputTemplateMap.set(item.getInputType(), item.getTemplateRef());
     });
@@ -106,7 +106,7 @@ export class DynamicFormComponent
 
   onSubmit(v: any) {
     this.inputTree.getControl()?.markAllAsTouched();
-    console.log(this.inputTree.getControl());
+    // console.log(this.inputTree.getControl());
     if (this.inputTree.getControl()?.valid) {
       this.submitEvent.emit(this.formValue);
     }

@@ -1,4 +1,4 @@
-# Decorator Driven Dynamic Forms version 10.0.7-a
+# Decorator Driven Dynamic Forms version 10.0.8-a
 
 > Opinionated way to create dynamic forms with **no json** , **no inheritance**
 > just use **decorators**
@@ -18,7 +18,8 @@
 7. export form context annotations
 8. form initial value only takes first change solved
 9. disabled attribute doesn't work
-
+10. exported date validations
+11. field override in some context affects other contexts
 ## Project Goals
 
 0. use one consistent strategy for creating form some thing that can be used as specification like other frame works ex JPA java persistence API just an API that tells how to do data base related operation

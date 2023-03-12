@@ -1,4 +1,4 @@
-# Decorator Driven Dynamic Forms version 10.0.7-a
+# Decorator Driven Dynamic Forms version 10.0.8-a
 
 > Opinionated way to create dynamic forms with **no json** , **no inheritance**
 > just use **decorators**
@@ -18,6 +18,8 @@
 7. export form context annotations
 8. form initial value only takes first change solved
 9. disabled attribute doesn't work
+10. exported date validations
+11. field override in some context affects other contexts
 
 ## Project Goals
 

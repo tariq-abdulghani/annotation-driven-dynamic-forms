@@ -14,7 +14,7 @@ export class InputsMetaData {
     target: any,
     propertyKey: string
   ): Map<string, any> | undefined {
-    return Reflect.getMetadata(INPUTS_METADATA_KEY, target, propertyKey);
+    return new Map<string, any>(Reflect.getMetadata(INPUTS_METADATA_KEY, target, propertyKey));
   }
 
   private static propertiesToMap(properties: any) {

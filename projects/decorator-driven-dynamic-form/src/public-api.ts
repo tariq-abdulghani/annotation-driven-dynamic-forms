@@ -26,6 +26,8 @@ export * from './lib/core/models/decorators/validation/sync/max-length';
 export * from './lib/core/models/decorators/validation/sync/min-length';
 export * from './lib/core/models/decorators/validation/sync/pattern';
 export * from './lib/core/models/decorators/validation/sync/email';
+export * from './lib/core/models/decorators/validation/sync/date-validation';
+
 
 export * from './lib/core/models/types/actions/actions';
 export * from './lib/core/models/types/inputs/input-types.enum';
